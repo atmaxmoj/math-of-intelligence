@@ -1,0 +1,223 @@
+\documentclass[11pt,a4paper]{book}
+
+% Encoding and fonts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% Math packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bussproofs}  % for proof trees
+
+% Logic symbols
+\usepackage{stmaryrd}    % \llbracket, \rrbracket
+\newcommand{\necessary}{\Box}
+\newcommand{\possible}{\Diamond}
+\newcommand{\forces}{\Vdash}
+\newcommand{\nforces}{\nVdash}
+\newcommand{\bisim}{\underline{\leftrightarrow}}
+
+% Theorem environments
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{example}[definition]{Example}
+
+\theoremstyle{plain}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Corollary}
+
+\theoremstyle{remark}
+\newtheorem{remark}[definition]{Remark}
+
+% TikZ for Kripke frames
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes}
+
+% Hyperlinks
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+% Bibliography
+\usepackage[style=authoryear,backend=biber]{biblatex}
+% \addbibresource{references.bib}
+
+% Title
+\title{Modal Logic: A Comprehensive Treatment}
+\author{Sijie Wang}
+\date{\today}
+
+\begin{document}
+
+\frontmatter
+\maketitle
+\tableofcontents
+
+\mainmatter
+
+\chapter{Introduction}
+
+Modal logic extends classical propositional logic with operators expressing modality---notions such as possibility, necessity, knowledge, belief, obligation, and time.
+
+\section{Historical Background}
+
+The modern study of modal logic begins with C.I. Lewis's work in the early 20th century...
+
+\section{Why Modal Logic?}
+
+% TODO: motivation and applications
+
+\chapter{Syntax and Semantics}
+
+\section{Modal Languages}
+
+\begin{definition}[Modal Language]
+Let $\Phi$ be a countable set of propositional variables. The \emph{modal language} $\mathcal{L}(\necessary, \possible)$ is defined by the grammar:
+\[
+\varphi ::= p \mid \neg\varphi \mid (\varphi \land \psi) \mid \necessary\varphi
+\]
+where $p \in \Phi$. We define $\possible\varphi := \neg\necessary\neg\varphi$.
+\end{definition}
+
+\section{Kripke Semantics}
+
+\begin{definition}[Kripke Frame]
+A \emph{Kripke frame} is a pair $\mathcal{F} = (W, R)$ where:
+\begin{itemize}
+    \item $W$ is a non-empty set of \emph{possible worlds}
+    \item $R \subseteq W \times W$ is a binary \emph{accessibility relation}
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Kripke Model]
+A \emph{Kripke model} is a triple $\mathcal{M} = (W, R, V)$ where:
+\begin{itemize}
+    \item $(W, R)$ is a Kripke frame
+    \item $V : \Phi \to \mathcal{P}(W)$ is a \emph{valuation function}
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Satisfaction]
+Let $\mathcal{M} = (W, R, V)$ be a Kripke model and $w \in W$. The satisfaction relation $\mathcal{M}, w \models \varphi$ is defined inductively:
+\begin{align*}
+\mathcal{M}, w &\models p &&\text{iff } w \in V(p) \\
+\mathcal{M}, w &\models \neg\varphi &&\text{iff } \mathcal{M}, w \not\models \varphi \\
+\mathcal{M}, w &\models \varphi \land \psi &&\text{iff } \mathcal{M}, w \models \varphi \text{ and } \mathcal{M}, w \models \psi \\
+\mathcal{M}, w &\models \necessary\varphi &&\text{iff for all } v \in W: wRv \Rightarrow \mathcal{M}, v \models \varphi
+\end{align*}
+\end{definition}
+
+\begin{example}
+Consider the frame with $W = \{w_0, w_1, w_2\}$ and $R = \{(w_0, w_1), (w_0, w_2), (w_1, w_1)\}$:
+
+\begin{center}
+\begin{tikzpicture}[
+    world/.style={circle, draw, minimum size=8mm},
+    arrow/.style={-{Stealth}, thick}
+]
+\node[world] (w0) at (0,0) {$w_0$};
+\node[world] (w1) at (2,1) {$w_1$};
+\node[world] (w2) at (2,-1) {$w_2$};
+
+\draw[arrow] (w0) -- (w1);
+\draw[arrow] (w0) -- (w2);
+\draw[arrow] (w1) to [loop right] (w1);
+\end{tikzpicture}
+\end{center}
+
+% TODO: complete the example
+\end{example}
+
+\section{Validity and Consequence}
+
+% TODO
+
+\chapter{Bisimulation and Model Theory}
+
+\section{Bisimulation}
+
+\begin{definition}[Bisimulation]
+Let $\mathcal{M} = (W, R, V)$ and $\mathcal{M}' = (W', R', V')$ be Kripke models. A non-empty relation $Z \subseteq W \times W'$ is a \emph{bisimulation} between $\mathcal{M}$ and $\mathcal{M}'$ if whenever $wZw'$:
+\begin{enumerate}
+    \item (Atomic harmony) For all $p \in \Phi$: $w \in V(p) \Leftrightarrow w' \in V'(p)$
+    \item (Zig) If $wRv$, then there exists $v' \in W'$ such that $w'R'v'$ and $vZv'$
+    \item (Zag) If $w'R'v'$, then there exists $v \in W$ such that $wRv$ and $vZv'$
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[Bisimulation Invariance]
+If $Z$ is a bisimulation between $\mathcal{M}$ and $\mathcal{M}'$ and $wZw'$, then for all modal formulas $\varphi$:
+\[
+\mathcal{M}, w \models \varphi \iff \mathcal{M}', w' \models \varphi
+\]
+\end{theorem}
+
+\begin{proof}
+By induction on the structure of $\varphi$.
+% TODO: complete proof
+\end{proof}
+
+\section{Bounded Morphisms}
+
+% TODO
+
+\section{Generated Submodels}
+
+% TODO
+
+\chapter{Soundness and Completeness}
+
+\section{Normal Modal Logics}
+
+% TODO
+
+\section{Canonical Models}
+
+% TODO
+
+\section{Completeness Theorems}
+
+% TODO
+
+\chapter{Correspondence Theory}
+
+\section{Frame Definability}
+
+% TODO
+
+\section{The Sahlqvist Theorem}
+
+% TODO
+
+\chapter{Decidability}
+
+\section{Finite Model Property}
+
+% TODO
+
+\section{Filtration}
+
+% TODO
+
+\chapter{Combining Modal Logics}
+
+\section{Fusion}
+
+% TODO
+
+\section{Products}
+
+% TODO
+
+\backmatter
+
+% \printbibliography
+
+\end{document}
