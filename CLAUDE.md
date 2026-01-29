@@ -66,6 +66,17 @@ I am here to help you:
 - Product L1 × L2
 - Transfer theorems
 
+## Study Workflow
+
+1. **Claude reads a section of the PDF** - extracts key concepts, identifies tricky parts
+2. **Claude explains in simple terms** - motivates definitions before stating them, gives intuition
+3. **Claude writes corresponding LaTeX** - in our style (intuition boxes, examples, diagrams)
+4. **User reads local PDF in parallel** - comparing original with Claude's explanation
+5. **Discussion** - user asks questions, challenges understanding, we refine together
+6. **Commit progress** - save to git when a section is solid
+
+This way: rigorous source material + accessible explanation + book gets written.
+
 ## Conversation Style
 
 - Speak Chinese for discussion, English for technical terms
