@@ -100,6 +100,9 @@ The book should NOT be like a typical logic textbook - no boring walls of symbol
 - If a concept can be explained with a picture, draw the picture
 
 ### Variety of forms
+Not just content variety, but literal visual/typographical variety:
+
+**Content types:**
 - Definitions and theorems (yes, but not ONLY these)
 - Intuitive explanations and motivations
 - Concrete examples before abstract generalizations
@@ -107,6 +110,17 @@ The book should NOT be like a typical logic textbook - no boring walls of symbol
 - Historical context and "why do we care?" sections
 - Exercises that build understanding, not just test memorization
 - "Common mistakes" and "what could go wrong" discussions
+
+**Visual formatting:**
+- Colored boxes for different purposes (definition boxes, example boxes, warning boxes, intuition boxes)
+- Margin notes for asides and cross-references
+- Highlighted "key insight" callouts
+- Proof sketches in a different style from full proofs
+- Summary boxes at chapter ends
+- Visual breaks - not just wall-to-wall text
+- Icons or small graphics to mark recurring elements (e.g., ⚠️ for common pitfalls, 💡 for intuition)
+
+The page should look alive, not like a legal document.
 
 ### Absolutely comprehensive
 - Cover ALL the meta-theory, not just the easy parts

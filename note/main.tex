@@ -36,6 +36,74 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, shapes}
 
+% Colored boxes for variety
+\usepackage[most]{tcolorbox}
+\usepackage{marginnote}
+\usepackage{fontawesome5}  % icons
+
+% Intuition box (light blue)
+\newtcolorbox{intuition}[1][]{
+    colback=blue!5,
+    colframe=blue!50,
+    fonttitle=\bfseries,
+    title={\faLightbulb\hspace{0.5em}Intuition},
+    #1
+}
+
+% Warning box (light red)
+\newtcolorbox{warning}[1][]{
+    colback=red!5,
+    colframe=red!50,
+    fonttitle=\bfseries,
+    title={\faExclamationTriangle\hspace{0.5em}Common Pitfall},
+    #1
+}
+
+% Key insight box (light green)
+\newtcolorbox{keyinsight}[1][]{
+    colback=green!5,
+    colframe=green!50,
+    fonttitle=\bfseries,
+    title={\faStar\hspace{0.5em}Key Insight},
+    #1
+}
+
+% Historical note box (light yellow/sepia)
+\newtcolorbox{history}[1][]{
+    colback=yellow!10,
+    colframe=orange!50,
+    fonttitle=\bfseries,
+    title={\faHistory\hspace{0.5em}Historical Note},
+    #1
+}
+
+% Proof sketch box (gray, for informal proofs)
+\newtcolorbox{proofsketch}[1][]{
+    colback=gray!5,
+    colframe=gray!50,
+    fonttitle=\bfseries,
+    title={Proof Sketch},
+    #1
+}
+
+% Summary box (purple, for chapter summaries)
+\newtcolorbox{summary}[1][]{
+    colback=violet!5,
+    colframe=violet!50,
+    fonttitle=\bfseries,
+    title={\faClipboardList\hspace{0.5em}Summary},
+    #1
+}
+
+% Exercise box
+\newtcolorbox{exercise}[1][]{
+    colback=white,
+    colframe=black!70,
+    fonttitle=\bfseries,
+    title={\faPencilAlt\hspace{0.5em}Exercise},
+    #1
+}
+
 % Hyperlinks
 \usepackage{hyperref}
 \hypersetup{
@@ -66,13 +134,38 @@
 
 Modal logic extends classical propositional logic with operators expressing modality---notions such as possibility, necessity, knowledge, belief, obligation, and time.
 
+\begin{intuition}
+Think of modal logic as logic with \emph{perspective}. Classical logic asks ``is this true?'' Modal logic asks ``is this true \emph{from where I'm standing}?'' Different positions might see different truths---and modal logic gives us the tools to reason about this.
+\end{intuition}
+
 \section{Historical Background}
 
-The modern study of modal logic begins with C.I. Lewis's work in the early 20th century...
+\begin{history}
+The modern study of modal logic begins with C.I. Lewis's work in the early 20th century. Lewis was dissatisfied with the ``paradoxes of material implication''---the fact that in classical logic, $p \to q$ is true whenever $p$ is false. He wanted a stronger notion of implication: $p$ \emph{strictly implies} $q$ if it's \emph{impossible} for $p$ to be true while $q$ is false. This led him to introduce modal operators.
+\end{history}
+
+% TODO: more history
 
 \section{Why Modal Logic?}
 
-% TODO: motivation and applications
+\begin{keyinsight}
+Modal logic is not one logic but a \emph{framework} for building logics. By choosing different interpretations of $\necessary$ (``box'') and different properties of the accessibility relation, we get:
+\begin{itemize}
+    \item Epistemic logic ($\necessary\varphi$ = ``the agent knows $\varphi$'')
+    \item Deontic logic ($\necessary\varphi$ = ``it is obligatory that $\varphi$'')
+    \item Temporal logic ($\necessary\varphi$ = ``always in the future, $\varphi$'')
+    \item Provability logic ($\necessary\varphi$ = ``$\varphi$ is provable'')
+\end{itemize}
+One framework, many applications.
+\end{keyinsight}
+
+\begin{warning}
+Don't think of possible worlds as parallel universes or science fiction! They are simply \emph{points in a mathematical structure}. What they ``really are'' depends on the application. In epistemic logic, they are states of knowledge. In temporal logic, they are moments in time. The math doesn't care.
+\end{warning}
+
+\begin{exercise}
+Before reading further, try to think of three situations in everyday life where you reason about possibility or necessity. What would $\necessary$ and $\possible$ mean in each case?
+\end{exercise}
 
 \chapter{Syntax and Semantics}
 
