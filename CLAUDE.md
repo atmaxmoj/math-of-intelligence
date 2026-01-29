@@ -85,9 +85,42 @@ The book is in `note/main.tex`. Key packages:
 - `tikz` for Kripke frame diagrams
 - Custom commands: `\necessary` (□), `\possible` (◇), `\bisim` (bisimulation symbol)
 
+## Writing Style for the Book
+
+The book should NOT be like a typical logic textbook - no boring walls of symbols, no dictionary-style definition dumps. Instead:
+
+### Lecture-like tone
+- Write as if explaining to a smart friend, not reciting to a blackboard
+- Use "we" and "let's" - bring the reader along on a journey
+- Ask rhetorical questions to motivate definitions before stating them
+
+### Simple language first
+- Explain ideas in plain words before introducing notation
+- Every symbol earns its place by making things clearer, not more impressive
+- If a concept can be explained with a picture, draw the picture
+
+### Variety of forms
+- Definitions and theorems (yes, but not ONLY these)
+- Intuitive explanations and motivations
+- Concrete examples before abstract generalizations
+- Diagrams (Kripke frames are inherently visual!)
+- Historical context and "why do we care?" sections
+- Exercises that build understanding, not just test memorization
+- "Common mistakes" and "what could go wrong" discussions
+
+### Absolutely comprehensive
+- Cover ALL the meta-theory, not just the easy parts
+- Don't hand-wave the hard proofs - work through them carefully
+- Connect everything: show how concepts relate and build on each other
+
+### The vibe
+Think: Feynman lectures for modal logic. Rigorous but human. Deep but accessible.
+
 ## Ultimate Goal
 
 Build a general modal logic framework where custom modal operators can be defined - applicable to policy analysis (immigration logic, welfare logic, etc.). This requires deep understanding of:
 - How to define new modal operators
 - How to prove meta-properties (soundness, completeness, decidability)
 - How to combine logics systematically
+
+The book itself is part of this goal - writing forces clarity of thought, and a good exposition makes the framework accessible to others (and to future self).
