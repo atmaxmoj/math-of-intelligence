@@ -1,5 +1,7 @@
 # Modal Logic Study Project
 
+> **CRITICAL: DO NOT read PDF files directly!** PDFs are too large and will cause context overflow. Always use the pre-split `.txt` files in each PDF's corresponding folder (e.g., `01-basics/cerami-modal1-intro/01_Introduction.txt`). If txt files don't exist, run `scripts/.venv/bin/python scripts/pdf_split.py` first.
+
 ## Project Overview
 
 This is a serious logic research project to systematically learn modal logic meta-theory and write a comprehensive LaTeX book comparable to BRV (Blackburn, de Rijke, Venema's "Modal Logic").
