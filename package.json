@@ -1,0 +1,24 @@
+{
+  "name": "modal-logic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd note && pdflatex -interaction=nonstopmode main.tex && pdflatex -interaction=nonstopmode main.tex",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atmaxmoj/math-of-intelligence.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atmaxmoj/math-of-intelligence/issues"
+  },
+  "homepage": "https://github.com/atmaxmoj/math-of-intelligence#readme",
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

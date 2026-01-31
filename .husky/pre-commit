@@ -1,0 +1,13 @@
+#!/bin/sh
+
+PDFLATEX="/Library/TeX/texbin/pdflatex"
+
+cd note
+if $PDFLATEX -interaction=nonstopmode main.tex > /dev/null 2>&1; then
+    $PDFLATEX -interaction=nonstopmode main.tex > /dev/null 2>&1
+    git add main.pdf
+    echo "✓ PDF compiled and staged"
+else
+    echo "✗ LaTeX compilation failed, committing anyway"
+fi
+cd ..
