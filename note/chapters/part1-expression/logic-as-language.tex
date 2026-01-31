@@ -35,14 +35,33 @@ This is enough for many philosophical arguments. But try to express:
 
 Is it ``All persons are lovers''? That loses the structure. The syllogism sees only \textbf{two terms} in a fixed relationship. The internal complexity---that loving involves a \emph{relation} between two things---is invisible.
 
-\subsection{Propositional Logic: Boole's Algebra}
+\subsection{Propositional Logic: From the Stoics to Boole}
+
+\begin{history}
+Propositional logic actually predates Boole by two millennia. The \textbf{Stoic} philosophers (3rd century BC) studied arguments based on connectives like ``and,'' ``or,'' and ``if-then''---independently of Aristotle's term logic.
+
+They identified basic argument forms, including what we now call \emph{modus ponens} and \emph{modus tollens}. But their work was largely forgotten, rediscovered only in the 20th century.
+
+George Boole (1854) reinvented propositional logic algebraically, treating propositions as variables and connectives as operations. This algebraic approach made logic part of mathematics.
+\end{history}
 
 Boole's algebra could express combinations of propositions:
 \[
 (p \land q) \to r
 \]
 
-The meaning is given by \textbf{truth tables}. Each connective is defined by how the truth value of the whole depends on the truth values of the parts:
+The basic \textbf{inference rules} of propositional logic are:
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Modus Ponens} & From $P$ and $P \to Q$, infer $Q$ & ``If it rains, the ground is wet. It rains. So the ground is wet.'' \\[0.5em]
+\textbf{Modus Tollens} & From $\neg Q$ and $P \to Q$, infer $\neg P$ & ``If it rains, the ground is wet. The ground is dry. So it didn't rain.'' \\[0.5em]
+\textbf{Hypothetical Syllogism} & From $P \to Q$ and $Q \to R$, infer $P \to R$ & Chaining conditionals \\[0.5em]
+\textbf{Disjunctive Syllogism} & From $P \lor Q$ and $\neg P$, infer $Q$ & ``A or B. Not A. So B.''
+\end{tabular}
+\end{center}
+
+These rules are \textbf{truth-preserving}: if the premises are true, the conclusion must be true. This can be verified by \textbf{truth tables}. Each connective is defined by how the truth value of the whole depends on the truth values of the parts:
 
 \begin{center}
 \begin{tabular}{cc|c}
@@ -75,7 +94,7 @@ p \to q
 \]
 is \textbf{true} for \emph{any} $q$---``if the moon is made of cheese, then I am the Pope,'' ``if the moon is made of cheese, then $2+2=5$.'' All true, because $p$ is false.
 
-In fact, from a false premise, you can ``derive'' anything. This is called \emph{ex falso quodlibet} (from falsehood, anything follows).
+In fact, from a false premise, you can ``derive'' anything. This is called \term{ex falso quodlibet} (from falsehood, anything follows).
 
 Even worse, you can construct seemingly valid ``proofs'' of absurd conclusions---like proving that God exists from the mere fact that you don't pray. We'll analyze this famous example in detail after introducing modal logic, where we'll see how a more expressive language dissolves the paradox.
 
@@ -103,7 +122,23 @@ Now we have:
 
 First-order logic is \textbf{remarkably expressive}. You can formalize most of mathematics in it. For decades, it was \emph{the} logic.
 
-But it still can't say everything.
+But it inherits the same quirk from propositional logic: vacuous truth. Consider:
+\begin{quote}
+``All even primes other than 2 are divisible by 5.''
+\end{quote}
+Formally: $\forall x \, ((\mathrm{EvenPrime}(x) \land x \neq 2) \to \mathrm{DivisibleBy5}(x))$.
+
+This is \textbf{true}. Why? Because there are no even primes other than 2. The antecedent is never satisfied, so the implication is vacuously true for all $x$.
+
+Or consider: ``I am taller than every blue giraffe in this room.'' Formally:
+\[
+\forall x \, ((\mathrm{BlueGiraffe}(x) \land \mathrm{InThisRoom}(x)) \to \mathrm{TallerThanMe}(x))
+\]
+Also true---there are no blue giraffes here. You can truthfully claim to be taller than all of them.
+
+In mathematics, vacuous truth is often convenient (it lets us state theorems without worrying about edge cases). But it shows that first-order logic's $\to$ still doesn't match our intuitive ``if-then.''
+
+And there's more it cannot say.
 
 \subsection{What First-Order Logic Cannot Say}
 
@@ -160,7 +195,7 @@ Recall the ``proof'' that God exists:
 Premise 1: If God doesn't exist, then ``if I pray, I'll be answered'' is false.\\
 Premise 2: I don't pray.\\
 Conclusion: Therefore, God exists.\\[0.5em]
-\textbf{Why it ``works'':} Since I don't pray, the statement ``if I pray, I'll be answered'' is vacuously true (the ``if'' part is false, so the whole conditional is true). But premise 1 says this conditional should be false if God doesn't exist. So God must exist.
+\textbf{Why it ``works'':} Premise 1 says ``no God $\Rightarrow$ the conditional is false.'' The contrapositive is ``conditional is true $\Rightarrow$ God exists.'' But since I don't pray, the conditional $P \to A$ is vacuously true! So by modus ponens, God exists.
 \end{quote}
 
 The formal derivation:
@@ -182,31 +217,46 @@ But when we say ``if I pray, I'll be answered,'' we mean something stronger: \em
 \[
 \Box(P \to A)
 \]
-meaning: in \emph{all accessible worlds}, if $P$ then $A$.
 
-Now let's redo the argument with strict implication:
+Let's be explicit about the notation:
+\begin{itemize}
+    \item $\Box$ reads as ``necessarily'' or ``in all possible situations''
+    \item $\Box(P \to A)$ reads as: ``Necessarily, if I pray then I'm answered''
+    \item In plain English: ``In \emph{every} possible situation where I pray, I would be answered''
+\end{itemize}
+
+This is much stronger than material implication $P \to A$, which only talks about the actual world.
+
+Now let's redo the argument with strict implication, step by step:
 
 \begin{quote}
-\textbf{In plain English (modal logic version):}\\[0.5em]
-Premise 1: If God doesn't exist, then it's not the case that \emph{in all possible situations}, praying leads to being answered.\\
-Premise 2: I don't pray (in the actual world).\\
-Conclusion: ???
+\textbf{Premise 1 (formal):} $\neg G \to \neg \Box(P \to A)$\\
+\textbf{Premise 1 (plain):} ``If God doesn't exist, then it's \emph{not} necessarily true that praying leads to being answered.''\\[0.5em]
+\textbf{Premise 2 (formal):} $\neg P$\\
+\textbf{Premise 2 (plain):} ``I don't pray (in the actual world).''
 \end{quote}
 
-The formal analysis:
+Now can we derive $G$ (God exists)?
+
 \begin{enumerate}
-    \item $\neg G \to \neg \Box(P \to A)$ \hfill (Premise, with strict implication)
-    \item $\neg P$ \hfill (Premise: in the actual world, I don't pray)
-    \item $\Box(P \to A)$ ??? \hfill \textbf{Does not follow!}
+    \item From $\neg P$, we get $P \to A$ in the actual world. \hfill (Vacuous truth, as before)
+
+    \textit{Plain: ``Since I don't pray, `if I pray then I'm answered' is trivially true---here, now.''}
+
+    \item But can we derive $\Box(P \to A)$? \hfill \textbf{No!}
+
+    \textit{Plain: ``Does `I don't pray here' imply `in ALL situations, praying leads to answers'? Of course not!''}
+
+    \item Without $\Box(P \to A)$, we cannot use the contrapositive of Premise 1.
+
+    \textit{Plain: ``We can't say `necessarily praying works' just because we don't pray. So the trick that proved God exists no longer works.''}
 \end{enumerate}
 
-\textbf{Why step 3 fails:} From $\neg P$ (I don't pray in the actual world), we can derive $P \to A$ \emph{in the actual world}. But we \emph{cannot} derive $\Box(P \to A)$---that would require $P \to A$ to hold in \emph{all} accessible worlds.
+\textbf{Why the argument collapses:} In other possible situations, I might pray. And in those situations, if God doesn't exist, my prayers wouldn't be answered. So $P \to A$ would be \emph{false} there---even though it's vacuously true here.
 
-In other worlds, I might pray. And in those worlds, if God doesn't exist, my prayers wouldn't be answered. So $P \to A$ would be false there.
+Therefore: $\neg P \nvdash \Box(P \to A)$. ``I don't pray'' does \emph{not} imply ``necessarily, praying leads to answers.''
 
-Therefore: $\neg P \nvdash \Box(P \to A)$.
-
-The argument collapses. Modal logic has the expressive power to distinguish what classical logic conflates.
+Modal logic has the expressive power to distinguish what classical logic conflates.
 
 \subsection{The Moral: Expressiveness Drives Progress}
 
@@ -426,7 +476,7 @@ Can we build a \textbf{lens for lenses}---a framework for talking about what all
 
 The four pillars of logic (proof theory, model theory, computability, set theory) all use set theory as their metalanguage. But set theory talks about \emph{membership}---what elements belong to what collections. This is not the same as \emph{structure}.
 
-What we need is a language where \textbf{structure} and \textbf{structure-preserving maps} are the primitive concepts.
+What we need is a language where \textbf{structure} and \textbf{invariance under transformation} are the primitive concepts.
 
 \section{Category Theory: The Ultimate Abstraction}
 
@@ -442,13 +492,13 @@ They invented \textbf{category theory} to capture this.
 A \textbf{category} consists of:
 \begin{itemize}
     \item \textbf{Objects}: the ``things'' (don't ask what they're made of)
-    \item \textbf{Morphisms} (arrows): structure-preserving maps between objects
+    \item \textbf{Morphisms} (arrows): maps under which structure is invariant
     \item \textbf{Composition}: morphisms can be composed ($f: A \to B$ and $g: B \to C$ give $g \circ f: A \to C$)
     \item \textbf{Identity}: every object has an identity morphism
 \end{itemize}
 \end{definition}
 
-\begin{example}[Some categories]
+\begin{example}[Some categories]\leavevmode
 \begin{itemize}
     \item \textbf{Set}: objects are sets, morphisms are functions
     \item \textbf{Grp}: objects are groups, morphisms are group homomorphisms
@@ -460,7 +510,7 @@ A \textbf{category} consists of:
 The key insight: we don't care what objects ``are made of.'' We only care about how they relate to each other through morphisms.
 
 \begin{keyinsight}
-Category theory is the \textbf{mathematics of mathematics}. It studies structure and structure-preserving maps in full generality.
+Category theory is the \textbf{mathematics of mathematics}. It studies structure and invariance in full generality.
 
 This is exactly what logic needed: a language where \emph{transformations} and \emph{what they preserve} are first-class concepts.
 \end{keyinsight}

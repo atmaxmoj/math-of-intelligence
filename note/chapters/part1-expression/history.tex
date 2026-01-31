@@ -109,7 +109,33 @@ S is an A.\\
 Therefore, S is B.
 \end{inference}
 
-This \textbf{is} the syllogism. Aristotle catalogued all the valid forms (Barbara, Celarent, Darii, Ferio...) and showed how to reduce complex arguments to combinations of these basic patterns.
+This \textbf{is} the syllogism. Aristotle catalogued all the valid forms and showed how to reduce complex arguments to combinations of these basic patterns.
+
+\begin{history}[title={Where do ``Barbara'' and ``Celarent'' come from?}]
+Medieval scholars invented a mnemonic system for the valid syllogisms.\footnote{The earliest known version is from William of Sherwood (13th century). See \href{https://medievallogic.wordpress.com/2017/11/16/syllogism-mnemonics/}{Medieval Logic \& Semantics}.}
+
+First, they labeled the four types of propositions with vowels:
+\begin{center}
+\begin{tabular}{cl}
+\textbf{A} & All S are P \quad (universal affirmative) --- from \emph{affirmo} \\
+\textbf{E} & No S are P \quad (universal negative) --- from \emph{nego} \\
+\textbf{I} & Some S are P \quad (particular affirmative) --- from \emph{affirmo} \\
+\textbf{O} & Some S are not P \quad (particular negative) --- from \emph{nego}
+\end{tabular}
+\end{center}
+
+Then each valid syllogism got a name whose vowels encode its structure:
+\begin{itemize}
+    \item \textbf{Barbara} (AAA): All M are P. All S are M. $\therefore$ All S are P.
+    \item \textbf{Celarent} (EAE): No M are P. All S are M. $\therefore$ No S are P.
+    \item \textbf{Darii} (AII): All M are P. Some S are M. $\therefore$ Some S are P.
+    \item \textbf{Ferio} (EIO): No M are P. Some S are M. $\therefore$ Some S are not P.
+\end{itemize}
+
+Even the consonants had meaning: the first letter (B, C, D, F) indicated which first-figure syllogism a more complex form could be reduced to, and letters like `s' and `p' indicated specific reduction operations.
+
+This is perhaps the first example of \textbf{encoding logic in notation}---a theme that will recur throughout this book.
+\end{history}
 
 \begin{keyinsight}
 Aristotle's revolution: \textbf{form can be studied independently of content}.
@@ -152,14 +178,27 @@ Boole realized that the logical operations AND, OR, NOT could be treated as alge
 \begin{example}[Boolean algebra]
 Let $p$ represent ``it is raining'' and $q$ represent ``the ground is wet.''
 
-Then:
+The basic operations are defined by their \textbf{truth tables}:
+
+\begin{center}
+\begin{tabular}{cc|cccc}
+$p$ & $q$ & $\neg p$ & $p \land q$ & $p \lor q$ & $p \to q$ \\
+\hline
+T & T & F & T & T & T \\
+T & F & F & F & T & F \\
+F & T & T & F & T & T \\
+F & F & T & F & F & T \\
+\end{tabular}
+\end{center}
+
 \begin{itemize}
-    \item $p \land q$ (AND): both are true
-    \item $p \lor q$ (OR): at least one is true
-    \item $\neg p$ (NOT): it is not raining
+    \item $\neg p$ (NOT): true when $p$ is false
+    \item $p \land q$ (AND): true when both are true
+    \item $p \lor q$ (OR): true when at least one is true
+    \item $p \to q$ (implication): false only when $p$ is true and $q$ is false
 \end{itemize}
 
-Boole showed these satisfy algebraic laws: $p \land q = q \land p$, $p \lor (q \land r) = (p \lor q) \land (p \lor r)$, and so on.
+Boole showed these satisfy algebraic laws: $p \land q = q \land p$, $p \lor (q \land r) = (p \lor q) \land (p \lor r)$, and so on. Logic became calculation.
 \end{example}
 
 This was a breakthrough: logic became a branch of mathematics. But Boole's algebra could only express \textbf{propositional} logic---combinations of whole propositions. It couldn't look inside propositions to see their structure.
@@ -245,15 +284,41 @@ The crisis revealed something important: logic is powerful, but \textbf{dangerou
 The crisis sparked a golden age of research. In the early 20th century, four branches of mathematical logic crystallized, each asking a fundamental question:
 
 \begin{center}
-\begin{tabular}{ll}
-\textbf{Proof Theory} & What is a proof? What can be proved? \\
-\textbf{Model Theory} & What is meaning? How do syntax and semantics relate? \\
-\textbf{Computability Theory} & What is computation? What can be computed? \\
-\textbf{Set Theory} & What is a mathematical object? What are the foundations?
-\end{tabular}
+\begin{tikzpicture}[
+    pillar/.style={draw, rounded corners, minimum width=3.2cm, minimum height=1.8cm, align=center, font=\small},
+    question/.style={font=\footnotesize\itshape, text width=3cm, align=center},
+    central/.style={draw, circle, minimum size=2.5cm, align=center, font=\small\bfseries, fill=blue!10},
+]
+    % Central question
+    \node[central] (center) at (0,0) {What are the\\limits of formal\\reasoning?};
+
+    % Four pillars
+    \node[pillar, fill=red!15] (proof) at (-4, 2.5) {\textbf{Proof Theory}\\[2pt]Hilbert, Gentzen};
+    \node[pillar, fill=green!15] (model) at (4, 2.5) {\textbf{Model Theory}\\[2pt]Tarski, Robinson};
+    \node[pillar, fill=orange!15] (comp) at (-4, -2.5) {\textbf{Computability}\\[2pt]G\"odel, Turing};
+    \node[pillar, fill=violet!15] (set) at (4, -2.5) {\textbf{Set Theory}\\[2pt]Cantor, Zermelo};
+
+    % Questions
+    \node[question] at (-4, 1.2) {What is a proof?};
+    \node[question] at (4, 1.2) {What is truth?};
+    \node[question] at (-4, -1.2) {What is computation?};
+    \node[question] at (4, -1.2) {What is a set?};
+
+    % Arrows
+    \draw[->, thick, gray] (proof) -- (center);
+    \draw[->, thick, gray] (model) -- (center);
+    \draw[->, thick, gray] (comp) -- (center);
+    \draw[->, thick, gray] (set) -- (center);
+
+    % Connections between pillars
+    \draw[<->, dashed, gray!60] (proof) -- node[above, font=\tiny] {completeness} (model);
+    \draw[<->, dashed, gray!60] (proof) -- node[left, font=\tiny] {decidability} (comp);
+    \draw[<->, dashed, gray!60] (model) -- node[right, font=\tiny] {foundations} (set);
+    \draw[<->, dashed, gray!60] (comp) -- node[below, font=\tiny] {axiomatics} (set);
+\end{tikzpicture}
 \end{center}
 
-These are not four unrelated subjects. They are four ways of asking: \textbf{what are the limits and possibilities of formal reasoning?}
+These are not four unrelated subjects. They are four perspectives on the same question: \textbf{what are the limits and possibilities of formal reasoning?} The dashed lines show how deeply interconnected they are---completeness theorems link proof theory and model theory, decidability connects proofs to computation, and set theory provides the foundational language for all.
 
 \subsection{Proof Theory}
 
@@ -286,12 +351,16 @@ Zermelo, Fraenkel, and others developed axiomatic set theory (ZFC), carefully re
 Beneath these four branches lies a single theme:
 
 \begin{keyinsight}
-Logic studies \textbf{form} and \textbf{invariance}.
+Logic studies \textbf{the invariance of forms}.
 
+What properties of a structure are preserved under what transformations?
 \begin{itemize}
-    \item \textbf{Form}: Logic abstracts away content, keeping only structure.
-    \item \textbf{Invariance}: What properties are preserved under what transformations? Valid inference preserves truth. Bisimulation preserves modal properties. Computable functions preserve finiteness of description.
+    \item Valid inference preserves truth.
+    \item Bisimulation preserves modal properties.
+    \item Computable functions preserve finiteness of description.
+    \item Homomorphisms preserve algebraic structure.
 \end{itemize}
+The content changes, but something essential remains unchanged. Logic is the study of that ``something.''
 \end{keyinsight}
 
 This is why logic became useful to so many fields:
@@ -323,7 +392,7 @@ But that is for the next chapter.
     \item Aristotle's syllogism: form can be studied independently of content
     \item Frege's revolution: quantifiers, predicates, and the ambition to ground all mathematics
     \item The foundational crisis led to four pillars: proof theory, model theory, computability, set theory
-    \item The core insight: logic studies \textbf{form} and \textbf{invariance}
+    \item The core insight: logic studies \textbf{the invariance of forms}
     \item This is why diverse fields all need logic---not for ``reasoning,'' but for describing structured systems
     \item Next: how logic became a \emph{language} for describing systems, not just a tool for checking arguments
 \end{itemize}
