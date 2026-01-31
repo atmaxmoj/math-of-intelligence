@@ -2,70 +2,545 @@
 
 \begin{goals}
 \begin{itemize}
-    \item Understand logic as a formal language for making statements
-    \item See why propositional logic is limited
-    \item Motivate the need for modal operators
+    \item See the evolution of expressive power: from syllogisms to modal logic
+    \item Understand why ``structure-preserving'' leads naturally to category theory
+    \item Meet algebra and coalgebra as the two faces of formal structure
 \end{itemize}
 \end{goals}
 
-\section{What Can We Say?}
+In the previous chapter, we saw that logic studies \textbf{form} and \textbf{structure-preserving} reasoning. Now we trace how this insight developed, and where it leads.
 
-Logic is a language. Like any language, it has:
+\section{The Ladder of Expressiveness}
+
+Logic began with a simple question: which arguments are valid? But the answer required building formal \textbf{languages}---and over time, these languages became more and more expressive.
+
+Each step up the ladder was driven by the same complaint: \textbf{I can't say what I want to say.}
+
+This desire for greater expressive power is the thread that runs through the entire history of logic---from Aristotle to category theory. Keep it in mind as we climb.
+
+\subsection{Syllogisms: The Starting Point}
+
+Aristotle's syllogisms could express statements of the form:
 \begin{itemize}
-    \item \textbf{Syntax}: the grammar---what counts as a well-formed sentence
-    \item \textbf{Semantics}: the meaning---what sentences are true and when
+    \item All A are B
+    \item Some A are B
+    \item No A are B
+    \item Some A are not B
 \end{itemize}
 
-\begin{intuition}
-Think of logic as a very precise, very restricted language. It can't express poetry or emotion, but what it \emph{can} express, it expresses unambiguously. This precision is its power.
-\end{intuition}
+This is enough for many philosophical arguments. But try to express:
+\begin{center}
+``Every person loves someone.''
+\end{center}
 
-\section{Propositional Logic}
+Is it ``All persons are lovers''? That loses the structure. The syllogism sees only \textbf{two terms} in a fixed relationship. The internal complexity---that loving involves a \emph{relation} between two things---is invisible.
 
-The simplest logic. We have propositions ($p, q, r, \ldots$) and connectives ($\neg, \land, \lor, \to$).
+\subsection{Propositional Logic: Boole's Algebra}
 
-\begin{definition}[Propositional Language]
-Let $\Phi$ be a countable set of propositional variables. The propositional language $\mathcal{L}_0$ is:
+Boole's algebra could express combinations of propositions:
 \[
-\varphi ::= p \mid \neg\varphi \mid (\varphi \land \psi)
+(p \land q) \to r
 \]
-where $p \in \Phi$. Other connectives are defined: $\varphi \lor \psi := \neg(\neg\varphi \land \neg\psi)$, etc.
-\end{definition}
 
-Semantics: a \emph{valuation} $v : \Phi \to \{0, 1\}$ assigns truth values.
+But each proposition is atomic. ``All men are mortal'' is just a letter $p$. You cannot look inside to see the quantifier ``all'' or the predicate ``mortal.''
 
-\begin{warning}
-Propositional logic is \emph{flat}. Every proposition is either true or false, period. There's no room for ``true from one perspective but false from another.'' Real reasoning needs more.
-\end{warning}
+\subsection{First-Order Logic: Frege's Revolution}
 
-\section{The Need for Modality}
+Frege's first-order logic finally cracked open propositions:
+\[
+\forall x \, (\mathrm{Man}(x) \to \mathrm{Mortal}(x))
+\]
+
+Now we have:
+\begin{itemize}
+    \item \textbf{Variables}: $x, y, z$ ranging over individuals
+    \item \textbf{Predicates}: $\mathrm{Man}(x)$, $\mathrm{Mortal}(x)$
+    \item \textbf{Relations}: $\mathrm{Loves}(x, y)$
+    \item \textbf{Quantifiers}: $\forall$ (for all), $\exists$ (exists)
+\end{itemize}
+
+``Every person loves someone'' becomes:
+\[
+\forall x \, (\mathrm{Person}(x) \to \exists y \, \mathrm{Loves}(x, y))
+\]
+
+First-order logic is \textbf{remarkably expressive}. You can formalize most of mathematics in it. For decades, it was \emph{the} logic.
+
+But it still can't say everything.
+
+\subsection{What First-Order Logic Cannot Say}
 
 Consider these statements:
 \begin{itemize}
-    \item ``It is \emph{possible} that it will rain tomorrow.''
+    \item ``It is \emph{necessary} that $2 + 2 = 4$.''
     \item ``Alice \emph{knows} that Bob is lying.''
-    \item ``It is \emph{obligatory} to pay taxes.''
     \item ``The program \emph{will eventually} terminate.''
+    \item ``It is \emph{obligatory} to keep promises.''
 \end{itemize}
 
-None of these can be expressed in propositional logic. They all involve a \emph{mode} of truth.
+These all involve a \textbf{mode} of truth. Not just ``is $\varphi$ true?'' but ``in what \emph{way} is $\varphi$ true?''
 
-\begin{keyinsight}
+First-order logic has no way to express these modes. It knows only bare, unqualified truth.
+
+\subsection{Modal Logic: Beyond First-Order}
+
 Modal logic adds \textbf{operators} that modify propositions:
 \begin{itemize}
-    \item $\necessary\varphi$: ``necessarily $\varphi$'' / ``in all accessible states, $\varphi$''
-    \item $\possible\varphi$: ``possibly $\varphi$'' / ``in some accessible state, $\varphi$''
+    \item $\Box \varphi$: necessarily $\varphi$ / in all accessible worlds, $\varphi$
+    \item \item $\Diamond \varphi$: possibly $\varphi$ / in some accessible world, $\varphi$
 \end{itemize}
+
+With different interpretations of ``accessible,'' we get different modal logics:
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Interpretation} & $\Box\varphi$ means & \textbf{Field} \\
+\hline
+Necessity & necessarily $\varphi$ & Metaphysics \\
+Knowledge & agent knows $\varphi$ & Epistemology \\
+Time & always in the future, $\varphi$ & Temporal logic \\
+Obligation & it ought to be that $\varphi$ & Deontic logic \\
+After action $a$ & after doing $a$, $\varphi$ holds & Dynamic logic \\
+\end{tabular}
+\end{center}
+
+\begin{intuition}
+Modal logic is not one logic but a \textbf{family} of logics, each tuned to a different notion of ``possibility'' and ``necessity.'' The syntax ($\Box$, $\Diamond$) is the same; the semantics varies.
+\end{intuition}
+
+This explosion of modal logics---hundreds of them, with different axioms and different applications---raises a question:
+
+\textbf{Is there a unified framework for all of them?}
+
+\section{The Great Shift: From Consequence to Structure}
+
+Before we continue, let us pause to notice something profound.
+
+Look at how the question has changed:
+
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Aristotle's question:} & Is this argument valid? \\
+& (Does the conclusion follow from the premises?) \\[1em]
+\textbf{The modern question:} & What kind of structure does this logic describe? \\
+& (What are the ``worlds'' and how are they related?)
+\end{tabular}
+\end{center}
+
+This is a fundamental shift in what logic \emph{is}.
+
+\subsection{The Old View: Logic Studies Consequence}
+
+In the old view, logic was about \textbf{valid inference}:
+\begin{quote}
+Given premises $A_1, \ldots, A_n$, does conclusion $B$ necessarily follow?
+\end{quote}
+
+The central concept was \textbf{consequence}: the relation $A_1, \ldots, A_n \vdash B$.
+
+Everything else---syntax, semantics, proof systems---served this goal.
+
+\subsection{The New View: Logic Describes Systems}
+
+In the new view, logic is a \textbf{language for describing structured systems}:
+\begin{quote}
+Given a type of system (possible worlds, time, knowledge states, program states...), how do we talk about it precisely?
+\end{quote}
+
+The central concept is \textbf{structure}: what kind of ``world'' does this logic describe?
+
+Consequence becomes \textbf{derived}: once you fix a logic and its class of structures, the consequence relation falls out automatically.
+
+\begin{keyinsight}
+Logic shifted from studying \textbf{``what follows from what''} to studying \textbf{``how to describe certain kinds of systems.''}
+
+Consequence is no longer the definition---it is a \emph{consequence} of the definition.
 \end{keyinsight}
 
-\section{Modal Language}
+\subsection{When Did This Happen?}
 
-\begin{definition}[Modal Language]
-The modal language $\mathcal{L}(\necessary, \possible)$ extends propositional logic:
+The shift was gradual, but modal logic made it explicit.
+
+In classical propositional or first-order logic, you can almost ignore the ``worlds.'' There's just one world, and formulas are either true or false in it. The focus stays on consequence.
+
+But modal logic \emph{forces} you to think about structure:
+\begin{itemize}
+    \item What are the possible worlds?
+    \item What is the accessibility relation?
+    \item Is it reflexive? Transitive? Symmetric?
+\end{itemize}
+
+The logic doesn't make sense until you specify the \textbf{structure}. And different structures give different logics.
+
+\begin{intuition}
+Think of it this way:
+
+\textbf{Old:} Logic is a machine for checking arguments.
+
+\textbf{New:} Logic is a lens for viewing systems. Different logics are different lenses, suited to different systems.
+
+When you ``apply'' a logic to a domain, you are \emph{instantiating} the lens---choosing a particular system to view through it. Consequence is what you see through the lens.
+\end{intuition}
+
+\subsection{Why This Matters}
+
+This shift explains why so many different fields need logic.
+
+They don't need logic because they want to ``do deduction.'' They need logic because they have \textbf{structured systems} to describe:
+
+\begin{itemize}
+    \item \textbf{Linguists}: Natural language is a system. Sentences have structure. ``If this word is a verb, what can come next?'' is a structural question.
+    \item \textbf{Computer scientists}: Programs are systems. States, transitions, specifications---all structural.
+    \item \textbf{Philosophers}: Possible worlds, knowledge states, moral situations---structured domains that need precise description.
+\end{itemize}
+
+Logic provides the \textbf{general framework} for describing systems with antecedent-consequent structure: ``in situation X, Y holds'' or ``from state X, you can reach state Y.''
+
+This is not ``reasoning'' in the everyday sense. It is \textbf{structural description}.
+
+\section{Enter the Linguists}
+
+Meanwhile, in linguistics, a parallel development was happening.
+
+\subsection{Chomsky: Language Has Hidden Structure}
+
+Noam Chomsky revolutionized linguistics in the 1950s with a simple observation: \textbf{language is not a list of sentences}. It is a \textbf{generative system}---a finite set of rules that produces infinitely many sentences.
+
+\begin{history}
+Chomsky's \emph{Syntactic Structures} (1957) introduced formal grammars to linguistics. The same mathematical tools used for programming languages could describe natural languages.
+\end{history}
+
+But Chomsky focused on \textbf{syntax}---the structure of sentences. What about \textbf{meaning}?
+
+\subsection{Montague: Natural Language Has Formal Semantics}
+
+Richard Montague made a bold claim: natural language can be given a \textbf{precise formal semantics}, just like a programming language.
+
+\begin{history}
+``I reject the contention that an important theoretical difference exists between formal and natural languages.'' --- Richard Montague, 1970
+\end{history}
+
+Montague grammar uses \textbf{intensional logic}---a form of modal logic---to analyze meaning. Why modal logic?
+
+Because natural language is full of \textbf{modality}:
+\begin{itemize}
+    \item ``John \emph{might} come'' (possibility)
+    \item ``Mary \emph{must} have left'' (necessity/inference)
+    \item ``He \emph{believes} that it's raining'' (propositional attitudes)
+    \item ``She \emph{will} arrive tomorrow'' (future tense)
+\end{itemize}
+
+\begin{keyinsight}
+Natural language doesn't just describe what \emph{is}. It describes what \emph{could be}, what \emph{must be}, what someone \emph{thinks} is, what \emph{will be}.
+
+Modal logic is the natural tool for this, because it has the expressive power to talk about \textbf{alternative possibilities}.
+\end{keyinsight}
+
+\section{Enter the Computer Scientists}
+
+At the same time, computer scientists discovered they needed modal logic too.
+
+\subsection{Program Specification}
+
+How do you specify what a program should do?
+
+Floyd and Hoare developed \textbf{Hoare logic}: $\{P\} \, C \, \{Q\}$ means ``if precondition $P$ holds before running program $C$, then postcondition $Q$ holds after.''
+
+This is an \textbf{implication}---but about \emph{states before and after an action}. It has modal flavor.
+
+\subsection{Temporal Logic for Verification}
+
+Amir Pnueli introduced \textbf{temporal logic} for specifying properties of reactive systems:
+\begin{itemize}
+    \item $\mathbf{G}\, \varphi$: ``globally, $\varphi$'' (always in the future)
+    \item $\mathbf{F}\, \varphi$: ``finally, $\varphi$'' (eventually)
+    \item $\varphi \, \mathbf{U} \, \psi$: ``$\varphi$ until $\psi$''
+\end{itemize}
+
+\begin{example}
+``Every request is eventually answered'':
 \[
-\varphi ::= p \mid \neg\varphi \mid (\varphi \land \psi) \mid \necessary\varphi
+\mathbf{G}\, (\mathit{request} \to \mathbf{F}\, \mathit{answer})
 \]
-We define $\possible\varphi := \neg\necessary\neg\varphi$.
+\end{example}
+
+This is modal logic, with $\Box = \mathbf{G}$ (necessity as ``always'').
+
+\subsection{The Curry-Howard Correspondence}
+
+Perhaps the deepest connection: \textbf{proofs are programs}.
+
+\begin{keyinsight}[Curry-Howard Isomorphism]
+\begin{center}
+\begin{tabular}{rcl}
+Propositions & $\longleftrightarrow$ & Types \\
+Proofs & $\longleftrightarrow$ & Programs \\
+$A \to B$ & $\longleftrightarrow$ & Function type $A \to B$ \\
+$A \land B$ & $\longleftrightarrow$ & Product type $A \times B$ \\
+Proof simplification & $\longleftrightarrow$ & Program execution
+\end{tabular}
+\end{center}
+\end{keyinsight}
+
+A proof of $A \to B$ is a program that transforms evidence for $A$ into evidence for $B$. Logic and computation are two views of the same thing.
+
+\section{The Need for Greater Generality}
+
+Remember the thread: the desire for greater expressive power.
+
+Let us take stock.
+
+Logic has transformed from the study of valid argument into a family of languages for describing structured systems:
+\begin{itemize}
+    \item Modal logic describes systems of possible worlds
+    \item Temporal logic describes systems evolving in time
+    \item Dynamic logic describes systems of program states
+    \item Epistemic logic describes systems of knowledge states
+\end{itemize}
+
+Each logic is tailored to a particular kind of structure.
+
+But this raises a question: \textbf{is there a language that can describe structure itself?}
+
+Not this or that particular structure, but the general notion of ``what it means to have structure'' and ``what it means to preserve structure.''
+
+\begin{intuition}
+We have many lenses, each suited to viewing a particular kind of system.
+
+Can we build a \textbf{lens for lenses}---a framework for talking about what all these lenses have in common?
+\end{intuition}
+
+The four pillars of logic (proof theory, model theory, computability, set theory) all use set theory as their metalanguage. But set theory talks about \emph{membership}---what elements belong to what collections. This is not the same as \emph{structure}.
+
+What we need is a language where \textbf{structure} and \textbf{structure-preserving maps} are the primitive concepts.
+
+\section{Category Theory: The Ultimate Abstraction}
+
+The answer came from algebra, not logic---but it turned out to be exactly what logic needed.
+
+In the 1940s, Samuel Eilenberg and Saunders Mac Lane, studying algebraic topology, noticed something curious: many proofs weren't really about specific objects (groups, spaces, modules). They were about \textbf{relationships between objects}---homomorphisms, continuous maps, natural transformations.
+
+The objects were interchangeable; the arrows were what mattered.
+
+They invented \textbf{category theory} to capture this.
+
+\begin{definition}[Category, informally]
+A \textbf{category} consists of:
+\begin{itemize}
+    \item \textbf{Objects}: the ``things'' (don't ask what they're made of)
+    \item \textbf{Morphisms} (arrows): structure-preserving maps between objects
+    \item \textbf{Composition}: morphisms can be composed ($f: A \to B$ and $g: B \to C$ give $g \circ f: A \to C$)
+    \item \textbf{Identity}: every object has an identity morphism
+\end{itemize}
 \end{definition}
 
-But what does $\necessary\varphi$ \emph{mean}? For that, we need \textbf{possible worlds}.
+\begin{example}[Some categories]
+\begin{itemize}
+    \item \textbf{Set}: objects are sets, morphisms are functions
+    \item \textbf{Grp}: objects are groups, morphisms are group homomorphisms
+    \item \textbf{Top}: objects are topological spaces, morphisms are continuous maps
+    \item \textbf{Pos}: objects are partially ordered sets, morphisms are monotone functions
+\end{itemize}
+\end{example}
+
+The key insight: we don't care what objects ``are made of.'' We only care about how they relate to each other through morphisms.
+
+\begin{keyinsight}
+Category theory is the \textbf{mathematics of mathematics}. It studies structure and structure-preserving maps in full generality.
+
+This is exactly what logic needed: a language where ``structure-preserving'' is a first-class concept.
+\end{keyinsight}
+
+\section{Lawvere: Logic Meets Category Theory}
+
+In the 1960s, F. William Lawvere showed that logic itself could be expressed categorically.
+
+\begin{history}
+Lawvere's thesis (1963) and subsequent work reformulated:
+\begin{itemize}
+    \item Theories as categories
+    \item Models as functors
+    \item Logical operations as categorical constructions (products, exponentials, etc.)
+\end{itemize}
+\end{history}
+
+The implication $A \to B$ becomes the \textbf{exponential object} $B^A$ in a category. Universal quantification becomes a \textbf{right adjoint}. Existence becomes a \textbf{left adjoint}.
+
+This is not just a translation. It reveals the \textbf{structural essence} of logic, stripped of the accidents of set-theoretic encoding.
+
+\section{Topos Theory: Logic and Geometry Unite}
+
+Lawvere and Myles Tierney developed \textbf{topos theory}: categories that behave like the category of sets, but with an internal logic that can differ from classical logic.
+
+\begin{intuition}
+A topos is a ``universe of mathematics'' with its own internal logic. Different toposes can have different logics: classical, intuitionistic, or even more exotic.
+
+This unified logic and geometry: a topos is both a geometric object (like a space) and a logical universe (where you can do mathematics).
+\end{intuition}
+
+\section{Algebra and Coalgebra: Two Faces of Structure}
+
+Within category theory, a fundamental duality emerged: \textbf{algebra} and \textbf{coalgebra}.
+
+\subsection{Algebra: Building Up}
+
+An \textbf{algebra} for a functor $F$ is a structure where you can ``fold'' or ``evaluate'' $F$-structured data.
+
+\begin{example}[Lists as an algebra]
+The type of lists of natural numbers satisfies:
+\[
+\mathsf{List}(\mathbb{N}) \cong 1 + \mathbb{N} \times \mathsf{List}(\mathbb{N})
+\]
+A list is either empty ($1$) or a head ($\mathbb{N}$) followed by a tail (another list).
+
+This is an \textbf{algebra} for the functor $F(X) = 1 + \mathbb{N} \times X$.
+
+Functions on lists (like $\mathsf{sum}$) are defined by \textbf{folding}: specify what to do with empty and what to do with cons.
+\end{example}
+
+Algebras are about \textbf{construction} and \textbf{induction}: building finite, well-founded structures.
+
+The syntax of a logic---formulas, proofs---forms an algebra: the \textbf{initial algebra} of the grammar.
+
+\subsection{Coalgebra: Observing Behavior}
+
+A \textbf{coalgebra} for a functor $F$ is a structure where you can ``unfold'' or ``observe'' behavior.
+
+\begin{example}[Streams as a coalgebra]
+An infinite stream of natural numbers has type:
+\[
+\mathsf{Stream}(\mathbb{N}) \to \mathbb{N} \times \mathsf{Stream}(\mathbb{N})
+\]
+From a stream, you can observe: the head (a number) and the tail (another stream).
+
+This is a \textbf{coalgebra} for the functor $F(X) = \mathbb{N} \times X$.
+
+Functions producing streams are defined by \textbf{unfolding}: specify the head and how to continue.
+\end{example}
+
+Coalgebras are about \textbf{behavior} and \textbf{coinduction}: potentially infinite, observable processes.
+
+State machines, automata, transition systems---these are coalgebras.
+
+\subsection{The Duality}
+
+\begin{center}
+\begin{tabular}{lll}
+& \textbf{Algebra} & \textbf{Coalgebra} \\
+\hline
+Perspective & Construction & Observation \\
+Principle & Induction & Coinduction \\
+Structure & Finite, well-founded & Potentially infinite \\
+Examples & Syntax, data types & Behavior, state machines \\
+Canonical object & Initial algebra & Final coalgebra \\
+\end{tabular}
+\end{center}
+
+\begin{keyinsight}
+Algebra is about \textbf{syntax}: how things are built.\\
+Coalgebra is about \textbf{semantics}: how things behave.
+
+Logic lives in both: the formulas are algebraic (syntax), but their meaning involves coalgebraic structures (models, possible worlds, state transitions).
+\end{keyinsight}
+
+\section{Modal Logic as Coalgebraic Logic}
+
+Here is where everything connects.
+
+Remember Kripke semantics for modal logic? A \textbf{Kripke frame} is a pair $(W, R)$ where:
+\begin{itemize}
+    \item $W$ is a set of ``possible worlds''
+    \item $R \subseteq W \times W$ is an ``accessibility relation''
+\end{itemize}
+
+But this is exactly a \textbf{coalgebra}! A Kripke frame is a coalgebra for the powerset functor:
+\[
+\alpha: W \to \mathcal{P}(W)
+\]
+where $\alpha(w) = \{v \mid w R v\}$---the set of worlds accessible from $w$.
+
+\begin{keyinsight}
+\textbf{Kripke frames are coalgebras.}
+
+And the key notion of equivalence for coalgebras is \textbf{bisimulation}---which is exactly the right notion of equivalence for modal logic!
+
+Van Benthem's theorem: modal logic is the \textbf{bisimulation-invariant} fragment of first-order logic.
+\end{keyinsight}
+
+This is not a coincidence. Modal logic is the \textbf{natural language for describing coalgebraic behavior}.
+
+Different modal logics arise from different functors:
+\begin{itemize}
+    \item Kripke frames: $F(X) = \mathcal{P}(X)$
+    \item Labeled transition systems: $F(X) = \mathcal{P}(A \times X)$ for action set $A$
+    \item Probabilistic systems: $F(X) = \mathcal{D}(X)$ (probability distributions)
+    \item Automata: $F(X) = 2 \times X^A$ (accepting/rejecting + transitions)
+\end{itemize}
+
+\textbf{Coalgebraic modal logic} provides a uniform treatment of all these cases.
+
+\section{The Modern Landscape}
+
+Let us step back and see where we are.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm, auto]
+    \node (form) {\textbf{``Form + Structure-preserving''}};
+    \node (four) [below=1.5cm of form] {Four Pillars};
+    \node (cat) [below=1.5cm of four] {Category Theory};
+    \node (alg) [below left=1.5cm and 1cm of cat] {Algebra (Syntax)};
+    \node (coalg) [below right=1.5cm and 1cm of cat] {Coalgebra (Behavior)};
+    \node (modal) [below=1.5cm of coalg] {Modal Logic};
+
+    \draw[->] (form) -- (four) node[midway, right] {\small 20th century};
+    \draw[->] (four) -- (cat) node[midway, right] {\small ``what is structure?''};
+    \draw[->] (cat) -- (alg);
+    \draw[->] (cat) -- (coalg);
+    \draw[->] (coalg) -- (modal) node[midway, right] {\small natural language for};
+\end{tikzpicture}
+\end{center}
+
+The journey, driven throughout by the desire for greater expressive power:
+\begin{enumerate}
+    \item \textbf{Syllogisms}: ``I want to describe valid argument forms''
+    \item \textbf{First-order logic}: ``I want to describe quantified relationships''
+    \item \textbf{Modal logic}: ``I want to describe possibility, necessity, time, knowledge...''
+    \item \textbf{The shift}: Logic becomes a language for describing systems, not just a tool for checking arguments
+    \item \textbf{Category theory}: ``I want to describe structure itself''
+    \item \textbf{Algebra/Coalgebra}: Syntax vs. behavior---two faces of structure
+    \item \textbf{Coalgebraic modal logic}: Modal logic is the natural language for behavioral systems
+\end{enumerate}
+
+Each step: \emph{I can't say what I want to say} $\to$ \emph{build a more expressive language}.
+
+\section{Why This Matters for Us}
+
+This book is about \textbf{the algebra of intelligence}. We want to understand:
+\begin{itemize}
+    \item How can agents reason about possibility, knowledge, change?
+    \item How can we specify and verify agent behavior?
+    \item How can formal structures \emph{learn}?
+\end{itemize}
+
+Modal logic gives us the \textbf{language}.
+
+Coalgebra gives us the \textbf{semantics}---a unified framework for all kinds of state-based, behavioral systems.
+
+And the algebraic/coalgebraic duality will be crucial when we ask: how do we make these structures \textbf{learnable}?
+
+But first, we need to understand modal logic properly. That begins in the next chapter, with Kripke frames.
+
+\begin{summary}
+The history of logic is the history of the desire for greater expressive power.
+
+\begin{itemize}
+    \item \textbf{The ladder}: syllogisms $\to$ propositional $\to$ first-order $\to$ modal $\to$ ...
+    \item \textbf{The shift}: from ``studying consequence'' to ``describing structured systems''
+    \item \textbf{The convergence}: philosophers, linguists, computer scientists all need to describe systems
+    \item \textbf{The ultimate abstraction}: category theory---the language of structure itself
+    \item \textbf{The duality}: algebra (syntax, construction) vs. coalgebra (behavior, observation)
+    \item \textbf{The connection}: modal logic is the natural language for coalgebraic systems
+\end{itemize}
+
+One thread runs through it all: \emph{I can't say what I want to say---so I build a more expressive language.}
+\end{summary}

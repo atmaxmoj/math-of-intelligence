@@ -1,170 +1,124 @@
-# Modal Logic Study Project
+# The Algebra of Intelligence
 
 > **CRITICAL: DO NOT read PDF files directly!** PDFs are too large and will cause context overflow. Always use the pre-split `.txt` files in each PDF's corresponding folder (e.g., `01-basics/cerami-modal1-intro/01_Introduction.txt`). If txt files don't exist, run `scripts/.venv/bin/python scripts/pdf_split.py` first.
 
 ## Project Overview
 
-This is a serious logic research project to systematically learn modal logic meta-theory and write a comprehensive LaTeX book comparable to BRV (Blackburn, de Rijke, Venema's "Modal Logic").
+This project explores a unified theory connecting **logic**, **learning**, and **structure**. The core vision:
+
+> **Logic can finally learn.**
+
+We're writing a book ("The Algebra of Intelligence") and conducting experiments that bridge:
+- **Modal logic** as a language for describing structured systems
+- **Coalgebra** as the categorical foundation for behavior and state
+- **Semirings** as the algebraic structure enabling continuization and gradient descent
+- **Learning theory** through the lens of distance matching and parameterization
+
+## The Book Structure (`note/main.tex`)
+
+Four parts:
+
+| Part | Theme | Key Ideas |
+|------|-------|-----------|
+| **I: Expression** | Logic as language for describing systems | History → Kripke → Bisimulation → Completeness → Coalgebra |
+| **II: Learning** | Making logic continuous/learnable | Semirings → Fuzzy logic → Gradient semiring → Differentiable structures |
+| **III: Learning Well** | What makes learning work? | Distance matching → κ(J) → Coalgebra parameterization |
+| **IV: Limits** | Boundaries of learning | Meta-learning → Fixed points → Uncomputability |
+
+## Core Insights
+
+### The Great Shift
+Logic evolved from "studying valid arguments" to "describing structured systems." This explains why philosophers, linguists, and computer scientists all need logic—they all have systems to describe.
+
+### The Hierarchy
+```
+Neural Semiring-valued Coalgebra  ← learn both structure AND operations
+            ↓
+Semiring-valued Coalgebra         ← learn structure, fixed semiring
+            ↓
+Crisp Coalgebra = Program         ← discrete, executable
+```
+
+### Distance Matching Principle
+Good parameterization = parameter distance ≈ behavioral distance. See `experiments/RESULTS_SUMMARY.md` for empirical findings.
 
 ## Directory Structure
 
-- `01-basics/` - Introductory PDFs (Zalta, van Benthem, Cerami)
-- `02-model-theory/` - Bisimulation, bounded morphisms, model constructions
-- `03-completeness/` - Canonical models, completeness proofs
-- `04-correspondence/` - Sahlqvist theorem, frame definability
-- `05-decidability/` - Finite model property, filtration
-- `06-combining/` - Fusion and products of modal logics
-- `07-handbook/` - Handbook of Modal Logic chapters
-- `note/` - LaTeX book being written (`main.tex`)
-- `ideas/` - Research directions, inspirations, references
-- `datasets/` - Reasoning benchmarks (FRoG, CLUTRR, StepGame, MLNNs)
-- `PLAN.md` - Detailed study plan with checklist
+```
+├── note/                    # LaTeX book
+│   ├── main.tex            # Main file
+│   ├── preamble.tex        # Packages and custom commands
+│   └── chapters/           # Chapter files by part
+├── 01-basics/ ... 07-handbook/   # Reading materials (PDFs + split txt)
+├── ideas/                   # Research directions and references
+├── experiments/             # Python experiments
+│   ├── RESULTS_SUMMARY.md  # Key findings
+│   └── *.py                # Experiment scripts
+├── code/                    # Learning automata implementations
+└── datasets/                # Benchmarks (automata, reasoning)
+```
 
-## My Role: Study Companion
+## LaTeX Compilation
 
-I am here to help you:
+MacTeX is installed at `/Library/TeX/texbin/`. To compile:
 
-1. **Read and understand PDFs** - Explain difficult proofs, clarify concepts, answer questions
-2. **Write LaTeX** - Help draft chapters, format proofs, create TikZ diagrams for Kripke frames
-3. **Check understanding** - Quiz you on definitions, ask you to explain proofs back
-4. **Suggest connections** - Point out how concepts relate across different sources
-5. **Debug proofs** - Help find gaps or errors in your own proof attempts
+```bash
+cd note
+/Library/TeX/texbin/pdflatex main.tex
+```
 
-## Key Concepts to Master
+Or add to PATH: `export PATH="/Library/TeX/texbin:$PATH"`
 
-### Foundations
-- Modal language syntax
-- Kripke frames and models
-- Satisfaction relation
-- Validity (in a model, in a frame, in a class of frames)
+## Writing Style
 
-### Model Theory
-- Bisimulation (zig-zag conditions)
-- Bounded morphism / p-morphism
-- Generated submodel
-- Disjoint union
-- Tree unravelling
-- Hennessy-Milner theorem
+**Feynman lectures for logic.** Rigorous but human. Deep but accessible.
 
-### Proof Theory
-- Normal modal logic (K + axioms)
-- Maximal consistent sets (MCS)
-- Lindenbaum's lemma
-- Canonical frame and canonical model
-- Truth lemma
-- Completeness theorem
+- Lecture-like tone: "we" and "let's", bring the reader along
+- Simple language first, then notation
+- Motivate before defining
+- Visual variety: intuition boxes, warning boxes, diagrams, examples
+- Historical context and "why do we care?"
 
-### Correspondence
-- Standard translation ST_x
-- Frame correspondence
-- Sahlqvist formulas
-- Canonicity
-
-### Decidability
-- Finite model property
-- Filtration (smallest, largest)
-- Complexity bounds
-
-### Combination
-- Fusion L1 ⊗ L2
-- Product L1 × L2
-- Transfer theorems
-
-## Study Workflow
-
-1. **Claude reads a section of the PDF** - extracts key concepts, identifies tricky parts
-2. **Claude explains in simple terms** - motivates definitions before stating them, gives intuition
-3. **Claude writes corresponding LaTeX** - in our style (intuition boxes, examples, diagrams)
-4. **User reads local PDF in parallel** - comparing original with Claude's explanation
-5. **Discussion** - user asks questions, challenges understanding, we refine together
-6. **Commit progress** - save to git when a section is solid
-
-This way: rigorous source material + accessible explanation + book gets written.
+Key LaTeX environments (defined in `preamble.tex`):
+- `\begin{intuition}` - blue box with lightbulb
+- `\begin{warning}` - red box for common pitfalls
+- `\begin{keyinsight}` - green box for important observations
+- `\begin{history}` - yellow box for historical notes
+- `\begin{summary}` - purple box for chapter summaries
 
 ## Conversation Style
 
-- Speak Chinese for discussion, English for technical terms
+- **Chinese** for discussion, **English** for technical terms
 - Be rigorous about definitions and proofs
-- Challenge vague understanding - ask for precise statements
-- When you claim something, ask me to verify with a source
-- Help me develop intuition, not just memorize
+- Challenge vague understanding—ask for precise statements
+- Help develop intuition, not just memorize
+- The user vibes and iterates; help structure and formalize
 
-## Current Progress
+## Current Focus
 
-Check `PLAN.md` for the detailed checklist of what has been read and written.
+The book's opening chapters (Part I):
+1. **Chapter 1: Why Logic?** — History from Aristotle to category theory
+2. **Chapter 2: Logic as Language** — The shift from consequence to structure description
 
-## LaTeX Notes
+Key themes to emphasize:
+- The desire for greater expressive power runs through all of logic's history
+- Logic shifted from "studying consequence" to "describing systems"
+- Category theory (algebra/coalgebra) is the natural endpoint of this progression
 
-The book is in `note/main.tex`. Key packages:
-- `bussproofs` for proof trees
-- `tikz` for Kripke frame diagrams
-- Custom commands: `\necessary` (□), `\possible` (◇), `\bisim` (bisimulation symbol)
+## Research Directions
 
-## Writing Style for the Book
+See `ideas/` folder for detailed notes:
+- `coalgebra.md` - Coalgebra as the right abstraction
+- `semiring.md` - Semiring as the right continuization
+- `universal_learner.md` - Fixed point bypasses uncomputability
+- `meta-learning.md` - Learning is coalgebraic, so meta-learning is too
 
-The book should NOT be like a typical logic textbook - no boring walls of symbols, no dictionary-style definition dumps. Instead:
+## Ultimate Vision
 
-### Lecture-like tone
-- Write as if explaining to a smart friend, not reciting to a blackboard
-- Use "we" and "let's" - bring the reader along on a journey
-- Ask rhetorical questions to motivate definitions before stating them
+A unified framework where:
+- **Structure** is described by coalgebras
+- **Language** is modal logic (the natural language of coalgebras)
+- **Learning** is gradient descent on semiring-valued coalgebras
+- **Intelligence** is the fixed point of meta-learning
 
-### Simple language first
-- Explain ideas in plain words before introducing notation
-- Every symbol earns its place by making things clearer, not more impressive
-- If a concept can be explained with a picture, draw the picture
-
-### Variety of forms
-Not just content variety, but literal visual/typographical variety:
-
-**Content types:**
-- Definitions and theorems (yes, but not ONLY these)
-- Intuitive explanations and motivations
-- Concrete examples before abstract generalizations
-- Diagrams (Kripke frames are inherently visual!)
-- Historical context and "why do we care?" sections
-- Exercises that build understanding, not just test memorization
-- "Common mistakes" and "what could go wrong" discussions
-
-**Visual formatting:**
-- Colored boxes for different purposes (definition boxes, example boxes, warning boxes, intuition boxes)
-- Margin notes for asides and cross-references
-- Highlighted "key insight" callouts
-- Proof sketches in a different style from full proofs
-- Summary boxes at chapter ends
-- Visual breaks - not just wall-to-wall text
-- Icons or small graphics to mark recurring elements (e.g., ⚠️ for common pitfalls, 💡 for intuition)
-
-The page should look alive, not like a legal document.
-
-### Absolutely comprehensive
-- Cover ALL the meta-theory, not just the easy parts
-- Don't hand-wave the hard proofs - work through them carefully
-- Connect everything: show how concepts relate and build on each other
-
-### The vibe
-Think: Feynman lectures for modal logic. Rigorous but human. Deep but accessible.
-
-## Ultimate Goal
-
-Build a formal modal logic framework for AI agents. Details in `ideas/` folder.
-
-**Core vision:**
-- Modal logic provides structure, verification, constraints
-- NN/LLM provides learning, semantics, adaptation
-- Two layers: strict (classical, provable) + soft (differentiable, learnable)
-
-**Concrete deliverable:** Lean scaffolding for rapidly defining custom modal logics with:
-- Sahlqvist automation (auto correspondence + completeness)
-- Generalized quantifiers (beyond □/◇)
-- Two-layer architecture (strict + soft/fuzzy for NN integration)
-
-See `ideas/` for detailed research directions, references, and inspirations.
-
-### What This Project Requires
-- How to define new modal operators
-- How to prove meta-properties (soundness, completeness, decidability)
-- How to combine logics systematically
-- Understanding the automata-coalgebra-modal logic triangle
-
-The book itself is part of this goal - writing forces clarity of thought, and a good exposition makes the framework accessible to others (and to future self).
+The book forces clarity; the experiments test intuitions; the theory unifies.

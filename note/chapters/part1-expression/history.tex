@@ -1,0 +1,303 @@
+\chapter{Why Logic?}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand why logic emerged in the first place
+    \item See logic not as ``being rational'' but as the study of implication
+    \item Trace the journey from Aristotle to the modern landscape
+\end{itemize}
+\end{goals}
+
+\section{What Logic Is Not}
+
+Let's begin by clearing up a common confusion.
+
+In everyday speech, ``logic'' means something like ``rational thinking'' or ``being reasonable.'' We say ``that's not logical'' when someone's argument doesn't make sense, or ``use your logic'' when we want someone to think carefully.
+
+\textbf{Formal logic is not this.}
+
+Formal logic is not about being smart, or thinking clearly, or avoiding fallacies in everyday reasoning. It is something much more specific, and in a way, much stranger.
+
+\begin{keyinsight}
+Logic is the study of \textbf{implication}---the ``if... then...'' structure.
+
+When can we say that one thing \emph{necessarily follows} from another? What does ``follows from'' even mean? These are the questions logic tries to answer, with mathematical precision.
+\end{keyinsight}
+
+Think about it: implication is everywhere.
+\begin{itemize}
+    \item ``If it rains, the ground is wet'' (causation)
+    \item ``If you are human, you are mortal'' (universal rule)
+    \item ``If the program satisfies the precondition, it will satisfy the postcondition'' (specification)
+    \item ``If these axioms hold, this theorem follows'' (proof)
+\end{itemize}
+
+All of these have the same \textbf{structure}: an antecedent (the ``if'' part) and a consequent (the ``then'' part). Logic studies this structure itself, abstracting away from what the antecedent and consequent actually say.
+
+\section{Athens: Where It Began}
+
+Why would anyone study such an abstract thing?
+
+The answer lies in ancient Athens, where democracy meant public debate. Citizens argued in the assembly, in the courts, in the marketplace. To win an argument, you needed to \textbf{persuade}---and persuasion required making your reasoning visible and unchallengeable.
+
+\begin{history}
+The word ``logic'' comes from the Greek \emph{logos}, which means both ``word'' and ``reason.'' For the Greeks, language and thought were intimately connected. To speak well was to think well.
+\end{history}
+
+Imagine you're in a debate. Your opponent says something, you say something back. How do you \emph{win}? Not by shouting louder, but by showing that your conclusion \textbf{necessarily follows} from premises your opponent already accepts.
+
+This is the birth of logic: the art of \textbf{valid argument}.
+
+\begin{definition}[Validity, informally]
+An argument is \textbf{valid} if the conclusion necessarily follows from the premises. That is, \emph{if} the premises are true, the conclusion \emph{must} be true.
+\end{definition}
+
+Note what validity does \emph{not} mean:
+\begin{itemize}
+    \item It does not mean the conclusion is true (the premises might be false)
+    \item It does not mean the argument is convincing (it might be valid but irrelevant)
+    \item It does not mean the argument is good (validity is just one criterion)
+\end{itemize}
+
+Validity is purely about the \textbf{structure} of the argument, not its content.
+
+\section{Plato's World of Forms}
+
+Before Aristotle systematized logic, his teacher Plato asked a deeper question: \textbf{what is truth?}
+
+Plato observed that the physical world is messy and changeable. The circles we draw are imperfect, the chairs we sit on break and decay, the politicians we elect disappoint us. Yet we have a concept of a \emph{perfect} circle, an \emph{ideal} chair, a \emph{just} society.
+
+Where do these perfect concepts come from?
+
+\begin{history}
+Plato's answer: there is a realm of \textbf{Forms} (or Ideas)---eternal, unchanging, perfect archetypes. The physical world is just a shadow of this realm. True knowledge is knowledge of the Forms, not of their imperfect shadows.
+\end{history}
+
+This sounds mystical, but it has a very practical implication for logic:
+
+\begin{intuition}
+Logical truths are not about this table or that chair. They are about the \emph{form} of arguments themselves. When we prove that ``if all A are B, and all B are C, then all A are C,'' we are not talking about any particular A, B, or C. We are talking about the \textbf{structure}.
+
+In a sense, logic lives in Plato's realm of Forms.
+\end{intuition}
+
+\section{Aristotle's Syllogism}
+
+Plato's student Aristotle was more practical. He wanted to \textbf{systematize} valid reasoning---to give rules that anyone could follow to check if an argument is valid.
+
+The result was the \textbf{syllogism}, the first formal system in history.
+
+\begin{example}[A syllogism]
+\begin{center}
+All men are mortal. \quad (major premise)\\
+Socrates is a man. \quad (minor premise)\\
+\rule{5cm}{0.4pt}\\
+Therefore, Socrates is mortal. \quad (conclusion)
+\end{center}
+\end{example}
+
+The key insight: the validity of this argument depends only on its \textbf{form}, not on what ``men,'' ``mortal,'' or ``Socrates'' mean. We can replace them with any terms:
+
+\begin{center}
+All A are B.\\
+S is an A.\\
+\rule{4cm}{0.4pt}\\
+Therefore, S is B.
+\end{center}
+
+This \textbf{is} the syllogism. Aristotle catalogued all the valid forms (Barbara, Celarent, Darii, Ferio...) and showed how to reduce complex arguments to combinations of these basic patterns.
+
+\begin{keyinsight}
+Aristotle's revolution: \textbf{form can be studied independently of content}.
+
+This is the founding insight of all formal logic. Once you abstract away the content, you can study validity mechanically, without understanding what the argument is about.
+\end{keyinsight}
+
+\section{The Long Sleep}
+
+After Aristotle, logic was considered essentially complete. Medieval scholars refined the syllogism, added some complications, debated edge cases---but the basic framework remained unchanged for nearly two thousand years.
+
+Why?
+
+Perhaps because syllogistic logic was \textbf{good enough} for philosophy and theology, which were the main intellectual activities of the time. When you're debating the nature of God or the essence of substances, the simple subject-predicate structure of syllogisms suffices.
+
+But then something changed.
+
+\section{Leibniz's Dream}
+
+In the 17th century, Gottfried Wilhelm Leibniz---mathematician, philosopher, diplomat, and inventor of calculus---had a vision.
+
+\begin{history}
+Leibniz dreamed of a \emph{characteristica universalis}: a universal symbolic language that could express all human thought. And a \emph{calculus ratiocinator}: a mechanical method to compute the truth of any statement.
+
+``When there are disputes among persons, we can simply say: let us calculate, without further ado, and see who is right.''
+\end{history}
+
+This was wildly ambitious. Leibniz never achieved it. But his dream planted a seed: \textbf{reasoning as calculation}.
+
+If arguments could be reduced to symbols, and validity could be checked by mechanical rules, then reasoning could be---in principle---automated.
+
+\section{Boole's Algebra}
+
+Two centuries later, George Boole took the first real step toward Leibniz's dream.
+
+\begin{history}[The Laws of Thought, 1854]
+Boole realized that the logical operations AND, OR, NOT could be treated as algebraic operations. Propositions became variables, connectives became operations, and logical reasoning became solving equations.
+\end{history}
+
+\begin{example}[Boolean algebra]
+Let $p$ represent ``it is raining'' and $q$ represent ``the ground is wet.''
+
+Then:
+\begin{itemize}
+    \item $p \land q$ (AND): both are true
+    \item $p \lor q$ (OR): at least one is true
+    \item $\neg p$ (NOT): it is not raining
+\end{itemize}
+
+Boole showed these satisfy algebraic laws: $p \land q = q \land p$, $p \lor (q \land r) = (p \lor q) \land (p \lor r)$, and so on.
+\end{example}
+
+This was a breakthrough: logic became a branch of mathematics. But Boole's algebra could only express \textbf{propositional} logic---combinations of whole propositions. It couldn't look inside propositions to see their structure.
+
+``All men are mortal'' is just a single symbol $p$ in Boolean algebra. The internal structure (``all,'' ``men,'' ``mortal'') is invisible.
+
+\section{Frege's Revolution}
+
+The real transformation came in 1879, when Gottlob Frege published a small book with a forbidding title: \emph{Begriffsschrift} (Concept-Script).
+
+Frege wanted to show that mathematics could be derived from pure logic. To do this, he needed a logic far more powerful than Aristotle's syllogisms or Boole's algebra.
+
+\begin{keyinsight}
+Frege introduced:
+\begin{enumerate}
+    \item \textbf{Quantifiers}: $\forall x$ (``for all $x$'') and $\exists x$ (``there exists an $x$'')
+    \item \textbf{Predicates and relations}: $P(x)$, $R(x, y)$ instead of ``$S$ is $P$''
+    \item \textbf{Nested structure}: $\forall x \exists y \, R(x, y)$ means something different from $\exists y \forall x \, R(x, y)$
+\end{enumerate}
+\end{keyinsight}
+
+This is \textbf{first-order logic}, and it is vastly more expressive than anything before.
+
+\begin{example}[Expressing ``all men are mortal'' in first-order logic]
+\[
+\forall x \, (\mathrm{Man}(x) \to \mathrm{Mortal}(x))
+\]
+Now the internal structure is visible. We can combine this with other statements, quantify over different variables, express complex relationships.
+\end{example}
+
+Frege's logic could express most of mathematics. This was the birth of \textbf{modern logic}.
+
+\section{The Foundational Crisis}
+
+Frege's dream was to derive all of mathematics from logic. In 1903, just as the second volume of his \emph{Grundgesetze} (Basic Laws) was going to press, he received a letter from a young British philosopher named Bertrand Russell.
+
+Russell had found a contradiction.
+
+\begin{history}[Russell's Paradox]
+Consider the set of all sets that do not contain themselves:
+\[
+R = \{ x \mid x \notin x \}
+\]
+Does $R$ contain itself?
+\begin{itemize}
+    \item If $R \in R$, then by definition $R \notin R$. Contradiction.
+    \item If $R \notin R$, then by definition $R \in R$. Contradiction.
+\end{itemize}
+\end{history}
+
+Frege's system was inconsistent. His life's work was undermined.
+
+Russell, together with Alfred North Whitehead, spent a decade trying to fix the problem. Their \emph{Principia Mathematica} (1910--1913) introduced \textbf{type theory} to avoid the paradox. The book was massive, dense, and took hundreds of pages to prove that $1 + 1 = 2$.
+
+\begin{intuition}
+The crisis revealed something important: logic is powerful, but \textbf{dangerous}. The same expressive power that lets you talk about ``all sets'' also lets you construct paradoxes. The boundaries of logic needed careful study.
+\end{intuition}
+
+\section{The Four Pillars}
+
+The crisis sparked a golden age of research. In the early 20th century, four branches of mathematical logic crystallized, each asking a fundamental question:
+
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Proof Theory} & What is a proof? What can be proved? \\
+\textbf{Model Theory} & What is meaning? How do syntax and semantics relate? \\
+\textbf{Computability Theory} & What is computation? What can be computed? \\
+\textbf{Set Theory} & What is a mathematical object? What are the foundations?
+\end{tabular}
+\end{center}
+
+These are not four unrelated subjects. They are four ways of asking: \textbf{what are the limits and possibilities of formal reasoning?}
+
+\subsection{Proof Theory}
+
+David Hilbert launched a program: formalize all of mathematics, and prove that the formalization is consistent (free of contradictions).
+
+Gerhard Gentzen developed \textbf{natural deduction} and the \textbf{sequent calculus}---ways of studying proofs as mathematical objects themselves. What is the structure of a proof? Can proofs be simplified? Transformed?
+
+\subsection{Model Theory}
+
+Alfred Tarski asked: what does it mean for a sentence to be \textbf{true}?
+
+His answer: truth is a relationship between sentences (syntax) and structures (semantics). A sentence is true \emph{in a model}. Model theory studies this relationship: which sentences have models? How do models relate to each other? What can be expressed?
+
+\subsection{Computability Theory}
+
+Kurt G\"odel, Alonzo Church, and Alan Turing independently discovered the boundaries of computation.
+
+G\"odel's incompleteness theorems (1931) showed that Hilbert's program was impossible: any sufficiently powerful consistent system contains true statements that cannot be proved.
+
+Church and Turing (1936) defined what ``computable'' means, and showed that some problems (like the halting problem) are \textbf{undecidable}---no algorithm can solve them.
+
+\subsection{Set Theory}
+
+Georg Cantor had discovered that infinity comes in different sizes. But his naive set theory led to paradoxes.
+
+Zermelo, Fraenkel, and others developed axiomatic set theory (ZFC), carefully restricting which sets can be formed. Paul Cohen later showed that some questions (like the continuum hypothesis) are \textbf{independent}---neither provable nor disprovable from the axioms.
+
+\section{The Core Insight}
+
+Beneath these four branches lies a single theme:
+
+\begin{keyinsight}
+Logic studies \textbf{form} and \textbf{structure-preserving} reasoning.
+
+\begin{itemize}
+    \item \textbf{Form}: Logic abstracts away content, keeping only structure.
+    \item \textbf{Structure-preserving}: Valid inference preserves truth. Consistent systems preserve non-contradiction. Computable functions preserve the finitary nature of calculation.
+\end{itemize}
+\end{keyinsight}
+
+This is why logic became useful to so many fields:
+
+\begin{itemize}
+    \item \textbf{Philosophers} needed it to analyze concepts precisely
+    \item \textbf{Mathematicians} needed it to establish foundations
+    \item \textbf{Linguists} needed it to describe the structure of language
+    \item \textbf{Computer scientists} needed it to specify and verify programs
+\end{itemize}
+
+They all needed the same thing: a formal language to express structure, and rules to reason about structure while preserving essential properties.
+
+\section{A Question for the Future}
+
+We have traced logic from Athenian debates to the four pillars of modern mathematical logic. But this is not the end of the story.
+
+A question lingers: \textbf{can we study ``structure-preserving'' itself as a mathematical object?}
+
+The four pillars use set theory as their common language. But sets are about \emph{membership} (what elements belong to what collections). Is there a language that directly talks about \emph{structure} and \emph{structure-preserving maps}?
+
+The answer is yes. It is called \textbf{category theory}, and it will transform how we think about logic.
+
+But that is for the next chapter.
+
+\begin{summary}
+\begin{itemize}
+    \item Logic is not ``being rational''---it is the study of implication and valid inference
+    \item It began with Aristotle's syllogism: form can be studied independently of content
+    \item Frege created modern logic with quantifiers and predicates
+    \item The foundational crisis led to four pillars: proof theory, model theory, computability, set theory
+    \item All share a core insight: logic studies form and structure-preserving reasoning
+    \item This is why diverse fields (philosophy, linguistics, computer science) all need logic
+\end{itemize}
+\end{summary}
