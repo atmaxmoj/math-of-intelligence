@@ -4,10 +4,19 @@ PDFLATEX="/Library/TeX/texbin/pdflatex"
 ROOT=$(git rev-parse --show-toplevel)
 
 cd "$ROOT/note"
-if $PDFLATEX -interaction=nonstopmode main.tex > /dev/null 2>&1; then
-    $PDFLATEX -interaction=nonstopmode main.tex > /dev/null 2>&1
+
+# Remove old PDF to check if compilation succeeds
+rm -f main.pdf
+
+# Run pdflatex twice (for references)
+$PDFLATEX -interaction=nonstopmode main.tex > /dev/null 2>&1
+$PDFLATEX -interaction=nonstopmode main.tex > /dev/null 2>&1
+
+# Check if PDF was generated (not just exit code, which can be 1 for warnings)
+if [ -f main.pdf ]; then
     git add main.pdf
     echo "✓ PDF compiled and staged"
 else
-    echo "✗ LaTeX compilation failed, committing anyway"
+    echo "✗ LaTeX compilation failed - commit blocked"
+    exit 1
 fi
