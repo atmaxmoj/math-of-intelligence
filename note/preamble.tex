@@ -17,6 +17,8 @@
 \newcommand{\bisim}{\underline{\leftrightarrow}}
 \newcommand{\sem}[1]{\llbracket #1 \rrbracket}
 \newcommand{\K}{\mathrm{K}}
+\newcommand{\behav}{\mathsf{beh}}
+\newcommand{\cat}[1]{\mathbf{#1}}
 
 % Theorem environments
 \theoremstyle{definition}
@@ -35,7 +37,8 @@
 
 % TikZ
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, positioning, shapes, decorations.pathreplacing}
+\usetikzlibrary{arrows.meta, positioning, shapes, decorations.pathreplacing, cd}
+\usepackage{tikz-cd}
 
 % Colored boxes
 \usepackage[most]{tcolorbox}
@@ -74,7 +77,7 @@
 
 \newtcolorbox{exercise}[1][]{
     colback=white, colframe=black!70, fonttitle=\bfseries,
-    title={\faPencilAlt\hspace{0.5em}Exercise}, #1
+    title={\faEdit\hspace{0.5em}Exercise}, #1
 }
 
 \newtcolorbox{goals}[1][]{
