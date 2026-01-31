@@ -85,6 +85,13 @@
     title={\faBullseye\hspace{0.5em}Goals of This Chapter}, #1
 }
 
+% Inference/syllogism environment (no page break)
+\newenvironment{inference}{%
+    \par\noindent\begin{minipage}{\linewidth}\centering
+}{%
+    \end{minipage}\par
+}
+
 % Hyperlinks
 \usepackage{hyperref}
 \hypersetup{

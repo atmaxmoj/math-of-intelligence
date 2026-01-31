@@ -3,12 +3,12 @@
 \begin{goals}
 \begin{itemize}
     \item See the evolution of expressive power: from syllogisms to modal logic
-    \item Understand why ``structure-preserving'' leads naturally to category theory
+    \item Understand why studying invariance leads naturally to category theory
     \item Meet algebra and coalgebra as the two faces of formal structure
 \end{itemize}
 \end{goals}
 
-In the previous chapter, we saw that logic studies \textbf{form} and \textbf{structure-preserving} reasoning. Now we trace how this insight developed, and where it leads.
+In the previous chapter, we saw that logic studies \textbf{form} and \textbf{invariance}---what properties are preserved under what transformations. Now we trace how this insight developed, and where it leads.
 
 \section{The Ladder of Expressiveness}
 
@@ -42,7 +42,44 @@ Boole's algebra could express combinations of propositions:
 (p \land q) \to r
 \]
 
-But each proposition is atomic. ``All men are mortal'' is just a letter $p$. You cannot look inside to see the quantifier ``all'' or the predicate ``mortal.''
+The meaning is given by \textbf{truth tables}. Each connective is defined by how the truth value of the whole depends on the truth values of the parts:
+
+\begin{center}
+\begin{tabular}{cc|c}
+$p$ & $q$ & $p \to q$ \\
+\hline
+T & T & T \\
+T & F & F \\
+F & T & T \\
+F & F & T
+\end{tabular}
+\end{center}
+
+Wait---why is $p \to q$ true when $p$ is false?
+
+\begin{intuition}
+This is \textbf{material implication}, and it confuses everyone at first.
+
+Think of implication as a \textbf{rule}: ``When the light is red, all cars must stop.''
+
+Now suppose the traffic light is broken today---it's green all day. No car stops. Has anyone violated the rule?
+
+\textbf{No.} The rule only says what must happen \emph{when the light is red}. If the light is never red, the rule is never triggered. It's not violated---it simply doesn't apply.
+
+That's material implication: $p \to q$ is false \emph{only} when $p$ is true and $q$ is false. Otherwise, no violation.
+\end{intuition}
+
+This leads to strange truths. Let $p$ = ``the moon is made of cheese.'' Then:
+\[
+p \to q
+\]
+is \textbf{true} for \emph{any} $q$---``if the moon is made of cheese, then I am the Pope,'' ``if the moon is made of cheese, then $2+2=5$.'' All true, because $p$ is false.
+
+In fact, from a false premise, you can ``derive'' anything. This is called \emph{ex falso quodlibet} (from falsehood, anything follows).
+
+Even worse, you can construct seemingly valid ``proofs'' of absurd conclusions---like proving that God exists from the mere fact that you don't pray. We'll analyze this famous example in detail after introducing modal logic, where we'll see how a more expressive language dissolves the paradox.
+
+But for now, note the more basic limitation: each proposition is atomic. ``All men are mortal'' is just a letter $p$. You cannot look inside to see the quantifier ``all'' or the predicate ``mortal.''
 
 \subsection{First-Order Logic: Frege's Revolution}
 
@@ -111,6 +148,83 @@ Modal logic is not one logic but a \textbf{family} of logics, each tuned to a di
 This explosion of modal logics---hundreds of them, with different axioms and different applications---raises a question:
 
 \textbf{Is there a unified framework for all of them?}
+
+But first, let us see how modal logic resolves the paradox we encountered earlier.
+
+\subsection{Revisiting the Prayer Argument}
+
+Recall the ``proof'' that God exists:
+
+\begin{quote}
+\textbf{In plain English (propositional logic version):}\\[0.5em]
+Premise 1: If God doesn't exist, then ``if I pray, I'll be answered'' is false.\\
+Premise 2: I don't pray.\\
+Conclusion: Therefore, God exists.\\[0.5em]
+\textbf{Why it ``works'':} Since I don't pray, the statement ``if I pray, I'll be answered'' is vacuously true (the ``if'' part is false, so the whole conditional is true). But premise 1 says this conditional should be false if God doesn't exist. So God must exist.
+\end{quote}
+
+The formal derivation:
+\begin{enumerate}
+    \item $\neg G \to \neg (P \to A)$ \hfill (Premise)
+    \item $\neg P$ \hfill (Premise)
+    \item $P \to A$ \hfill (From 2: $P$ is false, so $P \to A$ is vacuously true)
+    \item $(P \to A) \to G$ \hfill (Contrapositive of 1)
+    \item $G$ \hfill (Modus ponens: God exists)
+\end{enumerate}
+
+The logic is valid. The conclusion is absurd. What went wrong?
+
+\subsection{The Modal Solution: Strict Implication}
+
+The problem is that material implication $P \to A$ is too weak. It only talks about the \emph{actual} world. In the actual world, I don't pray, so $P \to A$ is trivially true.
+
+But when we say ``if I pray, I'll be answered,'' we mean something stronger: \emph{in any situation where I pray, I would be answered}. This is \textbf{strict implication}:
+\[
+\Box(P \to A)
+\]
+meaning: in \emph{all accessible worlds}, if $P$ then $A$.
+
+Now let's redo the argument with strict implication:
+
+\begin{quote}
+\textbf{In plain English (modal logic version):}\\[0.5em]
+Premise 1: If God doesn't exist, then it's not the case that \emph{in all possible situations}, praying leads to being answered.\\
+Premise 2: I don't pray (in the actual world).\\
+Conclusion: ???
+\end{quote}
+
+The formal analysis:
+\begin{enumerate}
+    \item $\neg G \to \neg \Box(P \to A)$ \hfill (Premise, with strict implication)
+    \item $\neg P$ \hfill (Premise: in the actual world, I don't pray)
+    \item $\Box(P \to A)$ ??? \hfill \textbf{Does not follow!}
+\end{enumerate}
+
+\textbf{Why step 3 fails:} From $\neg P$ (I don't pray in the actual world), we can derive $P \to A$ \emph{in the actual world}. But we \emph{cannot} derive $\Box(P \to A)$---that would require $P \to A$ to hold in \emph{all} accessible worlds.
+
+In other worlds, I might pray. And in those worlds, if God doesn't exist, my prayers wouldn't be answered. So $P \to A$ would be false there.
+
+Therefore: $\neg P \nvdash \Box(P \to A)$.
+
+The argument collapses. Modal logic has the expressive power to distinguish what classical logic conflates.
+
+\subsection{The Moral: Expressiveness Drives Progress}
+
+\begin{history}
+This is exactly why C.I. Lewis invented modal logic in 1912.\footnote{See \href{https://plato.stanford.edu/entries/logic-modal-origins/}{Stanford Encyclopedia of Philosophy: Modern Origins of Modal Logic}.} He was disturbed by the ``paradoxes of material implication'' in Russell and Whitehead's \emph{Principia Mathematica}: that a false proposition implies anything, and a true proposition is implied by anything.
+
+Lewis argued that this doesn't match the meaning of ``implies'' in ordinary reasoning and proof. He developed \textbf{strict implication} $A \Rightarrow B \;=_{\text{def}}\; \Box(A \to B)$ to capture a stronger notion. Kripke later provided the elegant possible-worlds semantics that made modal logic mathematically tractable.
+\end{history}
+
+\begin{keyinsight}
+Here is the crucial point:
+
+We did \emph{not} say: ``The prayer argument is logically valid in propositional logic, so we must accept that God exists.''
+
+We said: ``The prayer argument reveals that propositional logic's notion of validity doesn't match our intuitions about implication. So we build a better logic.''
+
+\textbf{Logic is a tool, not a master.} When the tool doesn't fit the job---when its $\vdash$ doesn't match our intuitive sense of ``follows from''---we develop a more expressive language. This is the engine that drives the history of logic.
+\end{keyinsight}
 
 \section{The Great Shift: From Consequence to Structure}
 
@@ -348,7 +462,7 @@ The key insight: we don't care what objects ``are made of.'' We only care about 
 \begin{keyinsight}
 Category theory is the \textbf{mathematics of mathematics}. It studies structure and structure-preserving maps in full generality.
 
-This is exactly what logic needed: a language where ``structure-preserving'' is a first-class concept.
+This is exactly what logic needed: a language where \emph{transformations} and \emph{what they preserve} are first-class concepts.
 \end{keyinsight}
 
 \section{Lawvere: Logic Meets Category Theory}

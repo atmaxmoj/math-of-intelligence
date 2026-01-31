@@ -3,8 +3,8 @@
 \begin{goals}
 \begin{itemize}
     \item Understand why logic emerged in the first place
-    \item See logic not as ``being rational'' but as the study of implication
-    \item Trace the journey from Aristotle to the modern landscape
+    \item See how logic evolved from ``valid inference'' to something much broader
+    \item Trace the journey from Aristotle to the four pillars of modern logic
 \end{itemize}
 \end{goals}
 
@@ -16,13 +16,17 @@ In everyday speech, ``logic'' means something like ``rational thinking'' or ``be
 
 \textbf{Formal logic is not this.}
 
-Formal logic is not about being smart, or thinking clearly, or avoiding fallacies in everyday reasoning. It is something much more specific, and in a way, much stranger.
+Formal logic is not \emph{only} about being smart, or thinking clearly, or avoiding fallacies in everyday reasoning---those may be corollaries, but they are not the core. The core is something much more specific, and in a way, much stranger.
 
-\begin{keyinsight}
+At least, that was the \textbf{original} question:
+
+\begin{quote}
 Logic is the study of \textbf{implication}---the ``if... then...'' structure.
 
-When can we say that one thing \emph{necessarily follows} from another? What does ``follows from'' even mean? These are the questions logic tries to answer, with mathematical precision.
-\end{keyinsight}
+When can we say that one thing \emph{necessarily follows} from another? What does ``follows from'' even mean?
+\end{quote}
+
+This is where logic \emph{started}. But as we will see, the subject has traveled far from this origin---not abandoning it, but generalizing it beyond recognition. By the end of this chapter, ``implication'' will seem like just one special case of something much broader.
 
 Think about it: implication is everywhere.
 \begin{itemize}
@@ -88,22 +92,22 @@ Plato's student Aristotle was more practical. He wanted to \textbf{systematize} 
 The result was the \textbf{syllogism}, the first formal system in history.
 
 \begin{example}[A syllogism]
-\begin{center}
+\begin{inference}
 All men are mortal. \quad (major premise)\\
 Socrates is a man. \quad (minor premise)\\
 \rule{5cm}{0.4pt}\\
 Therefore, Socrates is mortal. \quad (conclusion)
-\end{center}
+\end{inference}
 \end{example}
 
 The key insight: the validity of this argument depends only on its \textbf{form}, not on what ``men,'' ``mortal,'' or ``Socrates'' mean. We can replace them with any terms:
 
-\begin{center}
+\begin{inference}
 All A are B.\\
 S is an A.\\
 \rule{4cm}{0.4pt}\\
 Therefore, S is B.
-\end{center}
+\end{inference}
 
 This \textbf{is} the syllogism. Aristotle catalogued all the valid forms (Barbara, Celarent, Darii, Ferio...) and showed how to reduce complex arguments to combinations of these basic patterns.
 
@@ -176,6 +180,28 @@ Frege introduced:
     \item \textbf{Nested structure}: $\forall x \exists y \, R(x, y)$ means something different from $\exists y \forall x \, R(x, y)$
 \end{enumerate}
 \end{keyinsight}
+
+Why these two quantifiers, $\forall$ and $\exists$? Why not ``most,'' ``exactly three,'' or ``infinitely many''?
+
+\begin{intuition}
+$\forall$ and $\exists$ are the \textbf{minimal pair}: they correspond to Aristotle's ``All'' and ``Some,'' and they are \textbf{duals}:
+\[
+\forall x \, \varphi \;\equiv\; \neg \exists x \, \neg \varphi
+\]
+``Everything has property $\varphi$'' means ``there is nothing without property $\varphi$.''
+
+Some quantifiers can be built from these. For example, ``at least two things are $P$'' is:
+\[
+\exists x \, \exists y \, (x \neq y \land P(x) \land P(y))
+\]
+And ``exactly one thing is $P$'' is:
+\[
+\exists x \, (P(x) \land \forall y \, (P(y) \to y = x))
+\]
+But others---like ``most'' or ``infinitely many''---\emph{cannot} be expressed in first-order logic at all. This is a real limitation, and it drove later work on \textbf{generalized quantifiers}.
+
+Notice the pattern: $\forall$ = ``for all individuals,'' $\exists$ = ``for some individual.'' Later, modal logic will use the same pattern: $\Box$ = ``in all worlds,'' $\Diamond$ = ``in some world.'' This is not a coincidence.
+\end{intuition}
 
 This is \textbf{first-order logic}, and it is vastly more expressive than anything before.
 
@@ -260,11 +286,11 @@ Zermelo, Fraenkel, and others developed axiomatic set theory (ZFC), carefully re
 Beneath these four branches lies a single theme:
 
 \begin{keyinsight}
-Logic studies \textbf{form} and \textbf{structure-preserving} reasoning.
+Logic studies \textbf{form} and \textbf{invariance}.
 
 \begin{itemize}
     \item \textbf{Form}: Logic abstracts away content, keeping only structure.
-    \item \textbf{Structure-preserving}: Valid inference preserves truth. Consistent systems preserve non-contradiction. Computable functions preserve the finitary nature of calculation.
+    \item \textbf{Invariance}: What properties are preserved under what transformations? Valid inference preserves truth. Bisimulation preserves modal properties. Computable functions preserve finiteness of description.
 \end{itemize}
 \end{keyinsight}
 
@@ -283,9 +309,9 @@ They all needed the same thing: a formal language to express structure, and rule
 
 We have traced logic from Athenian debates to the four pillars of modern mathematical logic. But this is not the end of the story.
 
-A question lingers: \textbf{can we study ``structure-preserving'' itself as a mathematical object?}
+A question lingers: \textbf{can we study ``invariance'' itself as a mathematical object?}
 
-The four pillars use set theory as their common language. But sets are about \emph{membership} (what elements belong to what collections). Is there a language that directly talks about \emph{structure} and \emph{structure-preserving maps}?
+The four pillars use set theory as their common language. But sets are about \emph{membership} (what elements belong to what collections). Is there a language that directly talks about \emph{structure} and \emph{what is preserved under transformations}?
 
 The answer is yes. It is called \textbf{category theory}, and it will transform how we think about logic.
 
@@ -293,11 +319,12 @@ But that is for the next chapter.
 
 \begin{summary}
 \begin{itemize}
-    \item Logic is not ``being rational''---it is the study of implication and valid inference
-    \item It began with Aristotle's syllogism: form can be studied independently of content
-    \item Frege created modern logic with quantifiers and predicates
+    \item Logic is not ``being rational''---it \emph{began} as the study of valid inference, but has evolved far beyond
+    \item Aristotle's syllogism: form can be studied independently of content
+    \item Frege's revolution: quantifiers, predicates, and the ambition to ground all mathematics
     \item The foundational crisis led to four pillars: proof theory, model theory, computability, set theory
-    \item All share a core insight: logic studies form and structure-preserving reasoning
-    \item This is why diverse fields (philosophy, linguistics, computer science) all need logic
+    \item The core insight: logic studies \textbf{form} and \textbf{invariance}
+    \item This is why diverse fields all need logic---not for ``reasoning,'' but for describing structured systems
+    \item Next: how logic became a \emph{language} for describing systems, not just a tool for checking arguments
 \end{itemize}
 \end{summary}
