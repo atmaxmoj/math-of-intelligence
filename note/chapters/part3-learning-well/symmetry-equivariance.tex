@@ -1,0 +1,187 @@
+\chapter{The Symmetry View}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand geometric deep learning
+    \item See how symmetry constrains architecture
+    \item Know what this framework can and cannot do
+\end{itemize}
+\end{goals}
+
+\section{The Core Idea}
+
+Many tasks have symmetries. If the architecture respects them, learning is easier.
+
+\begin{example}
+Image classification:
+\begin{itemize}
+    \item A cat in the corner is still a cat
+    \item The task is \emph{translation invariant}
+    \item CNN kernels slide across positions $\to$ translation equivariant
+\end{itemize}
+\end{example}
+
+\begin{definition}[Invariance and Equivariance]
+Let $G$ be a group acting on input space $X$ and output space $Y$.
+\begin{itemize}
+    \item $f: X \to Y$ is \textbf{$G$-invariant} if $f(g \cdot x) = f(x)$ for all $g \in G$
+    \item $f: X \to Y$ is \textbf{$G$-equivariant} if $f(g \cdot x) = g \cdot f(x)$ for all $g \in G$
+\end{itemize}
+\end{definition}
+
+Invariance: output doesn't change. Equivariance: output transforms the same way as input.
+
+\section{Geometric Deep Learning}
+
+Bronstein et al. unified many architectures under one framework:
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Domain} & \textbf{Symmetry Group} & \textbf{Architecture} \\
+\hline
+Images & Translations $\mathbb{Z}^2$ & CNN \\
+Sets & Permutations $S_n$ & DeepSets \\
+Graphs & Node permutations & GNN \\
+Spheres & Rotations $SO(3)$ & Spherical CNN \\
+Manifolds & Gauge transformations & Gauge CNN \\
+\end{tabular}
+\end{center}
+
+\begin{keyinsight}
+Once you identify the symmetry group, the architecture follows.
+
+The ``right'' architecture is the one that is equivariant to the task's symmetry.
+\end{keyinsight}
+
+\section{Why Equivariance Helps}
+
+\subsection{Parameter Efficiency}
+
+Equivariant layers have fewer free parameters.
+
+\begin{example}
+For $n \times n$ images:
+\begin{itemize}
+    \item Fully connected: $n^4$ parameters
+    \item Convolutional ($k \times k$ kernel): $k^2$ parameters
+\end{itemize}
+The constraint of translation equivariance forces weight sharing.
+\end{example}
+
+\subsection{Data Efficiency}
+
+You don't need to learn what symmetry gives you for free.
+
+\begin{intuition}
+A non-equivariant network must learn separately:
+\begin{itemize}
+    \item ``Cat in top-left is a cat''
+    \item ``Cat in top-right is a cat''
+    \item ``Cat in bottom-left is a cat''
+    \item ...
+\end{itemize}
+An equivariant network learns once: ``This pattern is a cat.''
+\end{intuition}
+
+\subsection{Generalization}
+
+Equivariance is an inductive bias that matches the task structure.
+
+Recent work (2025) confirms: equivariant models
+\begin{enumerate}
+    \item Are more data efficient
+    \item Outpace non-equivariant models as task complexity increases
+    \item Can benefit from targeted symmetry breaking when data isn't perfectly symmetric
+\end{enumerate}
+
+\section{The Mathematical Framework}
+
+\subsection{Group Representations}
+
+A representation of group $G$ on vector space $V$ is a homomorphism:
+\[
+\rho: G \to GL(V)
+\]
+
+For neural networks, we need $G$ to act on both input and output spaces.
+
+\subsection{Equivariant Linear Maps}
+
+\begin{theorem}
+A linear map $\phi: V \to W$ is $G$-equivariant iff:
+\[
+\phi \circ \rho_V(g) = \rho_W(g) \circ \phi \quad \forall g \in G
+\]
+\end{theorem}
+
+The space of such maps is determined by representation theory — specifically, by how $\rho_V$ and $\rho_W$ decompose into irreducibles.
+
+\subsection{Building Equivariant Networks}
+
+\begin{enumerate}
+    \item Choose input/output representations
+    \item Compute the space of equivariant linear maps (using Schur's lemma)
+    \item Add equivariant nonlinearities
+    \item Stack layers
+\end{enumerate}
+
+The ``Equivariant MLP'' algorithm automates this for any matrix group.
+
+\section{Limitations}
+
+\subsection{Requires Known Symmetry}
+
+\begin{warning}
+Geometric deep learning assumes you \emph{know} the symmetry group upfront.
+
+But what if:
+\begin{itemize}
+    \item The symmetry is unknown?
+    \item The symmetry is approximate?
+    \item There is no group symmetry, but some other structure?
+\end{itemize}
+\end{warning}
+
+\subsection{Only Handles Group Symmetry}
+
+Not all structure is group-theoretic.
+
+\begin{example}
+Consider learning a DFA (deterministic finite automaton):
+\begin{itemize}
+    \item The ``structure'' is the transition function
+    \item There may be no natural group action
+    \item Geometric DL doesn't directly apply
+\end{itemize}
+\end{example}
+
+\subsection{Expressiveness vs. Bias Tradeoff}
+
+Making a network equivariant restricts its function class.
+
+\begin{theorem}[Universal Approximation]
+$G$-equivariant networks can approximate any $G$-equivariant function.
+
+But they \emph{cannot} approximate non-equivariant functions.
+\end{theorem}
+
+If your task isn't actually $G$-symmetric, an equivariant network will fail.
+
+\section{Relevance to Our Question}
+
+Geometric deep learning answers: \emph{given symmetry group $G$, what architecture?}
+
+But we want to answer: \emph{given semantic target (e.g., a coalgebra), what architecture?}
+
+These overlap when the semantics has group symmetry. But many structures (automata, Kripke frames, arbitrary coalgebras) don't have obvious group structure.
+
+\begin{keyinsight}
+Symmetry is one source of structure. But it's not the only one.
+
+We need a more general theory that handles:
+\begin{itemize}
+    \item Group symmetry (Geometric DL)
+    \item Algebraic structure (semirings, monoids)
+    \item Coalgebraic structure (transition systems, behaviors)
+\end{itemize}
+\end{keyinsight}

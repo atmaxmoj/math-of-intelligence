@@ -1,0 +1,73 @@
+\chapter{Kripke Frames}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand Kripke semantics: worlds, accessibility, satisfaction
+    \item See how different frame properties give different logics
+    \item Learn bisimulation as the right notion of equivalence
+\end{itemize}
+\end{goals}
+
+\section{Possible Worlds}
+
+The key idea: truth is \emph{relative to a world}.
+
+\begin{definition}[Kripke Frame]
+A \emph{Kripke frame} is a pair $\mathcal{F} = (W, R)$ where:
+\begin{itemize}
+    \item $W$ is a non-empty set of \emph{possible worlds}
+    \item $R \subseteq W \times W$ is the \emph{accessibility relation}
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Kripke Model]
+A \emph{Kripke model} is a triple $\mathcal{M} = (W, R, V)$ where $(W, R)$ is a frame and $V : \Phi \to \mathcal{P}(W)$ is a \emph{valuation}.
+\end{definition}
+
+\begin{intuition}
+Think of a Kripke model as a graph. Nodes are worlds, edges are accessibility, and each node is labeled with which propositions are true there.
+\end{intuition}
+
+\section{Satisfaction}
+
+\begin{definition}[Satisfaction Relation]
+Let $\mathcal{M} = (W, R, V)$ and $w \in W$. Define $\mathcal{M}, w \models \varphi$:
+\begin{align*}
+\mathcal{M}, w &\models p &&\text{iff } w \in V(p) \\
+\mathcal{M}, w &\models \neg\varphi &&\text{iff } \mathcal{M}, w \not\models \varphi \\
+\mathcal{M}, w &\models \varphi \land \psi &&\text{iff } \mathcal{M}, w \models \varphi \text{ and } \mathcal{M}, w \models \psi \\
+\mathcal{M}, w &\models \necessary\varphi &&\text{iff for all } v: wRv \Rightarrow \mathcal{M}, v \models \varphi
+\end{align*}
+\end{definition}
+
+\section{Frame Properties and Axioms}
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Property of $R$} & \textbf{Axiom} & \textbf{Name} \\
+\hline
+Reflexive & $\necessary\varphi \to \varphi$ & T \\
+Transitive & $\necessary\varphi \to \necessary\necessary\varphi$ & 4 \\
+Symmetric & $\varphi \to \necessary\possible\varphi$ & B \\
+Euclidean & $\possible\varphi \to \necessary\possible\varphi$ & 5 \\
+\end{tabular}
+\end{center}
+
+\section{Bisimulation}
+
+\begin{definition}[Bisimulation]
+A relation $Z \subseteq W \times W'$ is a \emph{bisimulation} if whenever $wZw'$:
+\begin{enumerate}
+    \item \textbf{(Atoms)} $w \in V(p) \Leftrightarrow w' \in V'(p)$ for all $p$
+    \item \textbf{(Zig)} If $wRv$, then $\exists v': w'R'v'$ and $vZv'$
+    \item \textbf{(Zag)} If $w'R'v'$, then $\exists v: wRv$ and $vZv'$
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[Bisimulation Invariance]
+If $wZw'$, then $\mathcal{M}, w \models \varphi \iff \mathcal{M}', w' \models \varphi$ for all modal $\varphi$.
+\end{theorem}
+
+\begin{keyinsight}
+Bisimulation is the ``right'' equivalence for modal logic. This will generalize to coalgebra.
+\end{keyinsight}

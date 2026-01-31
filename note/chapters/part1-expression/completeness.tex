@@ -1,0 +1,101 @@
+\chapter{Completeness}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand normal modal logics and their axiomatizations
+    \item Master the canonical model construction
+    \item Prove completeness for K, T, S4, S5
+    \item Understand what canonicity means and why it matters
+\end{itemize}
+\end{goals}
+
+\section{Normal Modal Logics}
+
+\begin{definition}[Normal Modal Logic]
+A \emph{normal modal logic} is a set $L$ of formulas containing:
+\begin{itemize}
+    \item All propositional tautologies
+    \item The \textbf{K axiom}: $\necessary(p \to q) \to (\necessary p \to \necessary q)$
+\end{itemize}
+and closed under:
+\begin{itemize}
+    \item Modus ponens: from $\varphi$ and $\varphi \to \psi$, derive $\psi$
+    \item Necessitation: from $\varphi$, derive $\necessary\varphi$
+\end{itemize}
+\end{definition}
+
+\begin{example}
+\begin{itemize}
+    \item \textbf{K} = minimal normal modal logic
+    \item \textbf{T} = K + $\necessary p \to p$ (reflexivity)
+    \item \textbf{S4} = T + $\necessary p \to \necessary\necessary p$ (transitivity)
+    \item \textbf{S5} = S4 + $p \to \necessary\possible p$ (symmetry)
+\end{itemize}
+\end{example}
+
+\section{Maximal Consistent Sets}
+
+\begin{definition}[Maximal Consistent Set]
+A set $\Gamma$ of formulas is \emph{maximally $L$-consistent} if:
+\begin{itemize}
+    \item $\Gamma$ is $L$-consistent (no derivation of $\bot$)
+    \item $\Gamma$ is maximal: for all $\varphi$, either $\varphi \in \Gamma$ or $\neg\varphi \in \Gamma$
+\end{itemize}
+\end{definition}
+
+\begin{lemma}[Lindenbaum]
+Every consistent set can be extended to a maximally consistent set.
+\end{lemma}
+
+\begin{proof}
+Enumerate all formulas. Add each one if consistent, otherwise add its negation.
+\end{proof}
+
+\section{The Canonical Model}
+
+\begin{definition}[Canonical Model]
+The \emph{canonical model} for logic $L$ is $\mathcal{M}^c_L = (W^c, R^c, V^c)$ where:
+\begin{itemize}
+    \item $W^c$ = all maximally $L$-consistent sets
+    \item $\Gamma R^c \Delta$ iff for all $\varphi$: $\necessary\varphi \in \Gamma \Rightarrow \varphi \in \Delta$
+    \item $V^c(p) = \{\Gamma : p \in \Gamma\}$
+\end{itemize}
+\end{definition}
+
+\begin{lemma}[Truth Lemma]
+$\mathcal{M}^c_L, \Gamma \models \varphi$ iff $\varphi \in \Gamma$.
+\end{lemma}
+
+\begin{proof}
+Induction on $\varphi$. The key case is $\necessary\varphi$:
+\begin{itemize}
+    \item If $\necessary\varphi \in \Gamma$ and $\Gamma R^c \Delta$, then $\varphi \in \Delta$, so by IH $\Delta \models \varphi$.
+    \item If $\necessary\varphi \notin \Gamma$, construct $\Delta$ with $\varphi \notin \Delta$ and $\Gamma R^c \Delta$. % TODO: details
+\end{itemize}
+\end{proof}
+
+\section{Completeness Theorem}
+
+\begin{theorem}[Completeness of K]
+If $\varphi$ is valid in all Kripke frames, then $\varphi$ is provable in K.
+\end{theorem}
+
+\begin{proof}
+Contrapositive. If $\varphi$ is not provable, then $\{\neg\varphi\}$ is consistent. Extend to MCS $\Gamma$. By Truth Lemma, $\mathcal{M}^c_K, \Gamma \models \neg\varphi$, so $\varphi$ is not valid.
+\end{proof}
+
+\section{Canonicity}
+
+\begin{definition}[Canonical Formula]
+A formula $\varphi$ is \emph{canonical} if: whenever $\varphi \in L$, the canonical frame for $L$ validates $\varphi$.
+\end{definition}
+
+\begin{keyinsight}
+Canonicity is the bridge between syntax (axioms) and semantics (frame conditions). If an axiom is canonical, adding it to a logic preserves completeness.
+\end{keyinsight}
+
+\begin{example}
+The T axiom $\necessary p \to p$ is canonical: if T $\in L$, then $R^c$ is reflexive.
+\end{example}
+
+% TODO: more on canonicity, Sahlqvist

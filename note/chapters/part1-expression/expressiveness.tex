@@ -1,0 +1,48 @@
+\chapter{How Much Can We Express?}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand expressiveness as a measure of logical power
+    \item Compare modal logic to first-order logic
+    \item Introduce correspondence theory
+\end{itemize}
+\end{goals}
+
+\section{The Standard Translation}
+
+\begin{definition}[Standard Translation]
+Define $\mathrm{ST}_x : \mathcal{L}(\necessary) \to \mathcal{L}_{\mathrm{FO}}$:
+\begin{align*}
+    \mathrm{ST}_x(p) &= P(x) \\
+    \mathrm{ST}_x(\neg\varphi) &= \neg\mathrm{ST}_x(\varphi) \\
+    \mathrm{ST}_x(\necessary\varphi) &= \forall y (R(x,y) \to \mathrm{ST}_y(\varphi))
+\end{align*}
+\end{definition}
+
+Modal logic is a \emph{fragment} of first-order logic. But which fragment?
+
+\section{The van Benthem Characterization}
+
+\begin{theorem}[van Benthem]
+A first-order formula $\varphi(x)$ is equivalent to a modal formula iff it is invariant under bisimulation.
+\end{theorem}
+
+\begin{keyinsight}
+Modal logic = bisimulation-invariant fragment of first-order logic.
+\end{keyinsight}
+
+\section{Frame Correspondence}
+
+Some modal formulas correspond to first-order conditions on frames:
+
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Modal Axiom} & \textbf{Frame Condition} \\
+\hline
+$\necessary p \to p$ & Reflexive \\
+$\necessary p \to \necessary\necessary p$ & Transitive \\
+$p \to \necessary\possible p$ & Symmetric \\
+\end{tabular}
+\end{center}
+
+% TODO: Sahlqvist theorem

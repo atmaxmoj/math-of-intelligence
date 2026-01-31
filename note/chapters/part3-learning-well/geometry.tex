@@ -1,0 +1,38 @@
+\chapter{The Geometry of Learning}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand Fisher information as a metric on parameter space
+    \item See how curvature affects learning difficulty
+    \item Appreciate why some landscapes are ``easy''
+\end{itemize}
+\end{goals}
+
+\section{Fisher Information}
+
+\begin{definition}[Fisher Information Matrix]
+For a parameterized distribution $p_\theta(x)$:
+\[
+F_{ij}(\theta) = \mathbb{E}_{x \sim p_\theta} \left[ \frac{\partial \log p_\theta(x)}{\partial \theta_i} \cdot \frac{\partial \log p_\theta(x)}{\partial \theta_j} \right]
+\]
+\end{definition}
+
+\begin{intuition}
+$F(\theta)$ measures how much the output changes when you change $\theta$. Large $F$ = sensitive. Small $F$ = insensitive.
+\end{intuition}
+
+\section{Condition Number}
+
+\begin{definition}
+The \emph{condition number} of $F$ is $\kappa(F) = \lambda_{\max}(F) / \lambda_{\min}(F)$.
+\end{definition}
+
+\begin{itemize}
+    \item $\kappa \approx 1$: easy to optimize
+    \item $\kappa \gg 1$: hard to optimize
+    \item $\kappa = \infty$: redundancy (zero eigenvalues)
+\end{itemize}
+
+\begin{keyinsight}
+Redundant parameterizations have $\kappa = \infty$ because symmetry directions have zero Fisher information.
+\end{keyinsight}

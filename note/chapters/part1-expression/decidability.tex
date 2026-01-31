@@ -1,0 +1,98 @@
+\chapter{Decidability}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand the finite model property (FMP)
+    \item Master the filtration technique
+    \item Prove decidability of K, T, S4, S5
+    \item Know the complexity classes involved
+\end{itemize}
+\end{goals}
+
+\section{The Finite Model Property}
+
+\begin{definition}[Finite Model Property]
+A logic $L$ has the \emph{finite model property} (FMP) if:
+every $L$-consistent formula is satisfiable in a \emph{finite} model.
+\end{definition}
+
+\begin{theorem}
+If $L$ is finitely axiomatizable and has FMP, then $L$ is decidable.
+\end{theorem}
+
+\begin{proof}
+To decide if $\varphi \in L$:
+\begin{itemize}
+    \item Search for a proof of $\varphi$ (complete enumeration)
+    \item Search for a finite countermodel to $\varphi$
+\end{itemize}
+One must succeed. Both searches are effective.
+\end{proof}
+
+\section{Filtration}
+
+The key technique for proving FMP.
+
+\begin{definition}[Closure]
+The \emph{closure} $\mathrm{cl}(\varphi)$ is the smallest set containing $\varphi$ and all its subformulas, closed under single negation.
+\end{definition}
+
+Note: $|\mathrm{cl}(\varphi)| \leq 2 \cdot |\varphi|$.
+
+\begin{definition}[Filtration]
+Let $\mathcal{M} = (W, R, V)$ and $\Sigma = \mathrm{cl}(\varphi)$. Define equivalence:
+\[
+w \equiv_\Sigma v \iff \forall \psi \in \Sigma: (\mathcal{M}, w \models \psi \Leftrightarrow \mathcal{M}, v \models \psi)
+\]
+
+A \emph{filtration} of $\mathcal{M}$ through $\Sigma$ is $(W/{\equiv_\Sigma}, R', V')$ where:
+\begin{itemize}
+    \item $V'(p) = \{[w] : w \in V(p)\}$ for $p \in \Sigma$
+    \item $R'$ satisfies: $wRv \Rightarrow [w]R'[v]$ \hfill (min condition)
+    \item $R'$ satisfies: $[w]R'[v] \land \necessary\psi \in \Sigma \land \mathcal{M},w \models \necessary\psi \Rightarrow \mathcal{M},v \models \psi$ \hfill (max condition)
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Filtration Lemma]
+For any filtration $\mathcal{M}'$ of $\mathcal{M}$ through $\Sigma$:
+\[
+\mathcal{M}, w \models \psi \iff \mathcal{M}', [w] \models \psi \quad \text{for all } \psi \in \Sigma
+\]
+\end{theorem}
+
+\begin{corollary}
+$|W/{\equiv_\Sigma}| \leq 2^{|\Sigma|}$, so the filtration is finite.
+\end{corollary}
+
+\section{FMP for Standard Logics}
+
+\begin{theorem}
+K, T, S4, S5 all have the finite model property.
+\end{theorem}
+
+\begin{proofsketch}
+\begin{itemize}
+    \item K: smallest filtration works
+    \item T: take reflexive closure
+    \item S4: take reflexive-transitive closure
+    \item S5: take equivalence closure
+\end{itemize}
+\end{proofsketch}
+
+\section{Complexity}
+
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Logic} & \textbf{Complexity} \\
+\hline
+K, T, S4 & PSPACE-complete \\
+S5 & NP-complete \\
+PDL & EXPTIME-complete \\
+\end{tabular}
+\end{center}
+
+\begin{keyinsight}
+Modal logic satisfiability is generally PSPACE-complete. This is ``just barely'' tractable---hard, but not as bad as undecidable.
+\end{keyinsight}
+
+% TODO: proof sketches for complexity bounds

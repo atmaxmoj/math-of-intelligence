@@ -1,0 +1,42 @@
+\chapter{Not All Parameterizations Are Equal}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand that the same function can be parameterized differently
+    \item See that some parameterizations are easier to learn
+    \item Motivate the study of optimization geometry
+\end{itemize}
+\end{goals}
+
+\section{The Observation}
+
+Consider learning a translation-invariant function on images.
+
+\textbf{Fully connected network:}
+\begin{itemize}
+    \item Parameters: $n^2 \times n^2$ matrix
+    \item Can express translation-invariant functions
+    \item Huge parameter space, lots of equivalent points
+\end{itemize}
+
+\textbf{Convolutional network:}
+\begin{itemize}
+    \item Parameters: small kernel
+    \item Much smaller parameter space
+    \item Each point corresponds to a unique function
+\end{itemize}
+
+\begin{keyinsight}
+Both can express the target, but CNN learns it \emph{much} faster. Why?
+
+It's not just expressiveness. It's the \textbf{geometry of the optimization landscape}.
+\end{keyinsight}
+
+\section{Symmetry and Redundancy}
+
+If the target has symmetry group $G$, but the parameterization doesn't respect $G$:
+\begin{itemize}
+    \item Multiple parameters map to the same function
+    \item The loss landscape has ``flat'' directions
+    \item Optimization wastes effort navigating redundancy
+\end{itemize}

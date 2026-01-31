@@ -1,0 +1,112 @@
+\chapter{Semiring: The Abstraction}
+
+\begin{goals}
+\begin{itemize}
+    \item See the common structure behind fuzzy, probabilistic, tropical
+    \item Understand the formal definition of semiring
+    \item Appreciate why this abstraction is useful
+\end{itemize}
+\end{goals}
+
+\section{The Pattern We've Seen}
+
+Recall:
+
+\begin{center}
+\begin{tabular}{llllll}
+\textbf{Name} & $S$ & $\oplus$ (OR) & $\otimes$ (AND) & $\mathbf{0}$ & $\mathbf{1}$ \\
+\hline
+Boolean & $\{0,1\}$ & $\lor$ & $\land$ & $0$ & $1$ \\
+Fuzzy (Gödel) & $[0,1]$ & $\max$ & $\min$ & $0$ & $1$ \\
+Probabilistic & $\mathbb{R}_{\geq 0}$ & $+$ & $\times$ & $0$ & $1$ \\
+\end{tabular}
+\end{center}
+
+All satisfy the same algebraic laws. Let's name this structure.
+
+\section{Definition}
+
+\begin{definition}[Semiring]
+A \emph{semiring} is a tuple $(S, \oplus, \otimes, \mathbf{0}, \mathbf{1})$ where:
+\begin{enumerate}
+    \item $(S, \oplus, \mathbf{0})$ is a commutative monoid:
+    \begin{itemize}
+        \item $a \oplus (b \oplus c) = (a \oplus b) \oplus c$
+        \item $a \oplus b = b \oplus a$
+        \item $a \oplus \mathbf{0} = a$
+    \end{itemize}
+    \item $(S, \otimes, \mathbf{1})$ is a monoid:
+    \begin{itemize}
+        \item $a \otimes (b \otimes c) = (a \otimes b) \otimes c$
+        \item $a \otimes \mathbf{1} = \mathbf{1} \otimes a = a$
+    \end{itemize}
+    \item $\otimes$ distributes over $\oplus$:
+    \begin{itemize}
+        \item $a \otimes (b \oplus c) = (a \otimes b) \oplus (a \otimes c)$
+        \item $(a \oplus b) \otimes c = (a \otimes c) \oplus (b \otimes c)$
+    \end{itemize}
+    \item $\mathbf{0}$ annihilates:
+    \begin{itemize}
+        \item $a \otimes \mathbf{0} = \mathbf{0} \otimes a = \mathbf{0}$
+    \end{itemize}
+\end{enumerate}
+\end{definition}
+
+\begin{intuition}
+$\oplus$ = ``or'' / ``choice'' / ``combine alternatives''
+
+$\otimes$ = ``and'' / ``sequence'' / ``combine steps''
+
+$\mathbf{0}$ = ``impossible'' / ``failure''
+
+$\mathbf{1}$ = ``trivially true'' / ``do nothing''
+\end{intuition}
+
+\section{More Examples}
+
+\begin{definition}[Tropical Semiring]
+$(\mathbb{R} \cup \{+\infty\}, \min, +, +\infty, 0)$
+
+\begin{itemize}
+    \item $a \oplus b = \min(a, b)$: choose the better option
+    \item $a \otimes b = a + b$: accumulate costs
+    \item $\mathbf{0} = +\infty$: infinite cost = impossible
+    \item $\mathbf{1} = 0$: zero cost = free
+\end{itemize}
+\end{definition}
+
+\begin{keyinsight}
+In the tropical semiring, logical inference becomes optimization!
+
+``Find a satisfying assignment'' becomes ``find the minimum-cost path.''
+\end{keyinsight}
+
+\begin{definition}[Viterbi Semiring]
+$([0,1], \max, \times, 0, 1)$
+
+Used in HMMs: find the most probable path.
+\end{definition}
+
+\begin{definition}[Log Semiring]
+$(\mathbb{R} \cup \{-\infty\}, \mathrm{logsumexp}, +, -\infty, 0)$
+
+Numerically stable version of probabilistic semiring.
+\end{definition}
+
+\section{Why Semirings?}
+
+\begin{enumerate}
+    \item \textbf{Genericity}: Write algorithm once, instantiate for different semirings
+    \item \textbf{Correctness}: Algebraic laws guarantee properties
+    \item \textbf{Modularity}: Change interpretation without changing structure
+\end{enumerate}
+
+\begin{example}
+The same dynamic programming algorithm:
+\begin{itemize}
+    \item Boolean semiring → reachability (is there a path?)
+    \item Tropical semiring → shortest path (what's the minimum cost?)
+    \item Probabilistic semiring → most probable path
+    \item Counting semiring $(\mathbb{N}, +, \times, 0, 1)$ → count paths
+\end{itemize}
+\end{example}

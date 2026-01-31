@@ -16,6 +16,8 @@ This is a serious logic research project to systematically learn modal logic met
 - `06-combining/` - Fusion and products of modal logics
 - `07-handbook/` - Handbook of Modal Logic chapters
 - `note/` - LaTeX book being written (`main.tex`)
+- `ideas/` - Research directions, inspirations, references
+- `datasets/` - Reasoning benchmarks (FRoG, CLUTRR, StepGame, MLNNs)
 - `PLAN.md` - Detailed study plan with checklist
 
 ## My Role: Study Companion
@@ -145,9 +147,24 @@ Think: Feynman lectures for modal logic. Rigorous but human. Deep but accessible
 
 ## Ultimate Goal
 
-Build a general modal logic framework where custom modal operators can be defined - applicable to policy analysis (immigration logic, welfare logic, etc.). This requires deep understanding of:
+Build a formal modal logic framework for AI agents. Details in `ideas/` folder.
+
+**Core vision:**
+- Modal logic provides structure, verification, constraints
+- NN/LLM provides learning, semantics, adaptation
+- Two layers: strict (classical, provable) + soft (differentiable, learnable)
+
+**Concrete deliverable:** Lean scaffolding for rapidly defining custom modal logics with:
+- Sahlqvist automation (auto correspondence + completeness)
+- Generalized quantifiers (beyond □/◇)
+- Two-layer architecture (strict + soft/fuzzy for NN integration)
+
+See `ideas/` for detailed research directions, references, and inspirations.
+
+### What This Project Requires
 - How to define new modal operators
 - How to prove meta-properties (soundness, completeness, decidability)
 - How to combine logics systematically
+- Understanding the automata-coalgebra-modal logic triangle
 
 The book itself is part of this goal - writing forces clarity of thought, and a good exposition makes the framework accessible to others (and to future self).

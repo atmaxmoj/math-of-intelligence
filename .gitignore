@@ -13,6 +13,10 @@
 # Scripts (can regenerate)
 scripts/
 
+# Datasets (large, can re-download, keep README)
+datasets/*/
+!datasets/README.md
+
 # Virtual environments
 .venv/
 venv/

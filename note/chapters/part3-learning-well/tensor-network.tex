@@ -1,0 +1,158 @@
+\chapter{Entanglement and Expressiveness}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand the tensor network perspective on neural networks
+    \item See how entanglement entropy characterizes expressiveness
+    \item Know what this explains and what it doesn't
+\end{itemize}
+\end{goals}
+
+\section{Functions as Tensors}
+
+A function $f(x_1, \ldots, x_n)$ where each $x_i \in \{0, 1\}$ can be viewed as a tensor with $2^n$ entries.
+
+Naive representation: store all $2^n$ values. Exponential in $n$.
+
+But many functions have \textbf{structure} that allows compression.
+
+\section{Tensor Decomposition}
+
+Different decompositions correspond to different dependency structures:
+
+\subsection{Fully Factorized (No Dependencies)}
+
+\[
+f(x_1, \ldots, x_n) = g_1(x_1) \cdot g_2(x_2) \cdots g_n(x_n)
+\]
+
+Variables are independent. Only $O(n)$ parameters needed.
+
+\subsection{Matrix Product State (Chain Dependencies)}
+
+\[
+f(x_1, \ldots, x_n) = A_1(x_1) \cdot A_2(x_2) \cdots A_n(x_n)
+\]
+
+where each $A_i$ is a matrix. Nearby variables correlated.
+
+Parameters: $O(n \cdot r^2)$ where $r$ is the ``bond dimension.''
+
+This is like an RNN.
+
+\subsection{Tree Tensor Network (Hierarchical Dependencies)}
+
+Variables are grouped hierarchically:
+\begin{itemize}
+    \item First layer: pairs $(x_1, x_2), (x_3, x_4), \ldots$
+    \item Second layer: groups of pairs
+    \item Continue until single output
+\end{itemize}
+
+This is like a CNN or a deep network with pooling.
+
+\subsection{Fully Entangled (All Correlated)}
+
+No structure to exploit. Need $O(2^n)$ parameters.
+
+\section{Entanglement Entropy}
+
+Given a partition of variables into sets $A$ and $B$:
+
+\begin{definition}[Entanglement Entropy]
+The entanglement entropy $S(A:B)$ measures how much $A$ and $B$ are ``inseparably correlated.''
+\[
+S(A:B) = -\text{Tr}(\rho_A \log \rho_A)
+\]
+where $\rho_A$ is the reduced density matrix.
+\end{definition}
+
+\begin{intuition}
+\begin{itemize}
+    \item $S = 0$: $A$ and $B$ are independent, $f = g(A) \cdot h(B)$
+    \item $S$ large: $A$ and $B$ deeply entangled, must be processed together
+\end{itemize}
+\end{intuition}
+
+\section{The Deep vs Shallow Separation}
+
+\begin{theorem}[Cohen et al., 2016]
+Consider functions with hierarchical entanglement structure (local variables highly entangled, distant variables less so).
+
+\begin{itemize}
+    \item Deep networks (hierarchical tensor decomposition): $O(\text{poly}(n))$ parameters
+    \item Shallow networks (flat decomposition): $O(2^n)$ parameters
+\end{itemize}
+
+This is an exponential separation.
+\end{theorem}
+
+\begin{keyinsight}
+Depth is necessary when the target function has hierarchical entanglement.
+
+Deep networks match this structure. Shallow networks don't.
+\end{keyinsight}
+
+\section{Matching Entanglement Structure}
+
+The principle:
+
+\begin{quote}
+\textbf{If the architecture's tensor structure matches the target's entanglement structure, learning is efficient.}
+\end{quote}
+
+\subsection{Images}
+
+\begin{itemize}
+    \item Local pixels: high entanglement (edges, textures)
+    \item Distant pixels: low entanglement
+    \item Structure: hierarchical, local-to-global
+    \item Matching architecture: CNN (hierarchical, local kernels)
+\end{itemize}
+
+\subsection{Sequences}
+
+\begin{itemize}
+    \item May have long-range dependencies
+    \item Entanglement not purely local
+    \item Need architecture that can ``skip'' hierarchy levels
+    \item Matching architecture: Transformer? (direct connections)
+\end{itemize}
+
+\section{Relation to Distance Matching}
+
+Entanglement structure tells us about \textbf{expressiveness}: can the architecture represent the function?
+
+Distance matching tells us about \textbf{optimization}: can we find the right parameters?
+
+They are complementary:
+\begin{itemize}
+    \item Entanglement: which architecture class is sufficient?
+    \item Distance: within that class, which parameterization is optimal?
+\end{itemize}
+
+\section{Limitations}
+
+Tensor network theory explains:
+\begin{itemize}
+    \item Why depth matters
+    \item Why local structure (convolution) helps for local entanglement
+\end{itemize}
+
+But doesn't explain:
+\begin{itemize}
+    \item Skip connections (ResNet)
+    \item Attention mechanisms (Transformer)
+    \item Specific architectural choices beyond depth
+\end{itemize}
+
+It's one dimension of the story, not the whole story.
+
+\section{Open Questions}
+
+\begin{enumerate}
+    \item How to measure entanglement structure of a learning task from data?
+    \item Can we automatically select architecture based on measured entanglement?
+    \item How does entanglement relate to the distance matching principle?
+    \item What's the entanglement structure of language? (Needed to understand Transformers)
+\end{enumerate}

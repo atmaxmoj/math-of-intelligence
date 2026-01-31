@@ -1,0 +1,211 @@
+\chapter{Learning as a Formal Object}
+
+\begin{goals}
+\begin{itemize}
+    \item Distinguish \emph{learning task} from \emph{learning}
+    \item Define behavior via final coalgebra
+    \item See how task and learner connect through observation
+    \item Understand performance as a multi-dimensional tuple
+\end{itemize}
+\end{goals}
+
+\section{Behavior: What We're Trying to Learn}
+
+Before we can talk about learning, we need to say what it means for two systems to ``behave the same.''
+
+\begin{definition}[Final Coalgebra and Behavior]
+Let $H : \cat{C} \to \cat{C}$ be a functor. A \emph{final $H$-coalgebra} is a coalgebra $(Z, \omega : Z \to HZ)$ such that for any $H$-coalgebra $(X, \alpha : X \to HX)$, there exists a unique morphism $\behav : X \to Z$ making the diagram commute:
+\[
+\begin{tikzcd}
+X \ar[r, "\alpha"] \ar[d, "{\behav}"'] & HX \ar[d, "H(\behav)"] \\
+Z \ar[r, "\omega"'] & HZ
+\end{tikzcd}
+\]
+The element $\behav(x) \in Z$ is called the \emph{behavior} of state $x$.
+\end{definition}
+
+The final coalgebra $Z$ is the ``universe of all possible behaviors.'' The unique map $\behav$ extracts the complete observable behavior of any state.
+
+\begin{example}[Behaviors for Common Functors]
+\begin{center}
+\begin{tabular}{lll}
+\textbf{System} & \textbf{Functor $H$} & \textbf{Final coalgebra $Z$} \\
+\hline
+DFA & $2 \times (-)^\Sigma$ & $\mathcal{P}(\Sigma^*)$ (languages) \\
+Mealy & $O \times (-)^I$ & $I^* \to O^*$ (causal functions) \\
+Labeled transition & $\mathcal{P}(A \times -)$ & infinite trees up to bisim \\
+\end{tabular}
+\end{center}
+Two states have the same behavior iff they are bisimilar.
+\end{example}
+
+\section{Learning Task vs Learning}
+
+Here is the key distinction:
+
+\begin{definition}[Learning Task]
+A \emph{learning task} is a tuple:
+\[
+T = (H, C_{\mathrm{target}})
+\]
+where:
+\begin{itemize}
+    \item $H$ is a functor (the type of system)
+    \item $C_{\mathrm{target}}$ is an $H$-coalgebra that \textbf{exists but is unknown}
+\end{itemize}
+\end{definition}
+
+The task is: find a coalgebra that behaves like $C_{\mathrm{target}}$.
+
+But we don't have direct access to $C_{\mathrm{target}}$. We only see partial observations.
+
+\begin{definition}[Observation]
+An \emph{observation} $D$ is partial information about the behavior of $C_{\mathrm{target}}$.
+
+Formally, let $(Z, \omega)$ be the final $H$-coalgebra. Then:
+\[
+D \subseteq Z_n
+\]
+where $Z_n$ is the ``truncation'' of $Z$ to depth $n$---behaviors observed up to $n$ steps.
+\end{definition}
+
+\begin{example}[Observations in Practice]
+\begin{itemize}
+    \item For DFA: $D$ = finite set of (word, accept/reject) pairs
+    \item For Mealy: $D$ = finite set of input-output traces
+    \item For a program: $D$ = input-output examples, or a queryable oracle
+\end{itemize}
+\end{example}
+
+Now we can define learning itself:
+
+\begin{definition}[Learning]
+A \emph{learning configuration} (or \emph{learner}) is a tuple:
+\[
+L = (H, S, \Theta, \gamma)
+\]
+where:
+\begin{itemize}
+    \item $H$ : functor (structural assumption---what kind of system)
+    \item $S$ : semiring (how we measure---fuzzy, probabilistic, tropical...)
+    \item $\Theta$ : parameter space, indexing a family of coalgebras $\{C_\theta\}_{\theta \in \Theta}$
+    \item $\gamma$ : optimizer (how we search $\Theta$)
+\end{itemize}
+\end{definition}
+
+\begin{keyinsight}
+The learning task $T$ contains the unknown $C_{\mathrm{target}}$.
+
+The learner $L$ contains the machinery to find an approximation.
+
+They are separate objects.
+\end{keyinsight}
+
+\section{How Task and Learner Connect}
+
+The relationship:
+
+\[
+\begin{tikzcd}[column sep=large, row sep=large]
+T = (H, C_{\mathrm{target}}) \ar[d, "\text{observe}"'] & \\
+D \ar[r, "L"] & \theta^* \in \Theta
+\end{tikzcd}
+\]
+
+\begin{enumerate}
+    \item The task $T$ contains the unknown target $C_{\mathrm{target}}$
+    \item We observe $D$, a partial view of $C_{\mathrm{target}}$'s behavior
+    \item The learner $L$ takes $D$ and produces $\theta^*$
+    \item We hope $C_{\theta^*} \approx C_{\mathrm{target}}$
+\end{enumerate}
+
+More categorically:
+
+\begin{align*}
+\mathrm{Task}(H) &= \text{category of learning tasks for functor } H \\
+\mathrm{Obs} &= \text{category of observations} \\
+\mathrm{Learner}(H, S) &= \text{category of $(H, S)$-learners}
+\end{align*}
+
+We have:
+\begin{itemize}
+    \item $\mathrm{observe} : \mathrm{Task}(H) \to \mathrm{Obs}$ \quad (forgets $C_{\mathrm{target}}$, keeps observable part)
+    \item $L : \mathrm{Obs} \to \Theta$ \quad (learner maps observations to parameters)
+\end{itemize}
+
+\section{Performance is Not a Number}
+
+Given a learner $L$ and a task $T$, how do we evaluate?
+
+\textbf{Not} with a single number. Performance is multi-dimensional:
+
+\begin{definition}[Performance Tuple]
+\[
+\mathrm{Perf}(L, T) = (\varepsilon_{\mathrm{opt}}, \varepsilon_{\mathrm{gen}}, \varepsilon_{\mathrm{exp}})
+\]
+where:
+\begin{itemize}
+    \item $\varepsilon_{\mathrm{opt}}$ = \textbf{optimization}: how well does $\gamma$ converge on $D$?
+    \item $\varepsilon_{\mathrm{gen}}$ = \textbf{generalization}: how well does $C_{\theta^*}$ perform on unseen behavior?
+    \item $\varepsilon_{\mathrm{exp}}$ = \textbf{expressiveness}: $\inf_{\theta \in \Theta} d_H^S(C_\theta, C_{\mathrm{target}})$---can we even represent the target?
+\end{itemize}
+\end{definition}
+
+These dimensions interact:
+\begin{itemize}
+    \item More expressive $\Theta$ (lower $\varepsilon_{\mathrm{exp}}$) often means harder optimization (higher $\varepsilon_{\mathrm{opt}}$)
+    \item Better optimization on $D$ may hurt generalization (overfitting)
+\end{itemize}
+
+\begin{keyinsight}
+``Learning well'' is not a scalar. It's a point in a multi-dimensional performance space.
+
+Different applications care about different trade-offs.
+\end{keyinsight}
+
+\section{The Geometry Induced by $(H, S)$}
+
+Here's the deep point: the pair $(H, S)$ induces geometric structure on $\Theta$.
+
+\begin{definition}[$S$-Bisimilarity]
+For $H$-coalgebras over semiring $S$, the \emph{$S$-bisimilarity} is:
+\[
+d_H^S : \mathrm{Coalg}(H) \times \mathrm{Coalg}(H) \to S
+\]
+defined via Kantorovich lifting of $H$.
+\end{definition}
+
+Now fix a target. The loss function emerges:
+\[
+\ell : \Theta \to S, \quad \theta \mapsto d_H^S(C_\theta, C_{\mathrm{target}})
+\]
+
+The pair $(H, S)$ determines:
+\begin{itemize}
+    \item The ``shape'' of the loss landscape on $\Theta$
+    \item Which directions in $\Theta$ correspond to behavioral changes
+    \item The condition number of optimization
+\end{itemize}
+
+\begin{keyinsight}
+The optimizer $\gamma$ operates on the geometry that $(H, S)$ induces on $\Theta$.
+
+``Learning well'' = $\gamma$ converges efficiently on this geometry.
+\end{keyinsight}
+
+\section{The Question of Part III}
+
+We now have precise language:
+
+\begin{quote}
+Given $(H, S, \Theta, \gamma)$, what determines whether $\gamma$ converges well on the $(H, S)$-induced geometry of $\Theta$?
+\end{quote}
+
+Equivalently:
+\begin{itemize}
+    \item When does parameter distance match behavioral distance?
+    \item What is the ``condition number'' of the map $\theta \mapsto C_\theta$?
+    \item How does the choice of $S$ affect optimization?
+\end{itemize}
+
+The rest of Part III explores these questions experimentally and theoretically.

@@ -1,0 +1,92 @@
+% Encoding and fonts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% Math packages
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bussproofs}
+
+% Logic symbols
+\usepackage{stmaryrd}
+\newcommand{\necessary}{\Box}
+\newcommand{\possible}{\Diamond}
+\newcommand{\forces}{\Vdash}
+\newcommand{\nforces}{\nVdash}
+\newcommand{\bisim}{\underline{\leftrightarrow}}
+\newcommand{\sem}[1]{\llbracket #1 \rrbracket}
+\newcommand{\K}{\mathrm{K}}
+
+% Theorem environments
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{example}[definition]{Example}
+
+\theoremstyle{plain}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{conjecture}[definition]{Conjecture}
+
+\theoremstyle{remark}
+\newtheorem{remark}[definition]{Remark}
+
+% TikZ
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes, decorations.pathreplacing}
+
+% Colored boxes
+\usepackage[most]{tcolorbox}
+\usepackage{marginnote}
+\usepackage{fontawesome5}
+
+\newtcolorbox{intuition}[1][]{
+    colback=blue!5, colframe=blue!50, fonttitle=\bfseries,
+    title={\faLightbulb\hspace{0.5em}Intuition}, #1
+}
+
+\newtcolorbox{warning}[1][]{
+    colback=red!5, colframe=red!50, fonttitle=\bfseries,
+    title={\faExclamationTriangle\hspace{0.5em}Common Pitfall}, #1
+}
+
+\newtcolorbox{keyinsight}[1][]{
+    colback=green!5, colframe=green!50, fonttitle=\bfseries,
+    title={\faStar\hspace{0.5em}Key Insight}, #1
+}
+
+\newtcolorbox{history}[1][]{
+    colback=yellow!10, colframe=orange!50, fonttitle=\bfseries,
+    title={\faHistory\hspace{0.5em}Historical Note}, #1
+}
+
+\newtcolorbox{proofsketch}[1][]{
+    colback=gray!5, colframe=gray!50, fonttitle=\bfseries,
+    title={Proof Sketch}, #1
+}
+
+\newtcolorbox{summary}[1][]{
+    colback=violet!5, colframe=violet!50, fonttitle=\bfseries,
+    title={\faClipboardList\hspace{0.5em}Summary}, #1
+}
+
+\newtcolorbox{exercise}[1][]{
+    colback=white, colframe=black!70, fonttitle=\bfseries,
+    title={\faPencilAlt\hspace{0.5em}Exercise}, #1
+}
+
+\newtcolorbox{goals}[1][]{
+    colback=cyan!5, colframe=cyan!50, fonttitle=\bfseries,
+    title={\faBullseye\hspace{0.5em}Goals of This Chapter}, #1
+}
+
+% Hyperlinks
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}

@@ -1,0 +1,105 @@
+\chapter{Correspondence and Sahlqvist's Theorem}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand frame correspondence deeply
+    \item Learn what Sahlqvist formulas are
+    \item Appreciate why Sahlqvist's theorem is powerful
+    \item Know that this has been mechanized
+\end{itemize}
+\end{goals}
+
+\section{The Correspondence Problem}
+
+Recall: some modal axioms correspond to first-order frame conditions.
+
+\begin{center}
+\begin{tabular}{ll}
+$\necessary p \to p$ & $\forall x. Rxx$ \\
+$\necessary p \to \necessary\necessary p$ & $\forall xyz. Rxy \land Ryz \to Rxz$ \\
+$\possible p \to \necessary\possible p$ & $\forall xy. Rxy \to \forall z. Rxz \to Ryz$ \\
+\end{tabular}
+\end{center}
+
+\textbf{Question}: Which modal formulas correspond to first-order conditions?
+
+\textbf{Answer}: Not all! The L\"ob axiom $\necessary(\necessary p \to p) \to \necessary p$ corresponds to a \emph{second-order} condition (well-foundedness).
+
+\section{Sahlqvist Formulas}
+
+\begin{definition}[Sahlqvist Formula (simplified)]
+A \emph{Sahlqvist formula} has the form:
+\[
+\varphi \to \psi
+\]
+where:
+\begin{itemize}
+    \item $\varphi$ is \emph{positive} in $\necessary$ and built from boxed atoms ($\necessary^n p$), negative formulas, and $\land, \lor$
+    \item $\psi$ is \emph{positive} (no negations in front of atoms)
+\end{itemize}
+\end{definition}
+
+\begin{example}
+All the standard axioms are Sahlqvist:
+\begin{itemize}
+    \item $\necessary p \to p$ (T)
+    \item $\necessary p \to \necessary\necessary p$ (4)
+    \item $p \to \necessary\possible p$ (B)
+    \item $\possible p \to \necessary\possible p$ (5)
+\end{itemize}
+\end{example}
+
+\section{Sahlqvist's Theorem}
+
+\begin{theorem}[Sahlqvist 1975]
+Every Sahlqvist formula:
+\begin{enumerate}
+    \item Corresponds to a first-order frame condition (computable from the formula)
+    \item Is canonical (hence its logic is complete)
+\end{enumerate}
+\end{theorem}
+
+\begin{keyinsight}
+Sahlqvist's theorem is a ``cookbook'' for modal logic:
+\begin{enumerate}
+    \item Write down your axiom (if Sahlqvist)
+    \item Automatically get the frame condition
+    \item Automatically get completeness
+\end{enumerate}
+No need to construct canonical models by hand!
+\end{keyinsight}
+
+\section{The Algorithm (SQEMA)}
+
+There's an algorithm called \textbf{SQEMA} (Sahlqvist-van Benthem algorithm) that:
+\begin{itemize}
+    \item Takes a modal formula as input
+    \item Outputs the corresponding first-order condition (if it exists)
+\end{itemize}
+
+The algorithm works by:
+\begin{enumerate}
+    \item Translate to first-order logic with the standard translation
+    \item Apply Ackermann's lemma to eliminate second-order quantifiers
+    \item If successful, output the first-order result
+\end{enumerate}
+
+\section{Mechanization}
+
+\begin{history}
+Sahlqvist's theorem has been formalized in proof assistants:
+\begin{itemize}
+    \item Isabelle/HOL: formalized by various authors
+    \item Lean: partial formalizations exist
+\end{itemize}
+This is one of the benchmark results for modal logic mechanization.
+\end{history}
+
+\begin{exercise}
+\begin{enumerate}
+    \item Verify that the McKinsey axiom $\necessary\possible p \to \possible\necessary p$ is \emph{not} Sahlqvist. (Hint: it's not canonical for the expected frame class.)
+    \item Use the standard translation to find the frame condition for $\necessary(p \lor q) \to \necessary p \lor \necessary q$. Is this formula valid on all frames?
+\end{enumerate}
+\end{exercise}
+
+% TODO: more on SQEMA, examples of the algorithm

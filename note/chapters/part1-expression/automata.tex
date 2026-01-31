@@ -1,0 +1,94 @@
+\chapter{Automata and the Chomsky Hierarchy}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand automata as another way to describe ``behavior''
+    \item See the Chomsky hierarchy: what can be recognized by what machine
+    \item Prepare for the unification: Kripke frames and automata are both coalgebras
+\end{itemize}
+\end{goals}
+
+\section{Finite Automata}
+
+\begin{definition}[Deterministic Finite Automaton]
+A \emph{DFA} is a tuple $(Q, \Sigma, \delta, q_0, F)$ where:
+\begin{itemize}
+    \item $Q$ is a finite set of states
+    \item $\Sigma$ is a finite alphabet
+    \item $\delta : Q \times \Sigma \to Q$ is the transition function
+    \item $q_0 \in Q$ is the initial state
+    \item $F \subseteq Q$ is the set of accepting states
+\end{itemize}
+\end{definition}
+
+\begin{intuition}
+A DFA is a machine that reads a string symbol by symbol, transitioning between states. At the end, it accepts or rejects based on whether it's in an accepting state.
+\end{intuition}
+
+\begin{definition}[Non-deterministic Finite Automaton]
+An \emph{NFA} allows multiple transitions: $\delta : Q \times \Sigma \to \mathcal{P}(Q)$.
+\end{definition}
+
+\begin{theorem}
+DFA and NFA recognize the same class of languages: the \emph{regular languages}.
+\end{theorem}
+
+\section{The Chomsky Hierarchy}
+
+\begin{center}
+\begin{tabular}{llll}
+\textbf{Type} & \textbf{Language Class} & \textbf{Machine} & \textbf{Example} \\
+\hline
+Type 3 & Regular & Finite automaton & $a^*b^*$ \\
+Type 2 & Context-free & Pushdown automaton & $a^n b^n$ \\
+Type 1 & Context-sensitive & Linear bounded & $a^n b^n c^n$ \\
+Type 0 & Recursively enumerable & Turing machine & Halting problem \\
+\end{tabular}
+\end{center}
+
+\begin{keyinsight}
+Each level adds computational power:
+\begin{itemize}
+    \item Finite automaton: finite memory (just the state)
+    \item Pushdown: unbounded stack
+    \item Linear bounded: tape proportional to input
+    \item Turing: unbounded tape
+\end{itemize}
+\end{keyinsight}
+
+\section{Automata as Transition Systems}
+
+Notice the similarity:
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Structure} & \textbf{States} & \textbf{Transitions} \\
+\hline
+Kripke frame & Worlds $W$ & $R \subseteq W \times W$ \\
+DFA & States $Q$ & $\delta : Q \times \Sigma \to Q$ \\
+NFA & States $Q$ & $\delta : Q \times \Sigma \to \mathcal{P}(Q)$ \\
+Labeled TS & States $S$ & $\to \subseteq S \times \Sigma \times S$ \\
+\end{tabular}
+\end{center}
+
+They're all ``states + transitions.'' This is not a coincidence.
+
+\begin{intuition}
+Both Kripke frames and automata describe \emph{systems that can be in states and move between states}. Modal logic asks ``what is true here?'' Automata theory asks ``what strings are accepted?'' But the underlying structure is the same.
+\end{intuition}
+
+\section{Looking Ahead}
+
+The next chapter introduces \textbf{coalgebra}, which unifies all these structures under one framework:
+\[
+\text{state} \to F(\text{state})
+\]
+Different choices of the functor $F$ give Kripke frames, DFAs, NFAs, Markov chains, streams, and more.
+
+\begin{exercise}
+\begin{enumerate}
+    \item Draw a DFA that accepts strings with an even number of $a$'s.
+    \item Can a finite automaton recognize $\{a^n b^n : n \geq 0\}$? Why or why not?
+    \item What's the relationship between a Kripke frame and an NFA without accepting states?
+\end{enumerate}
+\end{exercise}

@@ -1,0 +1,124 @@
+\chapter{Bisimulation}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand bisimulation as the fundamental equivalence for modal logic
+    \item Master the zig-zag conditions
+    \item See bisimulation games as an intuitive characterization
+    \item Connect to the later coalgebraic generalization
+\end{itemize}
+\end{goals}
+
+\section{The Problem of Equivalence}
+
+When are two models ``the same'' from a modal perspective?
+
+Not isomorphism---too strict. Two very different-looking models might satisfy exactly the same formulas.
+
+\begin{example}
+Consider:
+\begin{center}
+\begin{tikzpicture}[world/.style={circle, draw, minimum size=6mm}, arrow/.style={-{Stealth}}]
+\node[world] (w) at (0,0) {$w$};
+\node[world] (v1) at (1.5,0.5) {$v_1$};
+\node[world] (v2) at (1.5,-0.5) {$v_2$};
+\draw[arrow] (w) -- (v1);
+\draw[arrow] (w) -- (v2);
+
+\node[world] (w') at (4,0) {$w'$};
+\node[world] (v') at (5.5,0) {$v'$};
+\draw[arrow] (w') -- (v');
+\end{tikzpicture}
+\end{center}
+If $v_1, v_2, v'$ all satisfy the same atoms, then $w$ and $w'$ satisfy the same modal formulas---even though the models have different structure.
+\end{example}
+
+\section{Definition}
+
+\begin{definition}[Bisimulation]
+Let $\mathcal{M} = (W, R, V)$ and $\mathcal{M}' = (W', R', V')$. A relation $Z \subseteq W \times W'$ is a \emph{bisimulation} if whenever $w \mathrel{Z} w'$:
+
+\textbf{(Atoms)} For all $p \in \Phi$: $w \in V(p) \Leftrightarrow w' \in V'(p)$
+
+\textbf{(Zig)} If $wRv$, then there exists $v' \in W'$ such that $w'R'v'$ and $v \mathrel{Z} v'$
+
+\textbf{(Zag)} If $w'R'v'$, then there exists $v \in W$ such that $wRv$ and $v \mathrel{Z} v'$
+\end{definition}
+
+We write $w \bisim w'$ if there exists a bisimulation relating $w$ and $w'$.
+
+\begin{intuition}
+Zig: ``I can match your move.'' \\
+Zag: ``You can match my move.'' \\
+Two states are bisimilar if they can ``simulate'' each other, step by step.
+\end{intuition}
+
+\section{Bisimulation Games}
+
+Bisimulation has a game-theoretic interpretation.
+
+\textbf{Players}: Spoiler (tries to distinguish) vs Duplicator (tries to match)
+
+\textbf{Game}: Start at $(w, w')$. Each round:
+\begin{enumerate}
+    \item Spoiler picks a side and makes a move (follows an edge)
+    \item Duplicator must match on the other side
+\end{enumerate}
+
+\textbf{Winning}:
+\begin{itemize}
+    \item Spoiler wins if atoms differ, or Duplicator can't move
+    \item Duplicator wins if the game continues forever
+\end{itemize}
+
+\begin{theorem}
+$w \bisim w'$ iff Duplicator has a winning strategy.
+\end{theorem}
+
+\section{The Invariance Theorem}
+
+\begin{theorem}[Bisimulation Invariance]
+If $w \bisim w'$, then for all modal formulas $\varphi$:
+\[
+\mathcal{M}, w \models \varphi \iff \mathcal{M}', w' \models \varphi
+\]
+\end{theorem}
+
+\begin{proof}
+Induction on $\varphi$.
+
+\textbf{Base}: $\varphi = p$. By (Atoms).
+
+\textbf{Step $\neg$}: Immediate from IH.
+
+\textbf{Step $\land$}: Immediate from IH.
+
+\textbf{Step $\necessary$}: Suppose $\mathcal{M}, w \models \necessary\psi$ and $w \mathrel{Z} w'$.
+\begin{itemize}
+    \item Take any $v'$ with $w'R'v'$
+    \item By (Zag), exists $v$ with $wRv$ and $v \mathrel{Z} v'$
+    \item Since $\mathcal{M}, w \models \necessary\psi$, we have $\mathcal{M}, v \models \psi$
+    \item By IH, $\mathcal{M}', v' \models \psi$
+\end{itemize}
+So $\mathcal{M}', w' \models \necessary\psi$. The other direction uses (Zig).
+\end{proof}
+
+\section{Largest Bisimulation}
+
+\begin{proposition}
+The union of all bisimulations is itself a bisimulation---the \emph{largest} bisimulation.
+\end{proposition}
+
+\begin{definition}
+$w \sim w'$ (bisimilarity) iff $(w, w')$ is in the largest bisimulation.
+\end{definition}
+
+\section{Looking Ahead: Coalgebraic Bisimulation}
+
+The zig-zag conditions generalize beyond Kripke frames.
+
+For any coalgebra $(X, \gamma : X \to FX)$, there's a notion of bisimulation. For the powerset functor $F = \mathcal{P}$, it coincides exactly with Kripke bisimulation.
+
+\begin{keyinsight}
+Bisimulation is not an accident of Kripke semantics. It's a fundamental concept that exists for \emph{any} coalgebra. This is why it will reappear throughout the book.
+\end{keyinsight}

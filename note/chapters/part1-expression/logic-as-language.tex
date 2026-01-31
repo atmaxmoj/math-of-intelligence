@@ -1,0 +1,71 @@
+\chapter{Logic as Language}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand logic as a formal language for making statements
+    \item See why propositional logic is limited
+    \item Motivate the need for modal operators
+\end{itemize}
+\end{goals}
+
+\section{What Can We Say?}
+
+Logic is a language. Like any language, it has:
+\begin{itemize}
+    \item \textbf{Syntax}: the grammar---what counts as a well-formed sentence
+    \item \textbf{Semantics}: the meaning---what sentences are true and when
+\end{itemize}
+
+\begin{intuition}
+Think of logic as a very precise, very restricted language. It can't express poetry or emotion, but what it \emph{can} express, it expresses unambiguously. This precision is its power.
+\end{intuition}
+
+\section{Propositional Logic}
+
+The simplest logic. We have propositions ($p, q, r, \ldots$) and connectives ($\neg, \land, \lor, \to$).
+
+\begin{definition}[Propositional Language]
+Let $\Phi$ be a countable set of propositional variables. The propositional language $\mathcal{L}_0$ is:
+\[
+\varphi ::= p \mid \neg\varphi \mid (\varphi \land \psi)
+\]
+where $p \in \Phi$. Other connectives are defined: $\varphi \lor \psi := \neg(\neg\varphi \land \neg\psi)$, etc.
+\end{definition}
+
+Semantics: a \emph{valuation} $v : \Phi \to \{0, 1\}$ assigns truth values.
+
+\begin{warning}
+Propositional logic is \emph{flat}. Every proposition is either true or false, period. There's no room for ``true from one perspective but false from another.'' Real reasoning needs more.
+\end{warning}
+
+\section{The Need for Modality}
+
+Consider these statements:
+\begin{itemize}
+    \item ``It is \emph{possible} that it will rain tomorrow.''
+    \item ``Alice \emph{knows} that Bob is lying.''
+    \item ``It is \emph{obligatory} to pay taxes.''
+    \item ``The program \emph{will eventually} terminate.''
+\end{itemize}
+
+None of these can be expressed in propositional logic. They all involve a \emph{mode} of truth.
+
+\begin{keyinsight}
+Modal logic adds \textbf{operators} that modify propositions:
+\begin{itemize}
+    \item $\necessary\varphi$: ``necessarily $\varphi$'' / ``in all accessible states, $\varphi$''
+    \item $\possible\varphi$: ``possibly $\varphi$'' / ``in some accessible state, $\varphi$''
+\end{itemize}
+\end{keyinsight}
+
+\section{Modal Language}
+
+\begin{definition}[Modal Language]
+The modal language $\mathcal{L}(\necessary, \possible)$ extends propositional logic:
+\[
+\varphi ::= p \mid \neg\varphi \mid (\varphi \land \psi) \mid \necessary\varphi
+\]
+We define $\possible\varphi := \neg\necessary\neg\varphi$.
+\end{definition}
+
+But what does $\necessary\varphi$ \emph{mean}? For that, we need \textbf{possible worlds}.

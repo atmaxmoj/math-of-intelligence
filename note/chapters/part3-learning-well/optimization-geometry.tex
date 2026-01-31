@@ -1,0 +1,174 @@
+\chapter{The Optimization Geometry View}
+
+\begin{goals}
+\begin{itemize}
+    \item See parameter space as a Riemannian manifold
+    \item Understand Fisher information as a metric
+    \item Learn why some parameterizations optimize better than others
+\end{itemize}
+\end{goals}
+
+\section{The Core Idea}
+
+Not all directions in parameter space are equal.
+
+\begin{intuition}
+Imagine optimizing on an ellipse versus a circle.
+\begin{itemize}
+    \item Circle: all directions make equal progress
+    \item Elongated ellipse: some directions are ``steep,'' others ``flat''
+\end{itemize}
+Gradient descent struggles with elongated landscapes — it zigzags.
+\end{intuition}
+
+The \emph{shape} of the loss landscape affects optimization difficulty. This shape depends on how we parameterize.
+
+\section{Fisher Information}
+
+\subsection{Definition}
+
+\begin{definition}[Fisher Information Matrix]
+For a parameterized distribution $p_\theta(x)$:
+\[
+F_{ij}(\theta) = \mathbb{E}_{x \sim p_\theta} \left[ \frac{\partial \log p_\theta(x)}{\partial \theta_i} \cdot \frac{\partial \log p_\theta(x)}{\partial \theta_j} \right]
+\]
+\end{definition}
+
+Equivalently:
+\[
+F(\theta) = -\mathbb{E}\left[ \frac{\partial^2 \log p_\theta(x)}{\partial \theta_i \partial \theta_j} \right]
+\]
+
+\begin{intuition}
+$F(\theta)$ measures sensitivity: how much does the output distribution change when we perturb $\theta$?
+\begin{itemize}
+    \item Large eigenvalue: sensitive direction
+    \item Small eigenvalue: insensitive direction
+    \item Zero eigenvalue: redundant direction (multiple $\theta$ give same output)
+\end{itemize}
+\end{intuition}
+
+\subsection{Fisher as Riemannian Metric}
+
+The Fisher information defines a Riemannian metric on parameter space:
+\[
+ds^2 = \sum_{ij} F_{ij}(\theta) \, d\theta_i \, d\theta_j
+\]
+
+This is the \textbf{Fisher-Rao metric}. It measures distance between nearby distributions, not between parameter values.
+
+\begin{keyinsight}
+The Fisher metric is \emph{intrinsic}: it depends only on the family of distributions, not on how we parameterize it.
+
+Different parameterizations give different coordinate representations of the same geometry.
+\end{keyinsight}
+
+\section{Natural Gradient}
+
+\subsection{Amari's Insight}
+
+Ordinary gradient descent moves in the steepest direction in \emph{parameter space}.
+
+But we care about \emph{distribution space}. The steepest direction there is:
+\[
+\tilde{\nabla} L = F^{-1} \nabla L
+\]
+
+This is the \textbf{natural gradient} (Amari, 1998).
+
+\begin{definition}[Natural Gradient Descent]
+\[
+\theta_{t+1} = \theta_t - \eta \, F(\theta_t)^{-1} \nabla L(\theta_t)
+\]
+\end{definition}
+
+\subsection{Properties}
+
+\begin{enumerate}
+    \item \textbf{Parameterization invariant}: Same trajectory regardless of how we parameterize
+    \item \textbf{Fisher efficient}: Asymptotically optimal convergence rate
+    \item \textbf{Corrects for curvature}: No zigzagging on elongated landscapes
+\end{enumerate}
+
+\subsection{The Catch}
+
+\begin{warning}
+Computing $F^{-1}$ is expensive: $O(n^3)$ for $n$ parameters.
+
+For neural networks with millions of parameters, this is infeasible.
+\end{warning}
+
+Approximations:
+\begin{itemize}
+    \item \textbf{Diagonal Fisher}: Keep only diagonal entries
+    \item \textbf{K-FAC}: Kronecker-factored approximation (Martens \& Grosse, 2015)
+    \item \textbf{Block diagonal}: One block per layer
+\end{itemize}
+
+\section{Condition Number}
+
+\subsection{Definition}
+
+\begin{definition}
+The \emph{condition number} of $F$ is:
+\[
+\kappa(F) = \frac{\lambda_{\max}(F)}{\lambda_{\min}(F)}
+\]
+\end{definition}
+
+\begin{center}
+\begin{tabular}{ll}
+$\kappa \approx 1$ & Easy to optimize (isotropic) \\
+$\kappa \gg 1$ & Hard to optimize (elongated) \\
+$\kappa = \infty$ & Redundant parameterization (singular $F$) \\
+\end{tabular}
+\end{center}
+
+\subsection{Redundancy and Symmetry}
+
+If multiple parameters give the same function, $F$ has zero eigenvalues.
+
+\begin{example}
+A fully connected network learning a translation-invariant function:
+\begin{itemize}
+    \item Many weight configurations give the same input-output map
+    \item $F$ is singular along these ``symmetry directions''
+    \item $\kappa = \infty$
+\end{itemize}
+\end{example}
+
+\begin{keyinsight}
+Symmetry in the target function, not reflected in the parameterization, causes singular Fisher information and poor conditioning.
+\end{keyinsight}
+
+\section{What Geometry Tells Us}
+
+\subsection{Strengths}
+
+\begin{itemize}
+    \item \textbf{Quantitative}: Condition number is measurable
+    \item \textbf{Explains difficulty}: High $\kappa$ $\to$ slow convergence
+    \item \textbf{Suggests fix}: Natural gradient, or better parameterization
+\end{itemize}
+
+\subsection{Limitations}
+
+\begin{itemize}
+    \item \textbf{Local}: $F(\theta)$ depends on current $\theta$, not global landscape
+    \item \textbf{Expensive}: Natural gradient is costly to compute
+    \item \textbf{Doesn't prescribe architecture}: Says ``reduce $\kappa$,'' not how
+\end{itemize}
+
+\section{Relevance to Our Question}
+
+The geometry view suggests:
+
+\begin{enumerate}
+    \item Good parameterization $\to$ low condition number
+    \item If target has symmetry group $G$, parameterization should respect $G$
+    \item Otherwise, $F$ will be singular
+\end{enumerate}
+
+This motivates studying equivariant parameterizations (next chapter).
+
+But geometry alone doesn't tell us: given an arbitrary target (not just symmetric functions), what's the best parameterization?

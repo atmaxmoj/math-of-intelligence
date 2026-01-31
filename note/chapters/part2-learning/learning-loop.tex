@@ -1,0 +1,114 @@
+\chapter{The Learning Loop}
+
+\begin{goals}
+\begin{itemize}
+    \item Put everything together: the full learning pipeline
+    \item Understand loss, forward pass, backward pass
+    \item See convergence from soft to crisp
+\end{itemize}
+\end{goals}
+
+\section{The Setup}
+
+We have:
+\begin{itemize}
+    \item A functor $F$ (what we're learning: DFA, Kripke, etc.)
+    \item A semiring $S$ (how we soften: fuzzy, probabilistic, etc.)
+    \item Parameters $\theta \in \Theta \subseteq \mathbb{R}^d$
+    \item A parameterized $S$-coalgebra $\gamma_\theta$
+    \item Training data $\mathcal{D}$
+\end{itemize}
+
+\section{Loss Function}
+
+The loss measures how well $\gamma_\theta$ explains the data.
+
+\begin{example}[Automaton Learning]
+Data: strings labeled accept/reject.
+\[
+L(\theta) = -\sum_{(x, y) \in \mathcal{D}} \log P_\theta(y \mid x)
+\]
+where $P_\theta$ is computed by running the soft automaton on $x$.
+\end{example}
+
+\begin{example}[Modal Satisfaction]
+Data: (model, world, formula, truth value) tuples.
+\[
+L(\theta) = \sum_{(w, \varphi, v)} \left( \sem{\varphi}^\theta_w - v \right)^2
+\]
+\end{example}
+
+\section{Forward Pass}
+
+Compute $\sem{\cdot}^\theta$ using semiring operations.
+
+If using gradient semiring: get gradients simultaneously.
+
+\section{Backward Pass}
+
+Compute $\nabla_\theta L$ using:
+\begin{itemize}
+    \item Gradient semiring (forward-mode), or
+    \item Standard backpropagation (reverse-mode)
+\end{itemize}
+
+\section{Update}
+
+\[
+\theta \leftarrow \theta - \eta \nabla_\theta L
+\]
+
+Repeat until convergence.
+
+\section{Convergence to Crisp}
+
+As training progresses, soft values should approach $\{0, 1\}$.
+
+\begin{definition}[Temperature Annealing]
+Replace softmax with:
+\[
+\mathrm{softmax}_\tau(z)_i = \frac{e^{z_i / \tau}}{\sum_j e^{z_j / \tau}}
+\]
+Gradually decrease $\tau \to 0$. At $\tau = 0$, this is hard argmax.
+\end{definition}
+
+\begin{definition}[Sparsity Regularization]
+Add to loss:
+\[
+L_{\mathrm{sparse}}(\theta) = \lambda \sum_{i,j} H(\gamma_\theta(i, j))
+\]
+where $H(p) = -p \log p - (1-p) \log(1-p)$ is entropy. Pushes toward $0$ or $1$.
+\end{definition}
+
+\section{Extraction}
+
+After training, extract crisp coalgebra:
+\[
+\gamma_{\mathrm{crisp}}(x, y) = \begin{cases} 1 & \text{if } \gamma_\theta(x, y) > 0.5 \\ 0 & \text{otherwise} \end{cases}
+\]
+
+\begin{keyinsight}
+The full pipeline:
+\[
+\text{Data} \xrightarrow{\text{loss}} \text{Soft Coalgebra} \xrightarrow{\text{optimize}} \text{Trained Soft} \xrightarrow{\text{threshold}} \text{Crisp Coalgebra}
+\]
+We learn in continuous space, then extract a discrete program.
+\end{keyinsight}
+
+\section{Example: Learning a DFA}
+
+\textbf{Task}: Learn a DFA from positive/negative examples.
+
+\textbf{Setup}:
+\begin{itemize}
+    \item $n$ states, alphabet $\{0, 1\}$
+    \item $\theta \in \mathbb{R}^{n \times 2 \times n + n}$ (transitions + accepts)
+    \item Soft transitions via softmax
+    \item Soft accepts via sigmoid
+\end{itemize}
+
+\textbf{Training}: Standard gradient descent on cross-entropy loss.
+
+\textbf{Result}: After convergence, threshold to get a crisp DFA.
+
+This is what we'll implement in the code for Part II.

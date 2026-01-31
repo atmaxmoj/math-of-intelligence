@@ -1,0 +1,253 @@
+\chapter{What is Learning?}
+
+\begin{goals}
+\begin{itemize}
+    \item Ask: what does it mean to ``learn''?
+    \item Survey mathematical notions of ``getting closer''
+    \item Discover that most aren't operational
+    \item Motivate our choice: gradient descent + semiring
+\end{itemize}
+\end{goals}
+
+\section{The Intuition}
+
+Learning feels like \textbf{getting closer} to something.
+
+You start far from the answer. You try something. You see how well it works. You adjust. You try again. Gradually, you approach the target.
+
+\begin{intuition}
+A child learning to throw a ball:
+\begin{enumerate}
+    \item Throw. Miss.
+    \item Adjust. Throw. Closer.
+    \item Adjust. Throw. Hit!
+\end{enumerate}
+Each attempt is ``closer'' to the goal. Learning is the process of closing the gap.
+\end{intuition}
+
+Can we make this precise? What mathematical structures capture ``approaching''?
+
+\section{Mathematical Notions of Approximation}
+
+\subsection{Topology}
+
+Topology defines ``closeness'' without distance.
+
+\begin{itemize}
+    \item A sequence $x_n \to x$ means: every neighborhood of $x$ eventually contains all $x_n$
+    \item Continuous functions preserve convergence
+\end{itemize}
+
+\textbf{Problem}: Topology \emph{describes} convergence but doesn't tell you \emph{how} to get there. No algorithm.
+
+\subsection{Metric Spaces}
+
+Add a distance function $d(x, y)$.
+
+\begin{itemize}
+    \item ``Closer'' means smaller $d$
+    \item Cauchy sequences, completeness
+\end{itemize}
+
+\textbf{Problem}: Having a metric doesn't give you a method to minimize it.
+
+\subsection{Order / Domain Theory}
+
+An information ordering: $x \sqsubseteq y$ means ``$y$ is more defined than $x$.''
+
+\begin{itemize}
+    \item Start with $\bot$ (no information)
+    \item Iteratively refine: $\bot \sqsubseteq f(\bot) \sqsubseteq f^2(\bot) \sqsubseteq \cdots$
+    \item Reach a fixed point
+\end{itemize}
+
+\textbf{Problem}: Requires the structure to be a dcpo with finite chains, or continuous functions. Doesn't apply to arbitrary parameter spaces.
+
+\subsection{Galois Connections}
+
+A pair of ``best approximations'' between two levels of abstraction.
+
+\[
+f(x) \leq y \iff x \leq g(y)
+\]
+
+Used in abstract interpretation, type systems.
+
+\textbf{Problem}: Describes the \emph{relationship} between approximations, not how to compute them.
+
+\subsection{Game-Theoretic}
+
+Minimax, Nash equilibrium.
+
+\begin{itemize}
+    \item Multiple agents adjusting strategies
+    \item Converge to equilibrium (sometimes)
+\end{itemize}
+
+\textbf{Problem}: Convergence is not guaranteed. Computationally hard.
+
+\subsection{Probabilistic}
+
+PAC learning: ``Probably Approximately Correct.''
+
+\begin{itemize}
+    \item With high probability, get close to the target
+    \item Concentration inequalities, sample complexity
+\end{itemize}
+
+\textbf{Problem}: Gives bounds, not algorithms. Still need a method to actually learn.
+
+\section{The Operational Question}
+
+\begin{warning}
+Most notions of approximation are \textbf{descriptive}, not \textbf{operational}.
+
+They tell you what ``getting closer'' means, but not how to do it.
+\end{warning}
+
+What we need:
+\begin{enumerate}
+    \item A \textbf{space} to search in
+    \item A \textbf{measure} of how close we are (loss)
+    \item An \textbf{algorithm} that reduces the loss
+\end{enumerate}
+
+\section{The Problem of Semantic Convergence}
+
+There's a deeper issue with approaches that require ``understanding'' the structure.
+
+In analysis, when we say a sequence $x_n \to x$, we have \emph{tools to prove} this:
+\begin{itemize}
+    \item Epsilon-delta definitions
+    \item Cauchy criterion
+    \item Completeness of $\mathbb{R}$
+\end{itemize}
+
+The target $x$ \textbf{exists}, and we can \textbf{prove} our approximations converge to it.
+
+\begin{warning}
+But what if we're trying to ``approximate'' a \emph{meaning}?
+
+When we build a model to capture some semantic concept—``justice,'' ``intention,'' ``belief''—what guarantees that our formalization converges to anything real?
+\end{warning}
+
+This is Wittgenstein's challenge. He famously wrote:
+
+\begin{quote}
+``Philosophy is a battle against the \textbf{bewitchment} of our intelligence by means of language.''
+\end{quote}
+
+The bewitchment: language makes us \emph{feel} like we're referring to something. We say ``meaning,'' ``understanding,'' ``truth,'' and we imagine there must be \emph{things} these words point to—things we can approximate, converge to, capture.
+
+But what if there's nothing there? What if the question ``what is the meaning?'' is itself a grammatical illusion—a question that \emph{looks} well-formed but has no answer?
+
+\begin{intuition}
+In analysis: we prove $x_n \to x$ using the structure of $\mathbb{R}$. The limit \emph{exists}.
+
+In semantics: we want ``model $\to$ meaning.'' But maybe there is no ``meaning'' sitting there, waiting to be approximated. The target itself may be a mirage created by language.
+\end{intuition}
+
+The domain-theoretic approach is vulnerable to this bewitchment. To set up the dcpo, to define the continuous function, you must already \emph{believe} there's a well-defined target. You formalize your intuition about ``what learning should converge to.'' But you can't prove your intuition refers to anything real.
+
+\begin{keyinsight}[Shannon's Move]
+Shannon's information theory succeeds by \emph{refusing to engage} with meaning.
+
+He doesn't ask: ``What does this message mean?''
+
+He asks: ``How many bits to transmit it?''
+
+The semantic question has no tools. The syntactic question does.
+\end{keyinsight}
+
+Gradient descent makes the same move:
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Approach} & \textbf{Question} & \textbf{Tools?} \\
+\hline
+Semantic & ``Does my model capture the concept?'' & No \\
+Operational & ``Does my loss decrease?'' & Yes \\
+\end{tabular}
+\end{center}
+
+We don't ask whether our neural network ``understands'' language. We ask whether its loss on the next-token prediction task goes down. The first question is philosophically intractable. The second is measurable.
+
+This is why we choose gradient descent: not because it's philosophically satisfying, but because it's the only game in town with actual convergence guarantees—at the operational level, not the semantic level.
+
+\section{What Actually Works}
+
+Surprisingly few methods are both \emph{principled} and \emph{operational}:
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Method} & \textbf{Requirements} & \textbf{Scalable?} \\
+\hline
+Gradient descent & Differentiable loss & Yes \\
+Fixed point iteration & Monotone + chain condition & Sometimes \\
+Constraint propagation & Discrete + local & Sometimes \\
+LP relaxation & Linear/convex & Yes \\
+MCMC / sampling & Probabilistic & Slow \\
+Evolutionary & Fitness function & Slow \\
+\end{tabular}
+\end{center}
+
+\begin{keyinsight}
+\textbf{Gradient descent} dominates because it is:
+\begin{itemize}
+    \item Mathematically principled (follows steepest descent)
+    \item Computationally tractable (autodiff scales)
+    \item General (works for any differentiable function)
+\end{itemize}
+\end{keyinsight}
+
+\section{Our Path}
+
+For learning \emph{logical structures} (Kripke frames, automata, coalgebras):
+
+\begin{enumerate}
+    \item The structures are \textbf{discrete} — can't directly use gradients
+    \item We need to \textbf{embed} them into a continuous space
+    \item The embedding should preserve logical meaning
+    \item After learning, we \textbf{extract} back to discrete
+\end{enumerate}
+
+This is the \textbf{semiring relaxation}:
+
+\[
+\text{Discrete structure} \xrightarrow{\text{embed}} \text{Semiring-valued} \xrightarrow{\text{gradient descent}} \text{Trained} \xrightarrow{\text{threshold}} \text{Discrete}
+\]
+
+\section{Why Semiring?}
+
+Why not just use $[0, 1]$ (fuzzy) and be done?
+
+Because we want:
+\begin{itemize}
+    \item \textbf{Generality}: Different tasks need different interpretations
+    \item \textbf{Compositionality}: Logical connectives should compose correctly
+    \item \textbf{Gradient flow}: Operations should be differentiable
+\end{itemize}
+
+Semirings provide all three. They are the \emph{minimal algebraic structure} that supports continuous relaxation of logic.
+
+\begin{keyinsight}
+We arrive at semirings not by abstract preference, but by elimination:
+\begin{itemize}
+    \item Need operational approximation → gradient descent
+    \item Structures are discrete → need continuous embedding
+    \item Want compositionality → need algebraic structure
+    \item Semiring = the natural answer
+\end{itemize}
+\end{keyinsight}
+
+\section{What's Next}
+
+The rest of Part II develops this idea:
+\begin{enumerate}
+    \item Gradient descent: the core algorithm
+    \item Continuization: embedding discrete into continuous
+    \item Fuzzy and probabilistic: concrete examples
+    \item Semiring: the general framework
+    \item Modal operators: how to handle $\necessary$/$\possible$
+    \item The learning loop: putting it all together
+\end{enumerate}

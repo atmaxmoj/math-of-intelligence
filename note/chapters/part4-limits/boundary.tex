@@ -1,0 +1,57 @@
+\chapter{The Boundary of Intelligence}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand Kolmogorov complexity and its uncomputability
+    \item Prove that incomprehensible objects exist
+    \item Appreciate the fundamental limits of intelligence
+\end{itemize}
+\end{goals}
+
+\section{Intelligence as Compression}
+
+Following Hutter: \textbf{intelligence is the ability to compress}.
+
+\begin{definition}[Kolmogorov Complexity]
+$\K(x) = \min \{ |p| : U(p) = x \}$
+\end{definition}
+
+\section{The Compression Chain}
+
+For any object $X$:
+\[
+|X| \geq |\mathrm{compress}(X)| \geq |\mathrm{compress}^2(X)| \geq \cdots
+\]
+
+\begin{lemma}
+Every descending chain in $\mathbb{N}$ stabilizes.
+\end{lemma}
+
+\section{Incomprehensible Objects}
+
+\begin{theorem}[Existence]
+There exist objects $L$ with $\K(L) = |L|$---no compression is possible.
+\end{theorem}
+
+\begin{theorem}[Prevalence]
+For strings of length $n$: at least $(1 - 2^{-c})$ fraction have $\K(x) > n - c$.
+\end{theorem}
+
+\section{The Uncomputability Barrier}
+
+\begin{theorem}
+$\K$ is uncomputable.
+\end{theorem}
+
+\begin{keyinsight}
+The compression chain exists (by well-foundedness), but we cannot walk it (by uncomputability). Intelligence has a boundary---not because there's nothing beyond, but because \textbf{the path is uncomputable}.
+\end{keyinsight}
+
+\begin{corollary}[The Boundary]
+\begin{itemize}
+    \item Incompressible objects exist
+    \item They cannot be identified algorithmically
+    \item Most objects are incompressible
+    \item Intelligence is bounded
+\end{itemize}
+\end{corollary}

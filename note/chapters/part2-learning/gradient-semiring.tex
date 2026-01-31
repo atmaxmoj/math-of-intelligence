@@ -1,0 +1,101 @@
+\chapter{The Gradient Semiring}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand automatic differentiation algebraically
+    \item See how gradients flow through semiring operations
+    \item Appreciate: inference and learning in one pass
+\end{itemize}
+\end{goals}
+
+\section{The Problem}
+
+We want to optimize over semiring computations.
+
+Given a semiring expression (e.g., probabilistic inference), we need gradients w.r.t. parameters.
+
+Na\"ive approach: compute forward, then backpropagate.
+
+Better approach: \textbf{embed gradients into the semiring itself}.
+
+\section{Dual Numbers}
+
+\begin{definition}[Dual Numbers]
+A \emph{dual number} is $a + b\epsilon$ where $\epsilon^2 = 0$.
+
+Arithmetic:
+\begin{align*}
+(a + b\epsilon) + (c + d\epsilon) &= (a+c) + (b+d)\epsilon \\
+(a + b\epsilon) \times (c + d\epsilon) &= ac + (ad + bc)\epsilon
+\end{align*}
+\end{definition}
+
+\begin{keyinsight}
+If $f(x) = a + b\epsilon$ when we plug in $x = x_0 + 1 \cdot \epsilon$, then:
+\begin{itemize}
+    \item $a = f(x_0)$ (the value)
+    \item $b = f'(x_0)$ (the derivative!)
+\end{itemize}
+\end{keyinsight}
+
+\section{The Gradient Semiring}
+
+\begin{definition}[Gradient Semiring]
+Elements: pairs $(v, g)$ where $v$ = value, $g$ = gradient.
+
+Operations:
+\begin{align*}
+(v_1, g_1) \oplus (v_2, g_2) &= (v_1 + v_2, \; g_1 + g_2) \\
+(v_1, g_1) \otimes (v_2, g_2) &= (v_1 \cdot v_2, \; v_1 \cdot g_2 + v_2 \cdot g_1)
+\end{align*}
+
+Identities: $\mathbf{0} = (0, 0)$, $\mathbf{1} = (1, 0)$.
+\end{definition}
+
+\begin{proposition}
+The gradient semiring is a semiring.
+\end{proposition}
+
+\begin{proof}
+Check the axioms. The key is that $\otimes$ follows the product rule.
+\end{proof}
+
+\section{Forward-Mode Automatic Differentiation}
+
+To compute $f(x)$ and $\frac{\partial f}{\partial x}$ simultaneously:
+\begin{enumerate}
+    \item Replace $x$ with $(x, 1)$ (value $x$, derivative $1$)
+    \item Compute using gradient semiring operations
+    \item Extract: first component = value, second = derivative
+\end{enumerate}
+
+\begin{example}
+Compute $f(x) = x^2 + x$ at $x = 3$:
+\begin{align*}
+x &= (3, 1) \\
+x^2 &= (3, 1) \otimes (3, 1) = (9, 6) \\
+x^2 + x &= (9, 6) \oplus (3, 1) = (12, 7)
+\end{align*}
+So $f(3) = 12$ and $f'(3) = 7$. Check: $f'(x) = 2x + 1$, so $f'(3) = 7$. ✓
+\end{example}
+
+\section{Application: Differentiable Logic}
+
+Any semiring computation can be made differentiable:
+\begin{enumerate}
+    \item Write your logic in semiring form
+    \item Instantiate with gradient semiring
+    \item Get gradients for free
+\end{enumerate}
+
+\begin{keyinsight}
+This is how DeepProbLog works: probabilistic logic programming with gradients. Inference and learning happen in a single forward pass.
+\end{keyinsight}
+
+\section{Limitations}
+
+Forward-mode computes $\frac{\partial f}{\partial x_i}$ for one $x_i$ at a time.
+
+For many parameters, need reverse-mode (backpropagation).
+
+Reverse-mode is also algebraic, but more complex (requires ``transposing'' the computation).

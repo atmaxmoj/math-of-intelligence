@@ -1,0 +1,42 @@
+\chapter{Symmetry and Optimality}
+
+\begin{goals}
+\begin{itemize}
+    \item Formalize the relationship between symmetry and parameterization
+    \item State the main conjecture precisely
+    \item Understand implications for architecture design
+\end{itemize}
+\end{goals}
+
+\section{The Main Conjecture}
+
+\begin{conjecture}[Syntax-Semantics Optimality]
+Let $\mathcal{F}$ be a class of functions with symmetry group $G$. Then:
+\begin{enumerate}
+    \item Any $G$-equivariant parameterization achieves $\kappa(F) < \infty$
+    \item The quotient parameterization (parameters mod $G$) minimizes $\kappa(F)$
+    \item This is the unique minimizer (up to isomorphism)
+\end{enumerate}
+\end{conjecture}
+
+\section{Evidence}
+
+\begin{center}
+\begin{tabular}{llll}
+\textbf{Semantics} & \textbf{Symmetry $G$} & \textbf{Optimal Syntax} \\
+\hline
+Image functions & Translation & CNN \\
+Set functions & Permutation $S_n$ & DeepSets \\
+Graph functions & Node permutation & GNN \\
+\end{tabular}
+\end{center}
+
+\section{The Holy Grail}
+
+\begin{quote}
+\textit{Given semantics (what we want to compute), derive the optimal syntax (architecture).}
+\end{quote}
+
+This would be a \textbf{theory of architecture design}.
+
+% TODO: proof attempts, obstacles

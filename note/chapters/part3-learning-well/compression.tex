@@ -1,0 +1,161 @@
+\chapter{The Compression View}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand learning as compression
+    \item Survey MDL and Information Bottleneck
+    \item See the appeal and the limitations
+\end{itemize}
+\end{goals}
+
+\section{The Core Idea}
+
+\begin{quote}
+\textit{``To understand is to compress.''} — Chaitin, Solomonoff, Kolmogorov
+\end{quote}
+
+If you can describe the data in fewer bits, you've found structure. Learning, on this view, is finding short descriptions.
+
+\begin{intuition}
+Consider memorizing a phone book versus memorizing a formula.
+\begin{itemize}
+    \item Phone book: each entry is arbitrary, no compression possible
+    \item Formula $f(n) = n^2$: infinite values, finite description
+\end{itemize}
+The formula ``understands'' the pattern. The phone book doesn't.
+\end{intuition}
+
+\section{Minimum Description Length (MDL)}
+
+\subsection{The Principle}
+
+\begin{definition}[MDL Principle]
+Given data $D$ and model class $\mathcal{M}$, choose the model $M$ minimizing:
+\[
+L(M) + L(D \mid M)
+\]
+where $L(\cdot)$ denotes description length in bits.
+\end{definition}
+
+Two terms:
+\begin{itemize}
+    \item $L(M)$: cost of describing the model (complexity penalty)
+    \item $L(D \mid M)$: cost of describing data given model (fit)
+\end{itemize}
+
+\begin{keyinsight}
+MDL formalizes Occam's razor: prefer simpler explanations, but not at the cost of accuracy.
+\end{keyinsight}
+
+\subsection{MDL for Neural Networks}
+
+Early work (Hinton \& Van Camp 1993, Hochreiter \& Schmidhuber 1994) applied MDL to neural networks:
+\begin{itemize}
+    \item Encode network weights alongside prediction error
+    \item Prefer ``flat minima'' — regions where weights can be described coarsely
+    \item Use genetic algorithms to search architectures minimizing MDL score
+\end{itemize}
+
+Recent work (Lan et al. 2022) trains RNNs to optimize MDL directly:
+\begin{itemize}
+    \item Networks evolve during training — architecture can shrink
+    \item Reaches good generalization from very small corpora
+    \item Resulting networks are small and interpretable
+\end{itemize}
+
+\subsection{MDL vs Standard Regularization}
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Method} & \textbf{What it penalizes} & \textbf{Principled?} \\
+\hline
+L2 regularization & $\|w\|_2^2$ & Ad hoc \\
+L1 regularization & $\|w\|_1$ & Sparsity prior \\
+MDL & Description length & Information-theoretic \\
+\end{tabular}
+\end{center}
+
+\begin{warning}
+L1/L2 regularization can push models \emph{away} from perfect solutions. MDL tends to preserve or compress toward them.
+\end{warning}
+
+\section{Information Bottleneck}
+
+\subsection{The Framework}
+
+Tishby's Information Bottleneck (IB) formalizes compression in supervised learning.
+
+\begin{definition}[Information Bottleneck]
+Given input $X$, output $Y$, and representation $T$, minimize:
+\[
+I(X; T) - \beta \cdot I(T; Y)
+\]
+where $I(\cdot; \cdot)$ is mutual information.
+\end{definition}
+
+Two competing goals:
+\begin{itemize}
+    \item $I(X; T)$ small: $T$ compresses $X$ (forget irrelevant details)
+    \item $I(T; Y)$ large: $T$ preserves information about $Y$ (keep relevant signal)
+\end{itemize}
+
+\subsection{Tishby's Claims for Deep Learning}
+
+Shwartz-Ziv \& Tishby (2017) made striking claims:
+
+\begin{enumerate}
+    \item \textbf{Two phases}: Training has a ``fitting'' phase then a ``compression'' phase
+    \item \textbf{Compression $\to$ generalization}: The compression phase causes good generalization
+    \item \textbf{SGD diffusion}: Compression happens because SGD acts like random diffusion
+\end{enumerate}
+
+They observed layers converging toward the IB optimal bound.
+
+\subsection{The Controversy}
+
+Saxe et al. (2018) challenged all three claims:
+
+\begin{enumerate}
+    \item Compression phase \textbf{depends on activation function} — doesn't happen with ReLU
+    \item Networks that \textbf{don't compress can still generalize}
+    \item The ``diffusion'' explanation is specific to saturating activations
+\end{enumerate}
+
+\begin{warning}
+The Information Bottleneck view is elegant but contested. It may describe some networks (with tanh) but not others (with ReLU).
+\end{warning}
+
+\section{What Compression Tells Us}
+
+\subsection{Strengths}
+
+\begin{itemize}
+    \item \textbf{Principled}: Information theory gives exact quantities
+    \item \textbf{Connects to generalization}: Shorter description $\to$ less overfitting
+    \item \textbf{Architecture-agnostic}: Applies to any model class
+\end{itemize}
+
+\subsection{Limitations}
+
+\begin{itemize}
+    \item \textbf{Doesn't prescribe architecture}: Says ``compress,'' not ``how to compress''
+    \item \textbf{Computationally hard}: Description length, mutual information are hard to compute
+    \item \textbf{Contested empirics}: IB claims don't hold universally
+\end{itemize}
+
+\begin{keyinsight}
+Compression is a \emph{desideratum}, not a \emph{design principle}.
+
+It tells you what a good solution looks like, but not how to find one.
+\end{keyinsight}
+
+\section{Relevance to Our Question}
+
+For learning logical structures (coalgebras, Kripke frames):
+
+\begin{itemize}
+    \item MDL suggests: prefer smaller automata, simpler transition relations
+    \item But: how to parameterize so that ``simpler'' is easier to find?
+\end{itemize}
+
+Compression gives the objective. We still need the method.

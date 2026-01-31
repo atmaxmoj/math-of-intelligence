@@ -1,0 +1,176 @@
+\chapter{Open Questions and Other Directions}
+
+\begin{goals}
+\begin{itemize}
+    \item Summarize what we've established
+    \item State the remaining open questions precisely
+    \item Briefly note other directions we chose not to pursue
+\end{itemize}
+\end{goals}
+
+\section{What We Have}
+
+Two candidate principles for ``learning well'':
+
+\subsection{Distance Matching (Optimization)}
+
+\begin{quote}
+Good parameterization = parameter distance matches function distance.
+\end{quote}
+
+\begin{itemize}
+    \item Explains: linear regression optimality, CNN success, ResNet stability
+    \item Measurable via: condition number, Fisher information
+    \item Achievable via: symmetry/equivariance (special case)
+\end{itemize}
+
+\subsection{Entanglement Matching (Expressiveness)}
+
+\begin{quote}
+Good architecture = tensor structure matches target's entanglement structure.
+\end{quote}
+
+\begin{itemize}
+    \item Explains: why depth matters, why locality helps for images
+    \item Measurable via: entanglement entropy
+    \item Limitation: doesn't explain specific architectural choices (skip, attention)
+\end{itemize}
+
+\section{How They Relate}
+
+These are complementary:
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Principle} & \textbf{Asks} & \textbf{Answers} \\
+\hline
+Entanglement & Which architecture class? & Depth, locality structure \\
+Distance & Which parameterization within class? & How to set up parameters \\
+\end{tabular}
+\end{center}
+
+Together they might give: given a target, first match entanglement structure to choose architecture class, then match distances to choose parameterization.
+
+\section{Open Questions}
+
+\subsection{Formalizing Distance Matching}
+
+\begin{enumerate}
+    \item How to define ``function distance'' for general function classes?
+    \item Given function class $\mathcal{F}$, how to construct a matching $\Theta$?
+    \item When is perfect matching impossible? What's the best approximation?
+\end{enumerate}
+
+\subsection{Measuring Entanglement}
+
+\begin{enumerate}
+    \item How to estimate entanglement structure from finite data?
+    \item What's the entanglement structure of language/sequences?
+    \item Can we automatically select architecture based on measured entanglement?
+\end{enumerate}
+
+\subsection{Connecting to Coalgebras}
+
+\begin{enumerate}
+    \item For $F$-coalgebras, what is the ``natural'' parameterization?
+    \item Does bisimulation play the role that group symmetry plays for equivariant networks?
+    \item Can we define ``distance'' on coalgebra space via behavioral metrics?
+\end{enumerate}
+
+\subsection{Unification}
+
+\begin{enumerate}
+    \item Is there a single principle that subsumes both distance and entanglement?
+    \item How does generalization fit in? (Neither principle directly addresses it)
+    \item What about optimization dynamics? (We focused on landscape, not trajectory)
+\end{enumerate}
+
+\section{Directions Not Pursued}
+
+We considered but deprioritized:
+
+\subsection{Information Bottleneck}
+
+Claim: learning = fitting then compressing.
+
+Problem: controversial. ReLU networks don't compress but still generalize. The phenomenon may be activation-function-specific.
+
+\subsection{Neural Tangent Kernel}
+
+Claim: infinite-width networks are kernel machines.
+
+Problem: only applies in ``lazy training'' regime. Real networks do feature learning, which NTK can't explain.
+
+\subsection{Double Descent}
+
+Claim: more parameters can be better after the interpolation threshold.
+
+Problem: describes a phenomenon, doesn't give design guidance.
+
+\subsection{Categorical Deep Learning}
+
+Claim: category theory unifies all architectures.
+
+Problem: currently descriptive, not prescriptive. Doesn't tell you which architecture to use.
+
+These may still be valuable, but they don't directly answer our question: how to design parameterizations for learning.
+
+\section{The Research Program}
+
+\begin{enumerate}
+    \item \textbf{Formalize}: Make distance matching mathematically precise
+    \item \textbf{Compute}: For specific function classes, construct matching parameterizations
+    \item \textbf{Verify}: Check if known good architectures achieve good distance matching
+    \item \textbf{Generalize}: Extend from group symmetry to coalgebraic structure
+    \item \textbf{Apply}: Use the principles to design new architectures
+\end{enumerate}
+
+\section{Connection to the Book's Goal}
+
+Recall: we want to learn logical structures (coalgebras, Kripke frames, automata).
+
+\subsection{The Emerging Framework}
+
+The pieces fit together:
+
+\begin{enumerate}
+    \item \textbf{Part I}: Coalgebras define structure. Bisimulation defines equivalence.
+
+    \item \textbf{Part II}: Semiring relaxation enables gradients and makes behavior \emph{continuous}.
+
+    \item \textbf{Part III}: Behavioral metrics (from coalgebra theory) define the ``right'' distance on function space. Distance matching says: make parameter distance match behavioral distance.
+\end{enumerate}
+
+\subsection{The Vision}
+
+If this framework is correct, architecture design becomes principled:
+
+\begin{enumerate}
+    \item \textbf{Specify}: What coalgebra type (functor $H$)?
+    \item \textbf{Compute}: What is the behavioral metric for $H$-coalgebras?
+    \item \textbf{Construct}: Design parameter space $\Theta$ with matching metric.
+    \item \textbf{Train}: Gradient descent converges efficiently because distances match.
+    \item \textbf{Extract}: Threshold back to discrete coalgebra.
+\end{enumerate}
+
+This is no longer alchemy. It is engineering from first principles.
+
+\subsection{What Remains}
+
+The framework is conceptually complete, but:
+
+\begin{itemize}
+    \item We don't yet know how to \emph{compute} behavioral metrics for general functors
+    \item We don't yet know how to \emph{construct} matching parameterizations
+    \item We don't yet know if this explains \emph{all} successful architectures
+\end{itemize}
+
+These are the open problems. But we now have a clear direction.
+
+\subsection{The Guiding Hypotheses}
+
+\textbf{Distance matching}: Parameterize so that parameter distance $\approx$ behavioral distance.
+
+\textbf{Entanglement matching}: Match architecture depth/structure to the target's entanglement structure.
+
+Together, these may give a complete theory of ``learning well.''

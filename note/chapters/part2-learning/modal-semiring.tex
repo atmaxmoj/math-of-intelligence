@@ -1,0 +1,197 @@
+\chapter{Modal Operators in Semirings}
+
+\begin{goals}
+\begin{itemize}
+    \item Face the core question: how to interpret $\necessary$/$\possible$ over semirings
+    \item Survey existing approaches: fuzzy, many-valued, residuated lattices
+    \item Understand what's solved and what's open
+    \item Know the implications for learning
+\end{itemize}
+\end{goals}
+
+\section{The Problem}
+
+In classical modal logic:
+\[
+\mathcal{M}, w \models \necessary\varphi \iff \forall v: wRv \Rightarrow \mathcal{M}, v \models \varphi
+\]
+
+This involves:
+\begin{itemize}
+    \item $\forall$ — universal quantification (AND over all successors)
+    \item $\Rightarrow$ — implication (if accessible, then...)
+\end{itemize}
+
+In semiring-valued setting:
+\begin{itemize}
+    \item $R(w,v) \in S$ — soft accessibility
+    \item $\sem{\varphi}_v \in S$ — soft truth value
+\end{itemize}
+
+\textbf{Question}: What is $\sem{\necessary\varphi}_w$?
+
+\section{Existing Work: Three Traditions}
+
+This is \emph{not} a completely open problem. There's substantial literature.
+
+\subsection{Modal Semirings (Algebraic)}
+
+Möller, Desharnais, and others developed \emph{modal semirings} as an algebraic axiomatization.
+
+\begin{itemize}
+    \item Define \emph{domain} operation: $\mathrm{dom}(x) = |x\rangle 1$
+    \item Define box via de Morgan: $|x]p = \neg|x\rangle\neg p$
+    \item Focus on algebraic laws, not many-valued truth
+\end{itemize}
+
+Key reference: ``Some Uses of Modal Semirings'' (Möller \& Desharnais, WADT 2024).
+
+This approach is about \emph{algebraic structure}, not about truth values in $[0,1]$.
+
+\subsection{Many-Valued Modal Logic (Lattice-Valued)}
+
+Bou, Esteva, Godo, and others study modal logic over \emph{residuated lattices}.
+
+\begin{definition}[Lattice-Valued Kripke Model]
+Over a residuated lattice $A = \langle A, 0, 1, \land, \lor, \otimes, \to \rangle$:
+\begin{itemize}
+    \item $R : W \times W \to A$ (many-valued accessibility)
+    \item $e : \mathrm{Var} \times W \to A$ (many-valued valuation)
+\end{itemize}
+\end{definition}
+
+The semantics of $\necessary$:
+\[
+\sem{\necessary\varphi}_w = \bigwedge_v \left( R(w,v) \to \sem{\varphi}_v \right)
+\]
+where $\to$ is the residual of $\otimes$.
+
+Key reference: ``On the Minimum Many-Valued Modal Logic over a Finite Residuated Lattice'' (Bou et al., 2009).
+
+\subsection{Fuzzy Modal Logic (T-Norm Based)}
+
+Fuzzy modal logic uses t-norms and their residuals.
+
+\begin{definition}[Fuzzy Modal Semantics]
+For a t-norm $\otimes$ with residual $\Rightarrow$:
+\begin{align*}
+\sem{\necessary\varphi}_w &= \inf_v \left( R(w,v) \Rightarrow \sem{\varphi}_v \right) \\
+\sem{\possible\varphi}_w &= \sup_v \left( R(w,v) \otimes \sem{\varphi}_v \right)
+\end{align*}
+\end{definition}
+
+Common choices:
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Name} & $a \otimes b$ & $a \Rightarrow b$ \\
+\hline
+Gödel & $\min(a,b)$ & $\begin{cases} 1 & a \leq b \\ b & a > b \end{cases}$ \\
+Łukasiewicz & $\max(0, a+b-1)$ & $\min(1, 1-a+b)$ \\
+Product & $a \cdot b$ & $\begin{cases} 1 & a \leq b \\ b/a & a > b \end{cases}$ \\
+\end{tabular}
+\end{center}
+
+\section{What's Known}
+
+\begin{theorem}[Failure of Axiom K]
+In many-valued modal logic with non-Boolean accessibility, the axiom
+\[
+\necessary(\varphi \to \psi) \to (\necessary\varphi \to \necessary\psi)
+\]
+generally \textbf{fails}.
+\end{theorem}
+
+\begin{theorem}[Non-Interdefinability]
+In general, $\possible\varphi \not\equiv \neg\necessary\neg\varphi$ when $R$ is many-valued.
+\end{theorem}
+
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Property} & \textbf{Status} \\
+\hline
+Semantics for $\necessary$/$\possible$ & Defined (inf/sup with residual) \\
+Axiom K & Fails in general \\
+$\necessary$/$\possible$ duality & Fails in general \\
+Completeness & Case-by-case, often unknown \\
+Decidability & Case-by-case \\
+\end{tabular}
+\end{center}
+
+\section{What's Still Open}
+
+\begin{enumerate}
+    \item \textbf{General semirings}: Most work uses residuated lattices (which have a specific implication $\to$). Arbitrary semirings don't have a canonical implication.
+
+    \item \textbf{Tropical semiring}: $(\mathbb{R} \cup \{\infty\}, \min, +)$ — what's the right modal semantics? Not well-studied.
+
+    \item \textbf{Gradient semiring}: What happens when we track derivatives through modal operators? Unexplored.
+
+    \item \textbf{Best semantics for learning}: Which choice of t-norm/residual leads to best optimization landscape? No one has studied this.
+
+    \item \textbf{Convergence}: When does soft modal semantics converge to crisp? Conditions unclear.
+\end{enumerate}
+
+\section{For Learning: Practical Choices}
+
+Given the theory, what should we use for gradient-based learning?
+
+\begin{warning}
+$\inf$ and $\sup$ have zero gradients almost everywhere. Not suitable for learning.
+\end{warning}
+
+\subsection{Option 1: Soft Inf/Sup}
+
+Replace $\inf$ with softmin:
+\[
+\mathrm{softmin}_\tau(x_1, \ldots, x_n) = -\tau \log \sum_i e^{-x_i/\tau}
+\]
+
+As $\tau \to 0$, this approaches true $\min$.
+
+\subsection{Option 2: Product Semantics}
+
+Use product t-norm throughout:
+\begin{align*}
+\sem{\necessary\varphi}_w &= \prod_v \left( 1 - R(w,v) \cdot (1 - \sem{\varphi}_v) \right) \\
+\sem{\possible\varphi}_w &= 1 - \prod_v \left( 1 - R(w,v) \cdot \sem{\varphi}_v \right)
+\end{align*}
+
+Fully differentiable, gradients everywhere.
+
+\subsection{Option 3: Weighted Average}
+
+For $\necessary$ as ``expected truth over successors'':
+\[
+\sem{\necessary\varphi}_w = \frac{\sum_v R(w,v) \cdot \sem{\varphi}_v}{\sum_v R(w,v)}
+\]
+
+Simple, differentiable, but doesn't match classical semantics.
+
+\section{Recommendation}
+
+\begin{keyinsight}
+For learning:
+\begin{enumerate}
+    \item Use \textbf{product t-norm} or \textbf{softmin/softmax}
+    \item Accept that axiom K may fail during training
+    \item Add regularization to push toward crisp values
+    \item After convergence, verify classical properties
+\end{enumerate}
+\end{keyinsight}
+
+\section{Summary}
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Aspect} & \textbf{Status} & \textbf{Reference} \\
+\hline
+Algebraic axioms & Solved & Möller et al. \\
+Residuated lattice semantics & Solved & Bou et al. \\
+Fuzzy/t-norm semantics & Solved & Hájek, Fitting \\
+Arbitrary semirings & Partially open & --- \\
+Differentiable semantics & Open & --- \\
+Best choice for learning & Open & --- \\
+\end{tabular}
+\end{center}
+
+The mathematics of many-valued modal logic is well-developed. The question of which variant works best for gradient-based learning is new territory.

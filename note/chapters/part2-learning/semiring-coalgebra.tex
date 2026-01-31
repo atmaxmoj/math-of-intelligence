@@ -1,0 +1,96 @@
+\chapter{Semiring-Valued Coalgebra}
+
+\begin{goals}
+\begin{itemize}
+    \item Combine Part I (coalgebra) with Part II (semiring)
+    \item See how to ``soften'' any coalgebra
+    \item Understand the learning setup
+\end{itemize}
+\end{goals}
+
+\section{Recall: Coalgebra}
+
+From Part I: an $F$-coalgebra is $(X, \gamma : X \to F(X))$.
+
+Examples:
+\begin{itemize}
+    \item Kripke frame: $X \to \mathcal{P}(X)$
+    \item DFA: $X \to 2 \times X^A$
+    \item Stream: $X \to A \times X$
+\end{itemize}
+
+These are all \emph{crisp}: transitions either exist or don't.
+
+\section{Semiring-Valued Transitions}
+
+\begin{definition}[Semiring-Valued Coalgebra]
+Fix a semiring $S$. An \emph{$S$-valued $F$-coalgebra} replaces sets with $S$-valued functions.
+
+For $F = \mathcal{P}$ (Kripke-like):
+\[
+\gamma : X \to (X \to S)
+\]
+i.e., $\gamma : X \times X \to S$. Each transition has a weight in $S$.
+\end{definition}
+
+\begin{example}[Fuzzy Kripke Frame]
+$S = [0, 1]$. Then $\gamma(w, v) = 0.7$ means ``70\% connected.''
+\end{example}
+
+\begin{example}[Probabilistic Automaton]
+$S = \mathbb{R}_{\geq 0}$. Then $\gamma(q, a, q')$ is the probability of transitioning from $q$ to $q'$ on input $a$.
+\end{example}
+
+\section{Parameterized Coalgebras}
+
+For learning, we parameterize the coalgebra:
+
+\begin{definition}
+A \emph{parameterized $S$-coalgebra} is a family $\gamma_\theta$ indexed by $\theta \in \Theta$.
+\end{definition}
+
+Typically: $\theta$ are real numbers, $\gamma_\theta$ uses softmax or sigmoid to produce $S$-values.
+
+\begin{example}
+For a fuzzy DFA with $n$ states and alphabet $A$:
+\[
+\theta \in \mathbb{R}^{n \times |A| \times n}
+\]
+\[
+\gamma_\theta(q, a, q') = \mathrm{softmax}_j(\theta_{q,a,j})_{q'}
+\]
+\end{example}
+
+\section{Semantics in Semirings}
+
+Modal formulas can be evaluated in semiring-valued models:
+
+\begin{align*}
+\sem{p}_w &\in S \\
+\sem{\varphi \land \psi}_w &= \sem{\varphi}_w \otimes \sem{\psi}_w \\
+\sem{\varphi \lor \psi}_w &= \sem{\varphi}_w \oplus \sem{\psi}_w \\
+\sem{\necessary\varphi}_w &= \bigotimes_{v} \gamma(w,v) \Rightarrow_S \sem{\varphi}_v
+\end{align*}
+
+where $\Rightarrow_S$ is an $S$-valued implication (semiring-dependent).
+
+\section{The Bridge}
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm]
+\node (crisp) {Crisp Coalgebra};
+\node[right=3cm of crisp] (semiring) {$S$-valued Coalgebra};
+\node[below=1.5cm of crisp] (discrete) {Discrete, not learnable};
+\node[below=1.5cm of semiring] (continuous) {Continuous, differentiable};
+
+\draw[->] (crisp) -- (semiring) node[midway, above] {soften};
+\draw[->] (semiring) -- (crisp) node[midway, below] {threshold};
+
+\draw[dashed] (crisp) -- (discrete);
+\draw[dashed] (semiring) -- (continuous);
+\end{tikzpicture}
+\end{center}
+
+\begin{keyinsight}
+Semiring-valued coalgebra is the bridge between the discrete world of Part I and the continuous world of optimization.
+\end{keyinsight}

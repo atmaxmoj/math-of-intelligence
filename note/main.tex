@@ -1,124 +1,8 @@
 \documentclass[11pt,a4paper]{book}
 
-% Encoding and fonts
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
+\input{preamble}
 
-% Math packages
-\usepackage{amsmath,amssymb,amsthm}
-\usepackage{mathtools}
-\usepackage{bussproofs}  % for proof trees
-
-% Logic symbols
-\usepackage{stmaryrd}    % \llbracket, \rrbracket
-\newcommand{\necessary}{\Box}
-\newcommand{\possible}{\Diamond}
-\newcommand{\forces}{\Vdash}
-\newcommand{\nforces}{\nVdash}
-\newcommand{\bisim}{\underline{\leftrightarrow}}
-
-% Theorem environments
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[chapter]
-\newtheorem{example}[definition]{Example}
-
-\theoremstyle{plain}
-\newtheorem{theorem}[definition]{Theorem}
-\newtheorem{lemma}[definition]{Lemma}
-\newtheorem{proposition}[definition]{Proposition}
-\newtheorem{corollary}[definition]{Corollary}
-
-\theoremstyle{remark}
-\newtheorem{remark}[definition]{Remark}
-
-% TikZ for Kripke frames
-\usepackage{tikz}
-\usetikzlibrary{arrows.meta, positioning, shapes}
-
-% Colored boxes for variety
-\usepackage[most]{tcolorbox}
-\usepackage{marginnote}
-\usepackage{fontawesome5}  % icons
-
-% Intuition box (light blue)
-\newtcolorbox{intuition}[1][]{
-    colback=blue!5,
-    colframe=blue!50,
-    fonttitle=\bfseries,
-    title={\faLightbulb\hspace{0.5em}Intuition},
-    #1
-}
-
-% Warning box (light red)
-\newtcolorbox{warning}[1][]{
-    colback=red!5,
-    colframe=red!50,
-    fonttitle=\bfseries,
-    title={\faExclamationTriangle\hspace{0.5em}Common Pitfall},
-    #1
-}
-
-% Key insight box (light green)
-\newtcolorbox{keyinsight}[1][]{
-    colback=green!5,
-    colframe=green!50,
-    fonttitle=\bfseries,
-    title={\faStar\hspace{0.5em}Key Insight},
-    #1
-}
-
-% Historical note box (light yellow/sepia)
-\newtcolorbox{history}[1][]{
-    colback=yellow!10,
-    colframe=orange!50,
-    fonttitle=\bfseries,
-    title={\faHistory\hspace{0.5em}Historical Note},
-    #1
-}
-
-% Proof sketch box (gray, for informal proofs)
-\newtcolorbox{proofsketch}[1][]{
-    colback=gray!5,
-    colframe=gray!50,
-    fonttitle=\bfseries,
-    title={Proof Sketch},
-    #1
-}
-
-% Summary box (purple, for chapter summaries)
-\newtcolorbox{summary}[1][]{
-    colback=violet!5,
-    colframe=violet!50,
-    fonttitle=\bfseries,
-    title={\faClipboardList\hspace{0.5em}Summary},
-    #1
-}
-
-% Exercise box
-\newtcolorbox{exercise}[1][]{
-    colback=white,
-    colframe=black!70,
-    fonttitle=\bfseries,
-    title={\faPencilAlt\hspace{0.5em}Exercise},
-    #1
-}
-
-% Hyperlinks
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=blue,
-    urlcolor=blue
-}
-
-% Bibliography
-\usepackage[style=authoryear,backend=biber]{biblatex}
-% \addbibresource{references.bib}
-
-% Title
-\title{Modal Logic: A Comprehensive Treatment}
+\title{\textbf{The Algebra of Intelligence}}
 \author{Sijie Wang}
 \date{\today}
 
@@ -126,191 +10,74 @@
 
 \frontmatter
 \maketitle
+\input{chapters/preface}
 \tableofcontents
 
 \mainmatter
 
-\chapter{Introduction}
+%=============================================================================
+\part{Expression}
+%=============================================================================
 
-Modal logic extends classical propositional logic with operators expressing modality---notions such as possibility, necessity, knowledge, belief, obligation, and time.
+\include{chapters/part1-expression/logic-as-language}
+\include{chapters/part1-expression/kripke-frames}
+\include{chapters/part1-expression/bisimulation}
+\include{chapters/part1-expression/model-constructions}
+\include{chapters/part1-expression/completeness}
+\include{chapters/part1-expression/decidability}
+\include{chapters/part1-expression/sahlqvist}
+\include{chapters/part1-expression/graded-modal}
+\include{chapters/part1-expression/dynamic-logic}
+\include{chapters/part1-expression/automata}
+\include{chapters/part1-expression/coalgebra}
+\include{chapters/part1-expression/expressiveness}
 
-\begin{intuition}
-Think of modal logic as logic with \emph{perspective}. Classical logic asks ``is this true?'' Modal logic asks ``is this true \emph{from where I'm standing}?'' Different positions might see different truths---and modal logic gives us the tools to reason about this.
-\end{intuition}
+%=============================================================================
+\part{Learning}
+%=============================================================================
 
-\section{Historical Background}
+\include{chapters/part2-learning/what-is-learning}
+\include{chapters/part2-learning/gradient-descent}
+\include{chapters/part2-learning/continuization}
+\include{chapters/part2-learning/fuzzy-logic}
+\include{chapters/part2-learning/probabilistic-logic}
+\include{chapters/part2-learning/semiring}
+\include{chapters/part2-learning/gradient-semiring}
+\include{chapters/part2-learning/semiring-coalgebra}
+\include{chapters/part2-learning/modal-semiring}
+\include{chapters/part2-learning/learning-loop}
+\include{chapters/part2-learning/differentiable-graded}
 
-\begin{history}
-The modern study of modal logic begins with C.I. Lewis's work in the early 20th century. Lewis was dissatisfied with the ``paradoxes of material implication''---the fact that in classical logic, $p \to q$ is true whenever $p$ is false. He wanted a stronger notion of implication: $p$ \emph{strictly implies} $q$ if it's \emph{impossible} for $p$ to be true while $q$ is false. This led him to introduce modal operators.
-\end{history}
+%=============================================================================
+\part{Learning Well}
+%=============================================================================
 
-% TODO: more history
+\include{chapters/part3-learning-well/learning-as-tuple}
+\include{chapters/part3-learning-well/experiments}
+\include{chapters/part3-learning-well/distance-matching}
+\include{chapters/part3-learning-well/distance-matching-experiments}
+\include{chapters/part3-learning-well/coalgebra-parameterization}
+\include{chapters/part3-learning-well/tensor-network}
+\include{chapters/part3-learning-well/fisher-geometry}
+\include{chapters/part3-learning-well/symmetry-as-special-case}
+\include{chapters/part3-learning-well/open-questions}
 
-\section{Why Modal Logic?}
+%=============================================================================
+\part{Limits}
+%=============================================================================
 
-\begin{keyinsight}
-Modal logic is not one logic but a \emph{framework} for building logics. By choosing different interpretations of $\necessary$ (``box'') and different properties of the accessibility relation, we get:
-\begin{itemize}
-    \item Epistemic logic ($\necessary\varphi$ = ``the agent knows $\varphi$'')
-    \item Deontic logic ($\necessary\varphi$ = ``it is obligatory that $\varphi$'')
-    \item Temporal logic ($\necessary\varphi$ = ``always in the future, $\varphi$'')
-    \item Provability logic ($\necessary\varphi$ = ``$\varphi$ is provable'')
-\end{itemize}
-One framework, many applications.
-\end{keyinsight}
+\include{chapters/part4-limits/meta-learning}
+\include{chapters/part4-limits/boundary}
 
-\begin{warning}
-Don't think of possible worlds as parallel universes or science fiction! They are simply \emph{points in a mathematical structure}. What they ``really are'' depends on the application. In epistemic logic, they are states of knowledge. In temporal logic, they are moments in time. The math doesn't care.
-\end{warning}
+%=============================================================================
+\appendix
+%=============================================================================
 
-\begin{exercise}
-Before reading further, try to think of three situations in everyday life where you reason about possibility or necessity. What would $\necessary$ and $\possible$ mean in each case?
-\end{exercise}
+\include{chapters/applications}
 
-\chapter{Syntax and Semantics}
-
-\section{Modal Languages}
-
-\begin{definition}[Modal Language]
-Let $\Phi$ be a countable set of propositional variables. The \emph{modal language} $\mathcal{L}(\necessary, \possible)$ is defined by the grammar:
-\[
-\varphi ::= p \mid \neg\varphi \mid (\varphi \land \psi) \mid \necessary\varphi
-\]
-where $p \in \Phi$. We define $\possible\varphi := \neg\necessary\neg\varphi$.
-\end{definition}
-
-\section{Kripke Semantics}
-
-\begin{definition}[Kripke Frame]
-A \emph{Kripke frame} is a pair $\mathcal{F} = (W, R)$ where:
-\begin{itemize}
-    \item $W$ is a non-empty set of \emph{possible worlds}
-    \item $R \subseteq W \times W$ is a binary \emph{accessibility relation}
-\end{itemize}
-\end{definition}
-
-\begin{definition}[Kripke Model]
-A \emph{Kripke model} is a triple $\mathcal{M} = (W, R, V)$ where:
-\begin{itemize}
-    \item $(W, R)$ is a Kripke frame
-    \item $V : \Phi \to \mathcal{P}(W)$ is a \emph{valuation function}
-\end{itemize}
-\end{definition}
-
-\begin{definition}[Satisfaction]
-Let $\mathcal{M} = (W, R, V)$ be a Kripke model and $w \in W$. The satisfaction relation $\mathcal{M}, w \models \varphi$ is defined inductively:
-\begin{align*}
-\mathcal{M}, w &\models p &&\text{iff } w \in V(p) \\
-\mathcal{M}, w &\models \neg\varphi &&\text{iff } \mathcal{M}, w \not\models \varphi \\
-\mathcal{M}, w &\models \varphi \land \psi &&\text{iff } \mathcal{M}, w \models \varphi \text{ and } \mathcal{M}, w \models \psi \\
-\mathcal{M}, w &\models \necessary\varphi &&\text{iff for all } v \in W: wRv \Rightarrow \mathcal{M}, v \models \varphi
-\end{align*}
-\end{definition}
-
-\begin{example}
-Consider the frame with $W = \{w_0, w_1, w_2\}$ and $R = \{(w_0, w_1), (w_0, w_2), (w_1, w_1)\}$:
-
-\begin{center}
-\begin{tikzpicture}[
-    world/.style={circle, draw, minimum size=8mm},
-    arrow/.style={-{Stealth}, thick}
-]
-\node[world] (w0) at (0,0) {$w_0$};
-\node[world] (w1) at (2,1) {$w_1$};
-\node[world] (w2) at (2,-1) {$w_2$};
-
-\draw[arrow] (w0) -- (w1);
-\draw[arrow] (w0) -- (w2);
-\draw[arrow] (w1) to [loop right] (w1);
-\end{tikzpicture}
-\end{center}
-
-% TODO: complete the example
-\end{example}
-
-\section{Validity and Consequence}
-
-% TODO
-
-\chapter{Bisimulation and Model Theory}
-
-\section{Bisimulation}
-
-\begin{definition}[Bisimulation]
-Let $\mathcal{M} = (W, R, V)$ and $\mathcal{M}' = (W', R', V')$ be Kripke models. A non-empty relation $Z \subseteq W \times W'$ is a \emph{bisimulation} between $\mathcal{M}$ and $\mathcal{M}'$ if whenever $wZw'$:
-\begin{enumerate}
-    \item (Atomic harmony) For all $p \in \Phi$: $w \in V(p) \Leftrightarrow w' \in V'(p)$
-    \item (Zig) If $wRv$, then there exists $v' \in W'$ such that $w'R'v'$ and $vZv'$
-    \item (Zag) If $w'R'v'$, then there exists $v \in W$ such that $wRv$ and $vZv'$
-\end{enumerate}
-\end{definition}
-
-\begin{theorem}[Bisimulation Invariance]
-If $Z$ is a bisimulation between $\mathcal{M}$ and $\mathcal{M}'$ and $wZw'$, then for all modal formulas $\varphi$:
-\[
-\mathcal{M}, w \models \varphi \iff \mathcal{M}', w' \models \varphi
-\]
-\end{theorem}
-
-\begin{proof}
-By induction on the structure of $\varphi$.
-% TODO: complete proof
-\end{proof}
-
-\section{Bounded Morphisms}
-
-% TODO
-
-\section{Generated Submodels}
-
-% TODO
-
-\chapter{Soundness and Completeness}
-
-\section{Normal Modal Logics}
-
-% TODO
-
-\section{Canonical Models}
-
-% TODO
-
-\section{Completeness Theorems}
-
-% TODO
-
-\chapter{Correspondence Theory}
-
-\section{Frame Definability}
-
-% TODO
-
-\section{The Sahlqvist Theorem}
-
-% TODO
-
-\chapter{Decidability}
-
-\section{Finite Model Property}
-
-% TODO
-
-\section{Filtration}
-
-% TODO
-
-\chapter{Combining Modal Logics}
-
-\section{Fusion}
-
-% TODO
-
-\section{Products}
-
-% TODO
+%=============================================================================
 
 \backmatter
-
-% \printbibliography
+\input{chapters/afterword}
 
 \end{document}

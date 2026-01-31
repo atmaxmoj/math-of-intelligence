@@ -1,0 +1,213 @@
+\chapter{The Categorical View}
+
+\begin{goals}
+\begin{itemize}
+    \item See category theory as a unifying language for architectures
+    \item Understand functorial composition of neural networks
+    \item Appreciate both the promise and the current limitations
+\end{itemize}
+\end{goals}
+
+\section{The Core Idea}
+
+Different architectures (CNNs, RNNs, GNNs, Transformers) seem unrelated.
+
+Category theory claims: they're all instances of the same abstract pattern.
+
+\begin{quote}
+\textit{``Categorical deep learning is an algebraic theory of all architectures.''} — Gavranović et al., 2024
+\end{quote}
+
+\section{Why Category Theory?}
+
+\subsection{The Problem}
+
+Deep learning has:
+\begin{itemize}
+    \item Dozens of architecture families
+    \item No unified language to describe them
+    \item No systematic way to compare or compose them
+\end{itemize}
+
+Each architecture is its own island, with its own notation and conventions.
+
+\subsection{The Promise}
+
+Category theory provides:
+\begin{itemize}
+    \item \textbf{Abstraction}: Common patterns across architectures
+    \item \textbf{Composition}: Principled ways to combine components
+    \item \textbf{Universality}: ``Best'' constructions characterized by universal properties
+\end{itemize}
+
+\section{Key Concepts}
+
+\subsection{Neural Networks as Morphisms}
+
+A neural network is a parameterized function:
+\[
+f_\theta: X \to Y
+\]
+
+In categorical terms: a morphism in a category of ``parameterized maps.''
+
+\begin{definition}[Para Category]
+Objects are spaces. Morphisms $X \to Y$ are pairs $(\Theta, f)$ where:
+\begin{itemize}
+    \item $\Theta$ is a parameter space
+    \item $f: \Theta \times X \to Y$ is the parameterized function
+\end{itemize}
+\end{definition}
+
+Composition of parameterized maps: stack parameters.
+
+\subsection{Functors as Architecture Patterns}
+
+Many architectures arise from functors.
+
+\begin{example}[Sequence Models]
+The functor $\mathsf{List}: \mathbf{Set} \to \mathbf{Set}$ sends a set $X$ to the set of lists over $X$.
+
+RNNs process lists by applying the same cell repeatedly — this is functorial behavior.
+\end{example}
+
+\begin{example}[Graph Networks]
+The functor $\mathsf{Graph}: \mathbf{Set} \to \mathbf{Set}$ sends a set to graphs with that node set.
+
+GNNs transform graphs to graphs — morphisms in a category of graphs.
+\end{example}
+
+\subsection{Equivariance as Natural Transformations}
+
+Recall: a natural transformation $\eta: F \Rightarrow G$ makes diagrams commute.
+
+\begin{keyinsight}
+$G$-equivariance is a special case of naturality.
+
+If $G$ acts on $X$, and $F(X) = G \times X$ (the action), then $G$-equivariant maps are natural transformations.
+\end{keyinsight}
+
+This unifies geometric deep learning with the categorical view.
+
+\section{Backpropagation Categorically}
+
+\subsection{Lenses and Reverse Derivatives}
+
+Backpropagation computes gradients by reversing the forward pass.
+
+Categorically: this is a \textbf{lens} or \textbf{optic}.
+
+\begin{definition}[Lens]
+A lens from $A$ to $B$ consists of:
+\begin{itemize}
+    \item Forward map: $\mathsf{get}: A \to B$
+    \item Backward map: $\mathsf{put}: A \times B' \to A'$
+\end{itemize}
+where $B'$, $A'$ are ``gradient types.''
+\end{definition}
+
+Neural network layers compose as lenses: forward for inference, backward for training.
+
+\subsection{Cartesian Differential Categories}
+
+Backpropagation is formalized in \textbf{Cartesian differential categories}:
+\begin{itemize}
+    \item Objects have a notion of ``derivative''
+    \item Chain rule is a categorical law
+    \item Reverse mode autodiff is a functor
+\end{itemize}
+
+\section{What Exists}
+
+\subsection{Theoretical Frameworks}
+
+\begin{itemize}
+    \item \textbf{Para construction}: Parameterized morphisms (Cruttwell et al.)
+    \item \textbf{Optics/Lenses}: Bidirectional transformations for backprop
+    \item \textbf{Polynomial functors}: Capture architecture structure
+    \item \textbf{Markov categories}: Probabilistic models and Bayesian inference
+\end{itemize}
+
+\subsection{Recovered Architectures}
+
+The categorical framework can express:
+\begin{itemize}
+    \item Feedforward networks
+    \item Recurrent networks
+    \item Convolutional networks (via group actions)
+    \item Graph neural networks
+    \item Attention mechanisms
+\end{itemize}
+
+\subsection{Tools}
+
+\begin{itemize}
+    \item \texttt{CatGrad}: Categorical gradient computation
+    \item \texttt{numeric-optics-python}: Lenses for neural networks
+    \item Educational: \url{cats.for.ai} lecture series
+\end{itemize}
+
+\section{Limitations}
+
+\subsection{Descriptive, Not Prescriptive}
+
+\begin{warning}
+Current categorical deep learning \emph{describes} existing architectures.
+
+It doesn't (yet) \emph{derive} new ones from first principles.
+\end{warning}
+
+You can express ``CNN'' categorically. But the theory doesn't tell you to invent CNNs for images.
+
+\subsection{No Learning Theory}
+
+Category theory handles:
+\begin{itemize}
+    \item Structure of architectures ✓
+    \item Composition of components ✓
+\end{itemize}
+
+But not:
+\begin{itemize}
+    \item Why some architectures learn faster ✗
+    \item Generalization bounds ✗
+    \item Optimization dynamics ✗
+\end{itemize}
+
+\subsection{Steep Learning Curve}
+
+\begin{quote}
+\textit{``Category theory is abstract nonsense.''} — Steenrod (affectionately)
+\end{quote}
+
+The barrier to entry is high. Most ML practitioners don't know category theory.
+
+\section{Relevance to Our Question}
+
+Category theory is closest in spirit to what we want:
+
+\begin{itemize}
+    \item We have coalgebras (categorical structure)
+    \item We want to learn them (parameterized morphisms)
+    \item We want compositionality (functorial semantics)
+\end{itemize}
+
+\begin{keyinsight}
+Category theory provides the \emph{language} for our question.
+
+``Given functor $F$ (semantics), what is the optimal parameterized $F$-coalgebra (syntax)?''
+
+But the theory doesn't yet answer this question — it just lets us state it precisely.
+\end{keyinsight}
+
+\section{The Gap}
+
+What's missing:
+
+\begin{enumerate}
+    \item \textbf{Optimization theory}: Which categorical structures optimize well?
+    \item \textbf{Learnability}: When can we learn a coalgebra from data?
+    \item \textbf{Architecture derivation}: Given $F$, what parameterization?
+\end{enumerate}
+
+This is where our work begins.

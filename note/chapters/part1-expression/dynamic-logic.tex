@@ -1,0 +1,118 @@
+\chapter{Dynamic Logic}
+
+\begin{goals}
+\begin{itemize}
+    \item Understand PDL: modal logic for programs
+    \item See how actions become modalities
+    \item Appreciate the connection to program verification
+    \item Connect to coalgebra (labeled transition systems)
+\end{itemize}
+\end{goals}
+
+\section{Programs as Modalities}
+
+So far: $\necessary\varphi$ means ``in all accessible worlds, $\varphi$.''
+
+New idea: what if accessibility is \emph{labeled by programs}?
+
+\begin{definition}[PDL Syntax]
+Programs $\alpha$ and formulas $\varphi$ are mutually defined:
+\begin{align*}
+\alpha &::= a \mid \alpha;\beta \mid \alpha \cup \beta \mid \alpha^* \mid \varphi? \\
+\varphi &::= p \mid \neg\varphi \mid \varphi \land \psi \mid [\alpha]\varphi
+\end{align*}
+where $a$ is an atomic action.
+\end{definition}
+
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Program} & \textbf{Meaning} \\
+\hline
+$a$ & atomic action \\
+$\alpha;\beta$ & do $\alpha$, then $\beta$ \\
+$\alpha \cup \beta$ & choose $\alpha$ or $\beta$ (nondeterministic) \\
+$\alpha^*$ & repeat $\alpha$ zero or more times \\
+$\varphi?$ & test: proceed if $\varphi$, else fail \\
+\end{tabular}
+\end{center}
+
+\section{Semantics}
+
+\begin{definition}[PDL Model]
+A PDL model is $(W, \{R_a\}_{a \in \mathrm{Act}}, V)$ where each atomic action $a$ has its own accessibility relation $R_a$.
+\end{definition}
+
+Extend to compound programs:
+\begin{align*}
+R_{\alpha;\beta} &= R_\alpha \circ R_\beta \quad \text{(composition)} \\
+R_{\alpha \cup \beta} &= R_\alpha \cup R_\beta \quad \text{(union)} \\
+R_{\alpha^*} &= R_\alpha^* \quad \text{(reflexive-transitive closure)} \\
+R_{\varphi?} &= \{(w,w) : w \models \varphi\} \quad \text{(identity on $\varphi$-states)}
+\end{align*}
+
+\begin{definition}[Satisfaction]
+\[
+\mathcal{M}, w \models [\alpha]\varphi \iff \forall v: (w, v) \in R_\alpha \Rightarrow \mathcal{M}, v \models \varphi
+\]
+``After any execution of $\alpha$, $\varphi$ holds.''
+\end{definition}
+
+Dually: $\langle\alpha\rangle\varphi \equiv \neg[\alpha]\neg\varphi$ means ``$\alpha$ can lead to a state where $\varphi$.''
+
+\section{Examples}
+
+\begin{example}[Program Correctness]
+\[
+\mathsf{pre} \to [\mathsf{program}]\mathsf{post}
+\]
+``If precondition holds, then after running the program, postcondition holds.''
+
+This is a Hoare triple $\{\mathsf{pre}\}\mathsf{program}\{\mathsf{post}\}$ expressed in modal logic!
+\end{example}
+
+\begin{example}[Loop Invariant]
+\[
+\mathsf{inv} \to [(\mathsf{cond}?;\mathsf{body})^*](\neg\mathsf{cond} \to \mathsf{inv})
+\]
+``If invariant holds, after any number of loop iterations, when loop exits, invariant still holds.''
+\end{example}
+
+\begin{example}[Agent Planning]
+\[
+\mathsf{atHome} \to \langle\mathsf{drive};\mathsf{park}\rangle\mathsf{atWork}
+\]
+``From home, there exists a way (drive then park) to reach work.''
+\end{example}
+
+\section{PDL and Automata}
+
+Programs in PDL correspond to regular expressions:
+\begin{itemize}
+    \item $;$ = concatenation
+    \item $\cup$ = union
+    \item $*$ = Kleene star
+\end{itemize}
+
+\begin{theorem}
+PDL model checking is in P. PDL satisfiability is EXPTIME-complete.
+\end{theorem}
+
+\section{Connection to Coalgebra}
+
+A PDL model is a \emph{labeled transition system}:
+\[
+\gamma : W \to \prod_{a \in \mathrm{Act}} \mathcal{P}(W)
+\]
+This is a coalgebra for the functor $F(X) = (\mathcal{P}(X))^{\mathrm{Act}}$.
+
+\begin{keyinsight}
+PDL semantics is coalgebraic. Programs are built from atomic actions using regular operations. This connects modal logic of programs to automata theory.
+\end{keyinsight}
+
+\section{Extensions}
+
+\begin{itemize}
+    \item \textbf{Game Logic}: players alternate, $[\alpha^d]\varphi$ = ``player can ensure $\varphi$''
+    \item \textbf{Concurrent PDL}: parallel composition $\alpha \| \beta$
+    \item \textbf{$\mu$-calculus}: add fixed points, subsumes PDL and CTL
+\end{itemize}

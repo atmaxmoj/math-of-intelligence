@@ -1,0 +1,56 @@
+\chapter{Beyond Kripke: Coalgebra}
+
+\begin{goals}
+\begin{itemize}
+    \item See that Kripke frames are just one instance of a general pattern
+    \item Understand coalgebra as the mathematics of state-based systems
+    \item Appreciate the unification: automata, Markov chains, streams
+\end{itemize}
+\end{goals}
+
+\section{The Pattern}
+
+Look at these structures:
+
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Structure} & \textbf{Transition} \\
+\hline
+Kripke frame & $W \to \mathcal{P}(W)$ \\
+Deterministic automaton & $Q \to 2 \times Q^A$ \\
+Markov chain & $S \to \mathcal{D}(S)$ \\
+Stream & $S \to A \times S$ \\
+\end{tabular}
+\end{center}
+
+They all have the form: \textbf{state $\to$ F(state)} for some functor $F$.
+
+\begin{intuition}
+A coalgebra answers: ``What can I observe from this state, and what states can I reach next?'' It's the mathematics of \emph{behavior}.
+\end{intuition}
+
+\section{Coalgebras}
+
+\begin{definition}[Coalgebra]
+Let $F : \mathbf{Set} \to \mathbf{Set}$ be a functor. An \emph{$F$-coalgebra} is a pair $(X, \gamma)$ where:
+\begin{itemize}
+    \item $X$ is a set of \emph{states}
+    \item $\gamma : X \to F(X)$ is the \emph{transition structure}
+\end{itemize}
+\end{definition}
+
+\begin{example}[Kripke Frame as Coalgebra]
+A Kripke frame $(W, R)$ is a $\mathcal{P}$-coalgebra: $\gamma(w) = \{v : wRv\}$.
+\end{example}
+
+\section{Final Coalgebra}
+
+\begin{definition}[Final Coalgebra]
+A \emph{final} $F$-coalgebra $(\Omega, \omega)$ is one where for any $(X, \gamma)$, there exists a unique morphism $X \to \Omega$.
+\end{definition}
+
+\begin{keyinsight}
+The final coalgebra is the ``universe of all possible behaviors.'' Two states are equivalent iff they map to the same element in $\Omega$.
+\end{keyinsight}
+
+% TODO: coalgebraic bisimulation, Moss's nabla

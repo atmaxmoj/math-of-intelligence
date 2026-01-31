@@ -1,0 +1,47 @@
+\chapter{How Far Can We Go?}
+
+\begin{goals}
+\begin{itemize}
+    \item Explore meta-learning: learning to learn
+    \item Ask whether fixed points exist
+    \item Connect to Kolmogorov complexity
+\end{itemize}
+\end{goals}
+
+\section{Meta-Learning}
+
+If learning is coalgebraic (fold/unfold), then:
+\begin{itemize}
+    \item Learning algorithms are themselves structures
+    \item We can learn \emph{them} too
+\end{itemize}
+
+\begin{align*}
+\text{Level 0:} & \quad \text{Data} \to \text{Learn}_0 \to \text{Program} \\
+\text{Level 1:} & \quad \text{Learn}_0 \to \text{Learn}_1 \to \text{Better Learner} \\
+& \quad \vdots
+\end{align*}
+
+\section{Fixed Points}
+
+\begin{definition}[Universal Learner]
+A \emph{universal learner} is a fixed point: $L = \mathrm{MetaLearn}(L)$.
+\end{definition}
+
+\begin{theorem}[Bounded Complexity]
+If $L = \mathrm{MetaLearn}(L)$ exists, then $\K(L) \leq \K(\mathrm{MetaLearn}) + O(1)$.
+\end{theorem}
+
+\begin{proofsketch}
+$L$ can be described as ``the fixed point of MetaLearn.''
+\end{proofsketch}
+
+\section{Existence Questions}
+
+\begin{itemize}
+    \item Does the fixed point exist?
+    \item Is it unique?
+    \item Can we construct it?
+\end{itemize}
+
+% TODO: connections to domain theory

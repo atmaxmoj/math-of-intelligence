@@ -1,0 +1,103 @@
+\chapter{Symmetry as a Special Case}
+
+\begin{goals}
+\begin{itemize}
+    \item See equivariant architectures through the distance matching lens
+    \item Understand why symmetry helps: it removes redundancy
+    \item Know the limitations: not all structure is group-theoretic
+\end{itemize}
+\end{goals}
+
+\section{The Redundancy Problem}
+
+Consider learning a translation-invariant function with a fully-connected network.
+
+\begin{itemize}
+    \item The FC network can express many non-invariant functions
+    \item Many different weight configurations give the same invariant function
+    \item The parameter space is much larger than the function space
+\end{itemize}
+
+Result: severe distance mismatch. High condition number. Hard to optimize.
+
+\section{Equivariance Removes Redundancy}
+
+A $G$-equivariant architecture can only express $G$-equivariant functions.
+
+\begin{itemize}
+    \item Parameter space is smaller
+    \item Different parameters give different functions (less redundancy)
+    \item Better match between parameter distance and function distance
+\end{itemize}
+
+\begin{keyinsight}
+Equivariance improves distance matching by constraining the parameter space to match the function space.
+\end{keyinsight}
+
+\section{Example: CNN vs FC for Images}
+
+\textbf{Target}: translation-invariant image functions.
+
+\textbf{FC network}:
+\begin{itemize}
+    \item Parameters: $O(n^2)$ weights
+    \item Can express all functions, not just invariant ones
+    \item Huge redundancy for invariant targets
+    \item Poor distance matching
+\end{itemize}
+
+\textbf{CNN}:
+\begin{itemize}
+    \item Parameters: $O(k^2)$ kernel weights
+    \item Can only express translation-equivariant functions
+    \item Little redundancy
+    \item Good distance matching
+\end{itemize}
+
+\section{Quotient by Symmetry Group}
+
+Mathematically, if function space has symmetry group $G$:
+
+\[
+\text{Effective function space} = \mathcal{F} / G
+\]
+
+An equivariant parameterization directly parameterizes $\mathcal{F}/G$, avoiding redundancy.
+
+A non-equivariant parameterization has $|G|$-fold redundancy.
+
+\section{Limitations}
+
+Symmetry-based design works when:
+\begin{itemize}
+    \item The target has a known group symmetry $G$
+    \item We can construct $G$-equivariant layers
+\end{itemize}
+
+But many learning problems don't have obvious group structure:
+\begin{itemize}
+    \item Automata, Kripke frames: what's the group?
+    \item Language: partial symmetries at best
+    \item General coalgebras: symmetry unclear
+\end{itemize}
+
+\section{Symmetry Within the Larger Picture}
+
+\begin{center}
+\begin{tabular}{ll}
+\textbf{General principle} & Distance matching \\
+\textbf{Special case} & Symmetry/equivariance \\
+\textbf{Mechanism} & Remove redundancy by quotienting \\
+\textbf{Limitation} & Requires known group structure \\
+\end{tabular}
+\end{center}
+
+The distance matching principle is more general. Symmetry is one way to achieve it, but not the only way.
+
+\section{Open Question}
+
+For structures without group symmetry (coalgebras, automata), what plays the role of ``quotient by $G$''?
+
+Possibility: quotient by bisimulation equivalence?
+
+This connects back to our setting in Part I: bisimulation is the right equivalence for coalgebras, just as $G$-orbits are the right equivalence for $G$-symmetric functions.

@@ -1,0 +1,115 @@
+\chapter{Graded Modal Logic}
+
+\begin{goals}
+\begin{itemize}
+    \item Go beyond $\forall$/$\exists$: counting quantifiers
+    \item Understand graded modalities: $\possible_{\geq n}$, $\possible_{\leq n}$
+    \item See majority and probabilistic quantifiers
+    \item Appreciate the trade-offs (expressiveness vs decidability)
+\end{itemize}
+\end{goals}
+
+\section{The Limitation of $\necessary$/$\possible$}
+
+Standard modal logic has:
+\begin{itemize}
+    \item $\necessary\varphi$ = ``all accessible worlds satisfy $\varphi$'' ($\forall$)
+    \item $\possible\varphi$ = ``some accessible world satisfies $\varphi$'' ($\exists$)
+\end{itemize}
+
+But natural reasoning uses many more quantifiers:
+\begin{itemize}
+    \item ``\emph{Most} options are safe''
+    \item ``\emph{At least 3} escape routes exist''
+    \item ``\emph{Exactly one} successor state''
+    \item ``With \emph{probability $\geq 0.9$}, success''
+\end{itemize}
+
+\begin{warning}
+``At least 3 safe options'' is very different from ``some safe option.'' Standard modal logic can't distinguish them.
+\end{warning}
+
+\section{Graded Modalities}
+
+\begin{definition}[Graded Modal Logic]
+Extend the language with counting modalities:
+\begin{align*}
+\possible_{\geq n}\varphi &\quad \text{``at least $n$ accessible worlds satisfy $\varphi$''} \\
+\possible_{\leq n}\varphi &\quad \text{``at most $n$ accessible worlds satisfy $\varphi$''} \\
+\possible_{= n}\varphi &\quad \text{``exactly $n$ accessible worlds satisfy $\varphi$''}
+\end{align*}
+\end{definition}
+
+\begin{definition}[Semantics]
+\[
+\mathcal{M}, w \models \possible_{\geq n}\varphi \iff |\{v : wRv \text{ and } \mathcal{M}, v \models \varphi\}| \geq n
+\]
+\end{definition}
+
+Note: $\possible\varphi \equiv \possible_{\geq 1}\varphi$ and $\necessary\varphi \equiv \possible_{\leq 0}\neg\varphi$.
+
+\section{Majority Quantifier}
+
+\begin{definition}[Majority Modality]
+\[
+\mathsf{M}\varphi \quad \text{``most accessible worlds satisfy $\varphi$''}
+\]
+Semantics:
+\[
+\mathcal{M}, w \models \mathsf{M}\varphi \iff |\{v : wRv \land v \models \varphi\}| > |\{v : wRv \land v \not\models \varphi\}|
+\]
+\end{definition}
+
+\begin{keyinsight}
+The majority quantifier $\mathsf{M}$ cannot be defined using $\forall$/$\exists$ (Lindström). It's genuinely more expressive.
+\end{keyinsight}
+
+\section{Probabilistic Modality}
+
+\begin{definition}[Probabilistic Modal Logic]
+Given a probability distribution $\mu_w$ over successors of $w$:
+\[
+\mathcal{M}, w \models P_{\geq r}\varphi \iff \mu_w(\{v : wRv \land v \models \varphi\}) \geq r
+\]
+\end{definition}
+
+This requires more structure: not just accessibility $R$, but a probability measure.
+
+\section{Meta-Theoretic Trade-offs}
+
+Adding quantifiers has costs:
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Property} & \textbf{Basic Modal} & \textbf{Graded/Majority} \\
+\hline
+Compactness & \checkmark & Often fails \\
+Finite model property & \checkmark & Often fails \\
+Decidability & PSPACE & Higher complexity \\
+\end{tabular}
+\end{center}
+
+\begin{theorem}[Lindström]
+First-order logic is the unique logic with compactness and Löwenheim-Skolem. Adding quantifiers breaks at least one.
+\end{theorem}
+
+\section{Connection to Description Logic}
+
+Description logics (used in OWL, knowledge graphs) have number restrictions:
+\begin{align*}
+(\geq 3\ \mathsf{hasChild}.\mathsf{Doctor}) &\quad \text{``at least 3 children are doctors''} \\
+(\leq 1\ \mathsf{hasSpouse}) &\quad \text{``at most 1 spouse''}
+\end{align*}
+
+These are graded modalities in disguise!
+
+\section{Why This Matters}
+
+For AI agents:
+\begin{itemize}
+    \item ``Ensure at least 2 fallback options'' (robustness)
+    \item ``Most paths lead to success'' (probabilistic planning)
+    \item ``Exactly one next state'' (determinism)
+\end{itemize}
+
+Standard modal logic can't express these. Graded modal logic can.

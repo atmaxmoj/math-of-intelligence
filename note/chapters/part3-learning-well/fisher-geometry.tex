@@ -1,0 +1,119 @@
+\chapter{Fisher Information and Distance}
+
+\begin{goals}
+\begin{itemize}
+    \item Connect Fisher information to the distance matching principle
+    \item Understand condition number as a measure of mismatch
+    \item See natural gradient as a correction for mismatch
+\end{itemize}
+\end{goals}
+
+\section{The Jacobian Perspective}
+
+A parameterization $\gamma: \Theta \to \mathcal{F}$ maps parameters to functions.
+
+The Jacobian $J(\theta) = \partial \gamma / \partial \theta$ tells us:
+\begin{quote}
+How do small parameter changes translate to function changes?
+\end{quote}
+
+\section{Singular Values and Distance Distortion}
+
+The singular values $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_k$ of $J$ measure:
+\begin{itemize}
+    \item $\sigma_i$ large: moving in direction $i$ changes the function a lot
+    \item $\sigma_i$ small: moving in direction $i$ barely changes the function
+    \item $\sigma_i = 0$: direction $i$ is redundant (multiple $\theta$ give same function)
+\end{itemize}
+
+\section{Condition Number}
+
+\begin{definition}
+The condition number is $\kappa = \sigma_{\max} / \sigma_{\min}$.
+\end{definition}
+
+\begin{center}
+\begin{tabular}{ll}
+$\kappa \approx 1$ & All directions similar. Distance matching. Easy optimization. \\
+$\kappa \gg 1$ & Some directions stretched, others compressed. Mismatch. Hard. \\
+$\kappa = \infty$ & Some directions have $\sigma = 0$. Redundancy. Very hard.
+\end{tabular}
+\end{center}
+
+\begin{keyinsight}
+Condition number measures how far the parameterization is from distance matching.
+
+$\kappa = 1$ means perfect isometry. Large $\kappa$ means severe distortion.
+\end{keyinsight}
+
+\section{Fisher Information Matrix}
+
+For probabilistic models, the Fisher information matrix is:
+\[
+F_{ij}(\theta) = \mathbb{E}\left[ \frac{\partial \log p_\theta}{\partial \theta_i} \cdot \frac{\partial \log p_\theta}{\partial \theta_j} \right]
+\]
+
+For regression with Gaussian noise: $F \propto J^\top J$.
+
+The eigenvalues of $F$ are the squared singular values of $J$.
+
+Condition number of $F$ = $\kappa^2$.
+
+\section{Natural Gradient}
+
+Ordinary gradient descent:
+\[
+\theta_{t+1} = \theta_t - \eta \nabla L
+\]
+
+This moves in the steepest direction in parameter space.
+
+Natural gradient:
+\[
+\theta_{t+1} = \theta_t - \eta F^{-1} \nabla L
+\]
+
+This moves in the steepest direction in function space.
+
+\begin{keyinsight}
+Natural gradient corrects for distance mismatch by rescaling directions according to their sensitivity.
+
+It makes gradient descent behave as if the parameterization were isometric.
+\end{keyinsight}
+
+\section{The Design Question}
+
+Natural gradient is a \textbf{post-hoc fix}: given a parameterization, correct the gradients.
+
+But we want \textbf{a priori design}: choose a parameterization where ordinary gradient already works.
+
+\begin{quote}
+Can we design $\Theta$ such that $F \approx I$ (identity)?
+\end{quote}
+
+If yes, natural gradient = ordinary gradient. No correction needed.
+
+\section{When Is $F \approx I$ Possible?}
+
+\begin{itemize}
+    \item Linear regression with orthonormal features: $F = I$ exactly
+    \item Parameterization that ``respects'' the function space geometry
+    \item Quotient by symmetry group (remove redundant directions)
+\end{itemize}
+
+This connects to the symmetry/equivariance view: equivariant parameterizations remove redundancy, improving conditioning.
+
+\section{Summary}
+
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Concept} & \textbf{Role} \\
+\hline
+Jacobian $J$ & How parameters map to functions \\
+Singular values & Stretch/compression in each direction \\
+Condition number & Measure of distance mismatch \\
+Fisher matrix $F$ & $J^\top J$, captures local geometry \\
+Natural gradient & Corrects for mismatch \\
+Optimal parameterization & Achieves $\kappa \approx 1$ by design \\
+\end{tabular}
+\end{center}
