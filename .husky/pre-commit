@@ -1,8 +1,9 @@
 #!/bin/sh
 
 PDFLATEX="/Library/TeX/texbin/pdflatex"
+ROOT=$(git rev-parse --show-toplevel)
 
-cd note
+cd "$ROOT/note"
 if $PDFLATEX -interaction=nonstopmode main.tex > /dev/null 2>&1; then
     $PDFLATEX -interaction=nonstopmode main.tex > /dev/null 2>&1
     git add main.pdf
@@ -10,4 +11,3 @@ if $PDFLATEX -interaction=nonstopmode main.tex > /dev/null 2>&1; then
 else
     echo "✗ LaTeX compilation failed, committing anyway"
 fi
-cd ..
