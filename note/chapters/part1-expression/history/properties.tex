@@ -218,19 +218,24 @@ These two properties are easy to confuse. Let's be precise:
 
 Two natural questions arise:
 
-\begin{quote}
-\textbf{Q1}: ``If a proof exists (completeness), why can't I just search and find it? Doesn't that give me an algorithm (decidability)?''
+\begin{question}[title={Q1: Completeness $\Rightarrow$ Decidability?}]
+``If a proof exists (completeness), why can't I just search and find it? Doesn't that give me an algorithm (decidability)?''
+\end{question}
 
-\textbf{Q2}: ``If I have an algorithm that decides everything (decidability), doesn't that cover all truths (completeness)?''
-\end{quote}
+\begin{question}[title={Q2: Decidability $\Rightarrow$ Completeness?}]
+``If I have an algorithm that decides everything (decidability), doesn't that cover all truths (completeness)?''
+\end{question}
 
 Both questions have subtle answers.
 
-\textbf{Answer to Q1}: Yes, you can search for proofs. Enumerate all possible proofs: proof 1, proof 2, proof 3, ... If $\varphi$ is valid, you'll eventually find a proof. But here's the catch: \emph{what if $\varphi$ is invalid?} Then no proof exists. You'll search forever---proof 1 (no), proof 2 (no), proof 3 (no)---never knowing whether to keep looking or give up.
+\begin{answer}[title={A1: Completeness gives Semi-Decidability, not Decidability}]
+Yes, you can search for proofs. Enumerate all possible proofs: proof 1, proof 2, proof 3, ... If $\varphi$ is valid, you'll eventually find a proof. But here's the catch: \emph{what if $\varphi$ is invalid?} Then no proof exists. You'll search forever---proof 1 (no), proof 2 (no), proof 3 (no)---never knowing whether to keep looking or give up.
 
 The search procedure only works in one direction: it can \emph{confirm} validity (by finding a proof) but cannot \emph{refute} it (you can't search through all possible counterexamples). This is called \textbf{semi-decidability}: valid formulas can be recognized, but invalid ones cannot.
+\end{answer}
 
-\textbf{Answer to Q2}: This is subtler. You're right that if an algorithm says ``valid,'' you \emph{know} it's valid. But completeness asks a different question: can a \emph{specific proof system} derive all valid formulas?
+\begin{answer}[title={A2: Decidability is about the Logic, Completeness is about a Proof System}]
+You're right that if an algorithm says ``valid,'' you \emph{know} it's valid. But completeness asks a different question: can a \emph{specific proof system} derive all valid formulas?
 
 Here's the distinction:
 \begin{itemize}
@@ -238,7 +243,10 @@ Here's the distinction:
     \item \textbf{Completeness} is a property of a \emph{particular proof system}. It asks: can \emph{this} proof system derive all valid formulas?
 \end{itemize}
 
-A logic can be decidable while a particular proof system for it is incomplete. Let's see a concrete example.
+A logic can be decidable while a particular proof system for it is incomplete.
+\end{answer}
+
+Let's see a concrete example.
 
 \textbf{The logic}: Propositional logic.
 

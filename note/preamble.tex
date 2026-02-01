@@ -85,6 +85,16 @@
     title={\faBullseye\hspace{0.5em}Goals of This Chapter}, #1
 }
 
+\newtcolorbox{question}[1][]{
+    colback=teal!5, colframe=teal!50, fonttitle=\bfseries,
+    title={\faQuestionCircle\hspace{0.5em}Natural Question}, #1
+}
+
+\newtcolorbox{answer}[1][]{
+    colback=teal!3, colframe=teal!70, fonttitle=\bfseries,
+    title={\faCheckCircle\hspace{0.5em}Answer}, #1
+}
+
 % Inference/syllogism environment (no page break)
 \newenvironment{inference}{%
     \par\noindent\begin{minipage}{\linewidth}\centering
