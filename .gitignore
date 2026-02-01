@@ -59,3 +59,5 @@ note/build/
 
 # Node
 node_modules/
+.env
+note/.env

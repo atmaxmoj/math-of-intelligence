@@ -42,7 +42,7 @@ All of these have the same \textbf{structure}: an antecedent (the ``if'' part) a
 
 Why would anyone study such an abstract thing?
 
-The answer lies in ancient Athens, where democracy meant public debate. Citizens argued in the assembly, in the courts, in the marketplace. To win an argument, you needed to \textbf{persuade}---and persuasion required making your reasoning visible and unchallengeable.
+The answer lies in ancient Athens, where democracy meant public debate. Citizens argued in the assembly, in the courts, in the marketplace. To win an argument, you needed to \textbf{persuade}---and the ultimate persuasion is a chain of reasoning so tight that your opponent \emph{cannot} object.
 
 \begin{history}
 The word ``logic'' comes from the Greek \emph{logos}, which means both ``word'' and ``reason.'' For the Greeks, language and thought were intimately connected. To speak well was to think well.
@@ -176,7 +176,7 @@ Boole realized that the logical operations AND, OR, NOT could be treated as alge
 \end{history}
 
 \begin{example}[Boolean algebra]
-Let $p$ represent ``it is raining'' and $q$ represent ``the ground is wet.''
+Let $p$ = ``it is raining'' and $q$ = ``the ground is wet.''
 
 The basic operations are defined by their \textbf{truth tables}:
 
@@ -191,11 +191,20 @@ F & F & T & F & F & T \\
 \end{tabular}
 \end{center}
 
+Reading each row with our example:
 \begin{itemize}
-    \item $\neg p$ (NOT): true when $p$ is false
-    \item $p \land q$ (AND): true when both are true
-    \item $p \lor q$ (OR): true when at least one is true
-    \item $p \to q$ (implication): false only when $p$ is true and $q$ is false
+    \item \textbf{Row 1} ($p$=T, $q$=T): It's raining, ground is wet. Then: ``not raining'' is false, ``raining AND wet'' is true, ``raining OR wet'' is true, ``if raining then wet'' is true.
+    \item \textbf{Row 2} ($p$=T, $q$=F): It's raining, but ground is dry. Then: ``if raining then wet'' is \textbf{false}---the rain failed to wet the ground!
+    \item \textbf{Row 3} ($p$=F, $q$=T): Not raining, but ground is wet (sprinkler?). Then: ``if raining then wet'' is true---rain didn't happen, so the rule wasn't violated.
+    \item \textbf{Row 4} ($p$=F, $q$=F): Not raining, ground is dry. Then: ``if raining then wet'' is true---again, rain didn't happen, nothing to violate.
+\end{itemize}
+
+The operations in plain English:
+\begin{itemize}
+    \item $\neg p$: ``It is \emph{not} raining''
+    \item $p \land q$: ``It is raining \emph{and} the ground is wet''
+    \item $p \lor q$: ``It is raining \emph{or} the ground is wet (or both)''
+    \item $p \to q$: ``\emph{If} it is raining, \emph{then} the ground is wet''
 \end{itemize}
 
 Boole showed these satisfy algebraic laws: $p \land q = q \land p$, $p \lor (q \land r) = (p \lor q) \land (p \lor r)$, and so on. Logic became calculation.
@@ -243,6 +252,20 @@ Notice the pattern: $\forall$ = ``for all individuals,'' $\exists$ = ``for some 
 \end{intuition}
 
 This is \textbf{first-order logic}, and it is vastly more expressive than anything before.
+
+\begin{history}[title={Why ``first-order''?}]
+Frege's original system was actually \emph{higher-order}---it allowed quantification over predicates too, like $\forall P \, P(x)$ (``$x$ has every property''). This power led to Russell's paradox.
+
+The name ``first-order'' came later, when logicians distinguished:
+\begin{itemize}
+    \item \textbf{First-order}: quantify over \emph{individuals} ($\forall x$, $\exists x$)
+    \item \textbf{Second-order}: also quantify over \emph{predicates} ($\forall P$, $\exists P$)
+    \item \textbf{Higher-order}: quantify over predicates of predicates, etc.
+\end{itemize}
+``Order'' refers to what you're quantifying over. Individuals are first-order objects; predicates (which take individuals as arguments) are second-order; and so on.
+
+First-order logic became the standard because it has nice properties (completeness, compactness) that higher-order logics lack.
+\end{history}
 
 \begin{example}[Expressing ``all men are mortal'' in first-order logic]
 \[
@@ -365,14 +388,15 @@ The content changes, but something essential remains unchanged. Logic is the stu
 
 This is why logic became useful to so many fields:
 
-\begin{itemize}
-    \item \textbf{Philosophers} needed it to analyze concepts precisely
-    \item \textbf{Mathematicians} needed it to establish foundations
-    \item \textbf{Linguists} needed it to describe the structure of language
-    \item \textbf{Computer scientists} needed it to specify and verify programs
-\end{itemize}
+\textbf{Philosophers} wanted to analyze concepts that ordinary language leaves vague. What exactly is ``knowledge''? (Justified true belief? But what about Gettier cases?) What does ``necessary'' mean? (True in all possible worlds?) When is a name meaningful? (Russell's theory of descriptions: ``The present King of France is bald''---is this true, false, or meaningless?) Logic gave them tools to make these questions precise, to distinguish subtly different positions, and to reveal hidden assumptions.
 
-They all needed the same thing: a formal language to express structure, and rules to reason about structure while preserving essential properties.
+\textbf{Mathematicians} faced a crisis: their foundations were shaky. Cantor's set theory led to paradoxes. Hilbert wanted to prove mathematics consistent---but G\"odel showed this was impossible (from within). They needed to understand: What \emph{is} a proof? What can be proved? What are the limits of formal systems? Logic became the language in which these questions could even be \emph{asked}.
+
+\textbf{Linguists} discovered that natural language has hidden logical structure. ``Every student read some book''---does this mean there's one book everyone read, or each student read their own book? The ambiguity is a \emph{scope} ambiguity, invisible in the surface form but clear in the logical form. Montague showed that the semantics of English could be treated with the same rigor as the semantics of logic. Suddenly, meaning became mathematically tractable.
+
+\textbf{Computer scientists} needed to answer: does this program do what it's supposed to? Hoare logic lets you \emph{prove} that a program meets its specification. Type systems use logic to catch errors at compile time. Model checking exhaustively verifies that a system satisfies a temporal logic formula (``the elevator never moves with doors open''). Database queries (SQL) are essentially first-order logic. The entire field of formal verification rests on logic.
+
+They all converged on the same need: a formal language to express structure, and rules to reason about structure while knowing what remains invariant.
 
 \section{A Question for the Future}
 

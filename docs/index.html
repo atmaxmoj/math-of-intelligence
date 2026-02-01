@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Algebra of Intelligence</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: #16213e;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #0f3460;
+            z-index: 10;
+        }
+        h1 {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .status {
+            font-size: 12px;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #888;
+        }
+        .dot.live {
+            background: #4ade80;
+        }
+        .dot.syncing {
+            background: #fbbf24;
+            animation: pulse 0.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        #toc {
+            width: 280px;
+            background: #16213e;
+            border-right: 1px solid #0f3460;
+            overflow-y: auto;
+            padding: 15px 0;
+            font-size: 13px;
+            transition: width 0.2s, padding 0.2s;
+        }
+        #toc.hidden {
+            width: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #toc-content {
+            padding: 0 10px;
+        }
+        .toc-item {
+            padding: 6px 10px;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .toc-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        .toc-item.active {
+            background: rgba(255,255,255,0.1);
+        }
+        .toc-item.level-0 { font-weight: 600; margin-top: 10px; }
+        .toc-item.level-1 { padding-left: 20px; color: #bbb; }
+        .toc-item.level-2 { padding-left: 35px; color: #999; font-size: 12px; }
+        #viewer {
+            flex: 1;
+            overflow: auto;
+            background: #2a2a3e;
+            padding: 20px;
+        }
+        #pdf-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .page-wrapper {
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .page-wrapper canvas {
+            display: block;
+        }
+        .page-wrapper .textLayer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            opacity: 0.2;
+            line-height: 1.0;
+        }
+        .page-wrapper .textLayer > span {
+            color: transparent;
+            position: absolute;
+            white-space: pre;
+            cursor: text;
+        }
+        .page-wrapper .textLayer ::selection {
+            background: rgba(0, 0, 255, 0.3);
+        }
+        .page-wrapper .annotationLayer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        .page-wrapper .annotationLayer a {
+            position: absolute;
+            display: block;
+        }
+        .page-wrapper .annotationLayer .linkAnnotation > a {
+            background: rgba(255, 255, 0, 0);
+        }
+        .page-wrapper .annotationLayer .linkAnnotation > a:hover {
+            background: rgba(255, 255, 0, 0.2);
+        }
+        .left, .right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        a {
+            color: #888;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        a:hover {
+            color: #eee;
+        }
+        button {
+            background: #0f3460;
+            color: #eee;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        button:hover {
+            background: #1a5a8a;
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .loading {
+            color: #888;
+            padding: 40px;
+            text-align: center;
+        }
+        .toc-header {
+            padding: 0 10px 10px;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #666;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="left">
+            <button id="toc-toggle" title="Toggle TOC">☰</button>
+            <h1>The Algebra of Intelligence</h1>
+        </div>
+        <div class="status">
+            <span class="dot" id="dot"></span>
+            <span id="status-text">Loading...</span>
+            <span id="page-indicator" style="margin-left: 10px; color: #666;"></span>
+        </div>
+        <div class="right">
+            <a href="https://pub-a715c67981dc46dba5ca653c3da7b400.r2.dev/main.pdf" target="_blank">Download</a>
+            <button id="sync-btn">↻ Sync</button>
+        </div>
+    </header>
+    <div class="main">
+        <div id="toc">
+            <div class="toc-header">Contents</div>
+            <div id="toc-content">Loading...</div>
+        </div>
+        <div id="viewer">
+            <div id="pdf-container">
+                <div class="loading">Loading PDF...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PDF_URL = 'https://pub-a715c67981dc46dba5ca653c3da7b400.r2.dev/main.pdf';
+        const POLL_INTERVAL = 15000;
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        const viewer = document.getElementById('viewer');
+        const container = document.getElementById('pdf-container');
+        const tocContent = document.getElementById('toc-content');
+        const dot = document.getElementById('dot');
+        const statusText = document.getElementById('status-text');
+        const syncBtn = document.getElementById('sync-btn');
+        const pageIndicator = document.getElementById('page-indicator');
+
+        let pdfDoc = null;
+        let currentEtag = null;
+        let scale = 1.5;
+        let tocItems = [];
+        let currentPage = 1;
+
+        // Check ETag and sync if changed
+        async function checkAndSync(force = false) {
+            syncBtn.disabled = true;
+            syncBtn.textContent = '↻ Checking...';
+            dot.className = 'dot syncing';
+
+            try {
+                const response = await fetch(PDF_URL, { method: 'HEAD' });
+                const etag = response.headers.get('etag');
+
+                if (force || (etag !== currentEtag)) {
+                    if (currentEtag !== null) {
+                        statusText.textContent = 'Updating...';
+                    }
+                    currentEtag = etag;
+                    await loadPDF();
+                }
+
+                const now = new Date().toLocaleTimeString();
+                statusText.textContent = now;
+                dot.className = 'dot live';
+            } catch (e) {
+                statusText.textContent = 'Error';
+                dot.className = 'dot';
+                console.error(e);
+            }
+
+            syncBtn.disabled = false;
+            syncBtn.textContent = '↻ Sync';
+        }
+
+        // Load PDF
+        async function loadPDF() {
+            const scrollTop = viewer.scrollTop || parseInt(localStorage.getItem('scrollTop') || '0');
+
+            try {
+                pdfDoc = await pdfjsLib.getDocument(PDF_URL + '?t=' + Date.now()).promise;
+
+                const outline = await pdfDoc.getOutline();
+                await renderTOC(outline);
+                await renderAllPages();
+
+                viewer.scrollTop = scrollTop;
+                updateCurrentPage();
+            } catch (e) {
+                container.innerHTML = '<div class="loading">Error loading PDF</div>';
+                console.error(e);
+            }
+        }
+
+        // Save scroll position to localStorage
+        viewer.addEventListener('scroll', () => {
+            localStorage.setItem('scrollTop', viewer.scrollTop);
+            if (pdfDoc) updateCurrentPage();
+        });
+
+        // Get current page from scroll position
+        function getCurrentPageFromScroll() {
+            const wrappers = container.querySelectorAll('.page-wrapper');
+            const viewerRect = viewer.getBoundingClientRect();
+            const viewerMiddle = viewerRect.top + viewerRect.height / 3;
+
+            for (let i = wrappers.length - 1; i >= 0; i--) {
+                const rect = wrappers[i].getBoundingClientRect();
+                if (rect.top <= viewerMiddle) {
+                    return i + 1;
+                }
+            }
+            return 1;
+        }
+
+        // Render TOC
+        async function renderTOC(outline) {
+            tocItems = [];
+
+            if (!outline || outline.length === 0) {
+                tocContent.innerHTML = '<div class="toc-item" style="color:#666">No outline available</div>';
+                return;
+            }
+
+            tocContent.innerHTML = '';
+            await renderOutlineItems(outline, 0);
+        }
+
+        async function renderOutlineItems(items, level) {
+            for (const item of items) {
+                const div = document.createElement('div');
+                div.className = `toc-item level-${Math.min(level, 2)}`;
+                div.textContent = item.title;
+
+                let pageNum = 1;
+
+                if (item.dest) {
+                    try {
+                        let destRef = item.dest;
+                        if (typeof item.dest === 'string') {
+                            destRef = await pdfDoc.getDestination(item.dest);
+                        }
+                        if (destRef && destRef[0]) {
+                            const pageIndex = await pdfDoc.getPageIndex(destRef[0]);
+                            pageNum = pageIndex + 1;
+                            div.onclick = () => scrollToPage(pageNum);
+                        }
+                    } catch (e) {
+                        console.warn('Could not resolve destination', e);
+                    }
+                }
+
+                tocItems.push({ element: div, pageNum });
+                tocContent.appendChild(div);
+
+                if (item.items && item.items.length > 0) {
+                    await renderOutlineItems(item.items, level + 1);
+                }
+            }
+        }
+
+        // Scroll to page
+        function scrollToPage(pageNum) {
+            const wrapper = container.querySelector(`.page-wrapper[data-page="${pageNum}"]`);
+            if (wrapper) {
+                wrapper.scrollIntoView({ behavior: 'auto', block: 'start' });
+                viewer.scrollTop -= 20;
+            }
+        }
+
+        // Handle internal PDF links
+        function handleInternalLink(dest) {
+            if (typeof dest === 'string') {
+                pdfDoc.getDestination(dest).then(d => {
+                    if (d && d[0]) {
+                        pdfDoc.getPageIndex(d[0]).then(idx => scrollToPage(idx + 1));
+                    }
+                });
+            } else if (dest && dest[0]) {
+                pdfDoc.getPageIndex(dest[0]).then(idx => scrollToPage(idx + 1));
+            }
+        }
+
+        // Update current page and highlight TOC
+        function updateCurrentPage() {
+            const page = getCurrentPageFromScroll();
+            if (page !== currentPage) {
+                currentPage = page;
+            }
+
+            pageIndicator.textContent = `${currentPage} / ${pdfDoc ? pdfDoc.numPages : '?'}`;
+
+            let activeItem = null;
+            for (const item of tocItems) {
+                item.element.classList.remove('active');
+                if (item.pageNum <= currentPage) {
+                    activeItem = item;
+                }
+            }
+            if (activeItem) {
+                activeItem.element.classList.add('active');
+                activeItem.element.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+        }
+
+        // Render all pages
+        async function renderAllPages() {
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 1; i <= pdfDoc.numPages; i++) {
+                const page = await pdfDoc.getPage(i);
+                const viewport = page.getViewport({ scale });
+
+                // Page wrapper
+                const wrapper = document.createElement('div');
+                wrapper.className = 'page-wrapper';
+                wrapper.dataset.page = i;
+                wrapper.style.width = viewport.width + 'px';
+                wrapper.style.height = viewport.height + 'px';
+
+                // Canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                await page.render({
+                    canvasContext: canvas.getContext('2d'),
+                    viewport
+                }).promise;
+                wrapper.appendChild(canvas);
+
+                // Text layer
+                const textLayer = document.createElement('div');
+                textLayer.className = 'textLayer';
+                textLayer.style.width = viewport.width + 'px';
+                textLayer.style.height = viewport.height + 'px';
+                const textContent = await page.getTextContent();
+                pdfjsLib.renderTextLayer({
+                    textContent,
+                    container: textLayer,
+                    viewport,
+                    textDivs: []
+                });
+                wrapper.appendChild(textLayer);
+
+                // Annotation layer (for links)
+                const annotationLayer = document.createElement('div');
+                annotationLayer.className = 'annotationLayer';
+                const annotations = await page.getAnnotations();
+                for (const anno of annotations) {
+                    if (anno.subtype === 'Link' && anno.rect) {
+                        const [x1, y1, x2, y2] = viewport.convertToViewportRectangle(anno.rect);
+                        const link = document.createElement('a');
+                        link.style.left = Math.min(x1, x2) + 'px';
+                        link.style.top = Math.min(y1, y2) + 'px';
+                        link.style.width = Math.abs(x2 - x1) + 'px';
+                        link.style.height = Math.abs(y2 - y1) + 'px';
+
+                        if (anno.url) {
+                            link.href = anno.url;
+                            link.target = '_blank';
+                        } else if (anno.dest) {
+                            link.href = '#';
+                            link.onclick = (e) => {
+                                e.preventDefault();
+                                handleInternalLink(anno.dest);
+                            };
+                        }
+                        annotationLayer.appendChild(link);
+                    }
+                }
+                wrapper.appendChild(annotationLayer);
+
+                fragment.appendChild(wrapper);
+            }
+
+            container.innerHTML = '';
+            container.appendChild(fragment);
+        }
+
+        // TOC toggle
+        const toc = document.getElementById('toc');
+        const tocToggle = document.getElementById('toc-toggle');
+        tocToggle.addEventListener('click', () => {
+            toc.classList.toggle('hidden');
+        });
+
+        // Button click
+        syncBtn.addEventListener('click', () => checkAndSync(true));
+
+        // Keyboard: R to sync
+        document.addEventListener('keydown', (e) => {
+            if ((e.key === 'r' || e.key === 'R') && !e.metaKey && !e.ctrlKey && !syncBtn.disabled) {
+                checkAndSync(true);
+            }
+        });
+
+        // Initial load
+        checkAndSync(true);
+
+        // Auto-check for updates
+        setInterval(() => checkAndSync(false), POLL_INTERVAL);
+    </script>
+</body>
+</html>
