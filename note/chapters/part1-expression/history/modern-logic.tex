@@ -1,0 +1,100 @@
+% Section: The Birth of Modern Logic
+
+\subsection{Leibniz's Dream}
+
+In the 17th century, Leibniz had a vision:
+
+\begin{history}
+Leibniz dreamed of a \emph{characteristica universalis}: a universal symbolic language for all human thought. And a \emph{calculus ratiocinator}: a mechanical method to compute truth.
+
+``When there are disputes among persons, we can simply say: let us calculate, and see who is right.''
+\end{history}
+
+Leibniz never achieved it. But his dream planted a seed: \textbf{reasoning as calculation}.
+
+\subsection{Boole's Algebra}
+
+Two centuries later, George Boole took the first real step.
+
+\begin{history}[title={The Laws of Thought, 1854}]
+Boole realized that AND, OR, NOT could be treated as algebraic operations. Propositions became variables, connectives became operations, and logical reasoning became solving equations.
+\end{history}
+
+\begin{example}[Boolean algebra]
+Let $p$ = ``it is raining'' and $q$ = ``the ground is wet.''
+
+\begin{center}
+\begin{tabular}{cc|cccc}
+$p$ & $q$ & $\neg p$ & $p \land q$ & $p \lor q$ & $p \to q$ \\
+\hline
+T & T & F & T & T & T \\
+T & F & F & F & T & F \\
+F & T & T & F & T & T \\
+F & F & T & F & F & T \\
+\end{tabular}
+\end{center}
+
+Boole showed these satisfy algebraic laws: $p \land q = q \land p$, $p \lor (q \land r) = (p \lor q) \land (p \lor r)$, etc.
+\end{example}
+
+But Boole's algebra could only express \textbf{propositional} logic. ``All men are mortal'' is just a single symbol $p$---the internal structure is invisible.
+
+\subsection{Frege's Revolution}
+
+The real transformation came in 1879, when Gottlob Frege published \emph{Begriffsschrift} (Concept-Script).
+
+Frege wanted to derive mathematics from pure logic. To do this, he introduced:
+
+\begin{keyinsight}
+\begin{enumerate}
+    \item \textbf{Quantifiers}: $\forall x$ (``for all $x$'') and $\exists x$ (``there exists $x$'')
+    \item \textbf{Predicates and relations}: $P(x)$, $R(x, y)$ instead of ``$S$ is $P$''
+    \item \textbf{Nested structure}: $\forall x \exists y \, R(x, y)$ differs from $\exists y \forall x \, R(x, y)$
+\end{enumerate}
+\end{keyinsight}
+
+\begin{intuition}
+$\forall$ and $\exists$ are the \textbf{minimal pair}, corresponding to Aristotle's ``All'' and ``Some.'' They are duals:
+\[
+\forall x \, \varphi \;\equiv\; \neg \exists x \, \neg \varphi
+\]
+Later, modal logic will use the same pattern: $\Box$ = ``in all worlds,'' $\Diamond$ = ``in some world.'' This is not a coincidence.
+\end{intuition}
+
+This is \textbf{first-order logic}. Frege's original system was actually higher-order (quantifying over predicates), which led to Russell's paradox.
+
+\subsubsection{The Semantics of First-Order Logic}
+
+Propositional logic has truth tables. What is the analogous ``truth table'' for first-order logic?
+
+The answer is a \textbf{structure} (or \textbf{model}):
+
+\begin{definition}[Structure]
+A structure $\mathcal{M}$ consists of:
+\begin{enumerate}
+    \item A non-empty set $D$, the \textbf{domain}
+    \item For each constant $c$, an element $c^\mathcal{M} \in D$
+    \item For each predicate $P$, a subset $P^\mathcal{M} \subseteq D^n$
+    \item For each function $f$, a function $f^\mathcal{M}: D^n \to D$
+\end{enumerate}
+\end{definition}
+
+\begin{example}[Arithmetic]
+Structure $\mathcal{N}$: domain $D = \{0, 1, 2, \ldots\}$, $0^\mathcal{N} = 0$, $s^\mathcal{N}(n) = n+1$, $<^\mathcal{N} = \{(m,n) \mid m < n\}$.
+
+In $\mathcal{N}$, the formula $\forall x \, (x < s(x))$ is \textbf{true}.
+
+But in a different structure with $D = \{a, b\}$ and $s(b) = a$, the same formula is \textbf{false}.
+\end{example}
+
+The key insight: \textbf{the same formula can be true in one structure and false in another}. Truth is always relative to a structure.
+
+The formal satisfaction relation $\mathcal{M} \models \varphi$ is defined recursively:
+\begin{center}
+\begin{tabular}{ll}
+$\mathcal{M} \models P(t_1, \ldots, t_n)$ & iff $(t_1^\mathcal{M}, \ldots, t_n^\mathcal{M}) \in P^\mathcal{M}$ \\[4pt]
+$\mathcal{M} \models \neg \varphi$ & iff $\mathcal{M} \not\models \varphi$ \\[4pt]
+$\mathcal{M} \models \varphi \land \psi$ & iff $\mathcal{M} \models \varphi$ and $\mathcal{M} \models \psi$ \\[4pt]
+$\mathcal{M} \models \forall x \, \varphi$ & iff for \textbf{every} $d \in D$: $\mathcal{M} \models \varphi[x \mapsto d]$
+\end{tabular}
+\end{center}

@@ -93,8 +93,6 @@
             background: rgba(255,255,255,0.1);
         }
         .toc-item.level-0 { font-weight: 600; margin-top: 10px; }
-        .toc-item.level-1 { padding-left: 20px; color: #bbb; }
-        .toc-item.level-2 { padding-left: 35px; color: #999; font-size: 12px; }
         #viewer {
             flex: 1;
             overflow: auto;
@@ -328,8 +326,15 @@
         async function renderOutlineItems(items, level) {
             for (const item of items) {
                 const div = document.createElement('div');
-                div.className = `toc-item level-${Math.min(level, 2)}`;
+                div.className = `toc-item${level === 0 ? ' level-0' : ''}`;
                 div.textContent = item.title;
+
+                // Dynamic styling based on level
+                if (level > 0) {
+                    div.style.paddingLeft = (level * 15) + 'px';
+                    div.style.color = `hsl(0, 0%, ${Math.max(50, 80 - level * 10)}%)`;
+                    div.style.fontSize = Math.max(11, 13 - level) + 'px';
+                }
 
                 let pageNum = 1;
 

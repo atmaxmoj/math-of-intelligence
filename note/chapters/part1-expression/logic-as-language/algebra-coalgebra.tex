@@ -1,0 +1,64 @@
+% Section: Algebra and Coalgebra: Two Faces of Structure
+
+Within category theory, a fundamental duality emerged: \textbf{algebra} and \textbf{coalgebra}.
+
+\subsection{Algebra: Building Up}
+
+An \textbf{algebra} for a functor $F$ is a structure where you can ``fold'' or ``evaluate'' $F$-structured data.
+
+\begin{example}[Lists as an algebra]
+The type of lists of natural numbers satisfies:
+\[
+\mathsf{List}(\mathbb{N}) \cong 1 + \mathbb{N} \times \mathsf{List}(\mathbb{N})
+\]
+A list is either empty ($1$) or a head ($\mathbb{N}$) followed by a tail (another list).
+
+This is an \textbf{algebra} for the functor $F(X) = 1 + \mathbb{N} \times X$.
+
+Functions on lists (like $\mathsf{sum}$) are defined by \textbf{folding}: specify what to do with empty and what to do with cons.
+\end{example}
+
+Algebras are about \textbf{construction} and \textbf{induction}: building finite, well-founded structures.
+
+The syntax of a logic---formulas, proofs---forms an algebra: the \textbf{initial algebra} of the grammar.
+
+\subsection{Coalgebra: Observing Behavior}
+
+A \textbf{coalgebra} for a functor $F$ is a structure where you can ``unfold'' or ``observe'' behavior.
+
+\begin{example}[Streams as a coalgebra]
+An infinite stream of natural numbers has type:
+\[
+\mathsf{Stream}(\mathbb{N}) \to \mathbb{N} \times \mathsf{Stream}(\mathbb{N})
+\]
+From a stream, you can observe: the head (a number) and the tail (another stream).
+
+This is a \textbf{coalgebra} for the functor $F(X) = \mathbb{N} \times X$.
+
+Functions producing streams are defined by \textbf{unfolding}: specify the head and how to continue.
+\end{example}
+
+Coalgebras are about \textbf{behavior} and \textbf{coinduction}: potentially infinite, observable processes.
+
+State machines, automata, transition systems---these are coalgebras.
+
+\subsection{The Duality}
+
+\begin{center}
+\begin{tabular}{lll}
+& \textbf{Algebra} & \textbf{Coalgebra} \\
+\hline
+Perspective & Construction & Observation \\
+Principle & Induction & Coinduction \\
+Structure & Finite, well-founded & Potentially infinite \\
+Examples & Syntax, data types & Behavior, state machines \\
+Canonical object & Initial algebra & Final coalgebra \\
+\end{tabular}
+\end{center}
+
+\begin{keyinsight}
+Algebra is about \textbf{syntax}: how things are built.\\
+Coalgebra is about \textbf{semantics}: how things behave.
+
+Logic lives in both: the formulas are algebraic (syntax), but their meaning involves coalgebraic structures (models, possible worlds, state transitions).
+\end{keyinsight}

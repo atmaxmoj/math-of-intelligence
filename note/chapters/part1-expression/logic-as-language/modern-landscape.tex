@@ -1,0 +1,33 @@
+% Section: The Modern Landscape
+
+Let us step back and see where we are.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm, auto]
+    \node (form) {\textbf{``Form + Structure-preserving''}};
+    \node (four) [below=1.5cm of form] {Four Pillars};
+    \node (cat) [below=1.5cm of four] {Category Theory};
+    \node (alg) [below left=1.5cm and 1cm of cat] {Algebra (Syntax)};
+    \node (coalg) [below right=1.5cm and 1cm of cat] {Coalgebra (Behavior)};
+    \node (modal) [below=1.5cm of coalg] {Modal Logic};
+
+    \draw[->] (form) -- (four) node[midway, right] {\small 20th century};
+    \draw[->] (four) -- (cat) node[midway, right] {\small ``what is structure?''};
+    \draw[->] (cat) -- (alg);
+    \draw[->] (cat) -- (coalg);
+    \draw[->] (coalg) -- (modal) node[midway, right] {\small natural language for};
+\end{tikzpicture}
+\end{center}
+
+The journey, driven throughout by the desire for greater expressive power:
+\begin{enumerate}
+    \item \textbf{Syllogisms}: ``I want to describe valid argument forms''
+    \item \textbf{First-order logic}: ``I want to describe quantified relationships''
+    \item \textbf{Modal logic}: ``I want to describe possibility, necessity, time, knowledge...''
+    \item \textbf{The shift}: Logic becomes a language for describing systems, not just a tool for checking arguments
+    \item \textbf{Category theory}: ``I want to describe structure itself''
+    \item \textbf{Algebra/Coalgebra}: Syntax vs. behavior---two faces of structure
+    \item \textbf{Coalgebraic modal logic}: Modal logic is the natural language for behavioral systems
+\end{enumerate}
+
+Each step: \emph{I can't say what I want to say} $\to$ \emph{build a more expressive language}.

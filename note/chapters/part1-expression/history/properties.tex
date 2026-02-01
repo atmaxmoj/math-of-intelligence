@@ -1,0 +1,498 @@
+% Section: Properties of Logical Systems
+
+The foundational crisis forced a question: \textbf{what makes a logical system trustworthy?}
+
+Before Russell's paradox, mathematicians assumed their reasoning was sound. Frege spent decades building his logical foundation for arithmetic, confident it was rock-solid. Then one letter from Russell demolished everything.
+
+After the crisis, nothing could be taken for granted. Logicians needed \textbf{explicit criteria}---properties that a logical system must have (or should have) to be reliable. These properties became the vocabulary for evaluating any formal system.
+
+\subsection{Non-Negotiable Properties}
+
+\subsubsection{Soundness: Proofs Don't Lie}
+
+\begin{history}[title={Frege's Life Work, Destroyed}]
+Gottlob Frege began his project in 1879 with the \emph{Begriffsschrift}. His goal: prove that arithmetic is reducible to pure logic. No intuition, no hand-waving---just rigorous derivation from logical axioms.
+
+For over twenty years, Frege labored in obscurity. Most mathematicians ignored his strange notation. But Frege persisted, building an elaborate formal system. In 1893, he published the first volume of \emph{Grundgesetze der Arithmetik} (Basic Laws of Arithmetic). The second volume was at the printer in 1902.
+
+Then came the letter.
+
+Bertrand Russell, a young philosopher who was one of the few people actually reading Frege, had discovered something terrible. He wrote to Frege on June 16, 1902:
+
+\begin{quote}
+``I find myself in complete agreement with you in all essentials... There is just one point where I have encountered a difficulty.''
+\end{quote}
+
+The ``difficulty'' was this: Frege's Axiom V allowed forming the set of all sets that satisfy any property. Russell asked: what about the set $R = \{x \mid x \notin x\}$---the set of all sets that don't contain themselves?
+
+\begin{itemize}
+    \item If $R \in R$, then by definition of $R$, we have $R \notin R$. Contradiction.
+    \item If $R \notin R$, then by definition of $R$, we have $R \in R$. Contradiction.
+\end{itemize}
+
+Frege's system could \emph{construct} this set $R$. Therefore his system could prove both $R \in R$ and $R \notin R$. A contradiction.
+
+Frege's reply, written just days later, is one of the most poignant in the history of mathematics:
+
+\begin{quote}
+``Your discovery of the contradiction caused me the greatest surprise and, I would almost say, consternation, since it has shaken the basis on which I intended to build arithmetic... It is all the more serious since... not only the foundations of my arithmetic, but also the sole possible foundations of arithmetic, seem to vanish.''
+\end{quote}
+
+The second volume of \emph{Grundgesetze} was already being printed. Frege hastily added an appendix admitting the flaw. He never recovered intellectually; he published little afterward and died in obscurity.
+\end{history}
+
+But why does one contradiction destroy \emph{everything}? Because of \emph{ex falso quodlibet}: from a contradiction, you can derive any statement. Once Frege's system proved $R \in R$ and $R \notin R$, it could also prove:
+\begin{itemize}
+    \item $0 = 1$
+    \item $2 + 2 = 5$
+    \item ``The moon is made of green cheese''
+\end{itemize}
+Every ``theorem'' in the system was worthless---not because they were all false, but because the system could no longer distinguish true from false.
+
+The problem is now clear: \textbf{how do we know our proof rules are trustworthy?} Just because we can derive $\varphi$ doesn't mean $\varphi$ is actually true. Frege \emph{thought} his Axiom V was obviously correct. It wasn't.
+
+\begin{intuition}
+Think of a proof system as a \textbf{machine} that stamps ``APPROVED'' on formulas. Soundness checks whether this machine ever approves a false statement---by asking: does $\vdash \varphi$ always imply $\models \varphi$?
+
+If not, the machine is broken. You can never trust its output.
+\end{intuition}
+
+\begin{definition}[Soundness]
+A proof system is \textbf{sound} if everything provable is true:
+\[ \vdash \varphi \;\Rightarrow\; \models \varphi \]
+``If we can derive it, it's actually valid.''
+\end{definition}
+
+Soundness is proved by \textbf{induction on proof length}: show that axioms are valid, and that each inference rule preserves validity. If both hold, every derivable formula is valid.
+
+Now we can return to Frege's disaster. What went wrong? His Axiom V seemed obviously true, but it wasn't---it allowed constructing Russell's paradoxical set. In modern terms: \textbf{Frege's system was unsound}. It could derive $R \in R$, but $R \in R$ is not true (in fact, it's neither true nor false---it's meaningless, because $R$ doesn't exist as a well-defined set).
+
+With the concept of soundness in hand, we know exactly what to check: before trusting any proof system, \emph{prove that its axioms are valid and its rules preserve validity}. If we can establish soundness, then the nightmare scenario cannot happen---the system will never approve ``$0 = 1$'' or ``the moon is made of green cheese,'' because those statements are false, and a sound system only approves truths.
+
+\begin{warning}
+Soundness is the \textbf{absolute minimum}. An unsound system is not merely incomplete or inconvenient---it is \textbf{broken}. Frege's system was unsound, which is why it could ``prove'' anything at all.
+\end{warning}
+
+\subsubsection{Consistency: No Contradictions}
+
+\begin{history}[title={Ex Falso Quodlibet}]
+Medieval logicians discovered a terrifying principle: from a contradiction, \emph{anything} follows.
+
+Suppose you can prove both $\varphi$ and $\neg\varphi$. Then:
+\begin{enumerate}
+    \item $\varphi$ \hfill (assumption)
+    \item $\varphi \lor \psi$ \hfill (from 1, by $\lor$-introduction)
+    \item $\neg\varphi$ \hfill (assumption)
+    \item $\psi$ \hfill (from 2 and 3, by disjunctive syllogism)
+\end{enumerate}
+The formula $\psi$ was arbitrary. So from a contradiction, you can derive \emph{any} statement whatsoever.
+\end{history}
+
+This is why consistency matters: an inconsistent system proves everything, which means it proves nothing meaningful.
+
+\begin{definition}[Consistency]
+A system is \textbf{consistent} if there is no formula $\varphi$ such that both $\vdash \varphi$ and $\vdash \neg\varphi$.
+
+Equivalently: a system is consistent if it does \emph{not} prove $\bot$ (falsehood).
+\end{definition}
+
+\begin{intuition}
+Consistency is the ``sanity check.'' A system that contradicts itself has lost all connection to truth---it's just symbol-shuffling that proves anything you want.
+\end{intuition}
+
+Russell's paradox showed that Frege's system was inconsistent. From the contradiction, Frege could derive $0 = 1$, $2 + 2 = 5$, and ``the moon is made of green cheese.'' The system was worthless.
+
+\subsection{Desirable Properties}
+
+\subsubsection{Completeness: No Truths Left Behind}
+
+Soundness says proofs don't lie. But there's a converse question: \textbf{are all truths provable?}
+
+\begin{history}[title={Hilbert's Program}]
+David Hilbert, the most influential mathematician of his era, wanted to secure mathematics forever. His program (1920s): formalize all of mathematics, prove it consistent, and show every statement is decidable. In 1928 he declared: ``We must know. We will know.''
+\end{history}
+
+Hilbert's vision emerged from the chaos after Russell's paradox. If naive reasoning could hide contradictions, perhaps \emph{all} of mathematics was suspect. Hilbert's solution: formalize everything, then prove the formalization is safe.
+
+The program had three goals:
+\begin{enumerate}
+    \item Formalize all of mathematics in a precise symbolic system
+    \item Prove, using only ``finitary'' methods, that this system is consistent
+    \item Show that every mathematical statement can be either proved or disproved
+\end{enumerate}
+
+If successful, mathematics would be \textbf{complete} and \textbf{provably consistent}. Human intuition could be replaced by mechanical symbol manipulation.
+
+Enter Kurt Gödel, a 23-year-old Austrian logician.
+
+In 1929, Gödel proved the \textbf{completeness theorem}: first-order logic is complete. Every valid formula has a proof. Progress!
+
+But in 1931, Gödel published his \textbf{incompleteness theorems}, which demolished the program:
+
+\begin{itemize}
+    \item \textbf{First Incompleteness Theorem}: Any consistent formal system capable of expressing basic arithmetic contains statements that are true but unprovable within the system.
+
+    \item \textbf{Second Incompleteness Theorem}: Such a system cannot prove its own consistency (unless it is actually inconsistent).
+\end{itemize}
+
+Gödel's proof was devastatingly clever. He constructed a sentence $G$ that essentially says: ``This sentence is not provable.''
+\begin{itemize}
+    \item If $G$ is provable, then what it says is false, so the system proves a falsehood---the system is unsound.
+    \item If $G$ is not provable, then what it says is true---a true but unprovable statement exists.
+\end{itemize}
+Either way, the system is incomplete or inconsistent. Hilbert's dream was dead.
+
+\begin{definition}[Completeness]
+A proof system is \textbf{complete} if every valid formula is provable:
+\[ \models \varphi \;\Rightarrow\; \vdash \varphi \]
+``If it's true in all models, we can derive it.''
+\end{definition}
+
+Together with soundness, completeness gives the ideal correspondence:
+\[ \vdash \varphi \;\Leftrightarrow\; \models \varphi \]
+Syntax and semantics coincide perfectly.
+
+\begin{intuition}
+Soundness: ``the proof system doesn't make mistakes.''
+
+Completeness: ``the proof system doesn't miss anything.''
+
+First-order logic has both. Arithmetic (and anything stronger) has soundness but not completeness---there are truths it cannot prove.
+\end{intuition}
+
+Now return to Hilbert's question: can every mathematical statement be proved or disproved?
+
+For pure first-order logic, the answer is \textbf{yes}---that's Gödel's completeness theorem. If $\varphi$ is a logical truth (true in all structures), there's a proof of $\varphi$. If $\varphi$ is not a logical truth, there's a counterexample.
+
+But Hilbert wanted more: completeness for \emph{arithmetic}, not just logic. Here Gödel's answer is \textbf{no}. The sentence $G$ (``I am not provable'') is true but unprovable. Hilbert's dream of deciding every arithmetic statement was impossible---not because we haven't been clever enough, but because \emph{no consistent formal system can do it}.
+
+What does this mean in practice? It means mathematics is inexhaustible. No matter how many axioms you add, there will always be truths beyond your reach. Far from being a defeat, this is liberating: mathematics can never be reduced to a finished, mechanical procedure. There will always be new theorems to discover, new methods to invent.
+
+\subsubsection{Decidability: Can Machines Check?}
+
+\begin{history}[title={The Entscheidungsproblem}]
+Hilbert and Ackermann (1928) posed the ``decision problem'': is there an algorithm that takes any first-order formula and correctly determines whether it's valid? This was the last hope for Hilbert's program---even if not all truths are provable, perhaps validity is still mechanically checkable.
+\end{history}
+
+For propositional logic, the answer is yes: truth tables. You can mechanically check all $2^n$ rows.
+
+But first-order logic is different. In 1936, two mathematicians independently proved that no such algorithm can exist.
+
+\textbf{Alonzo Church} at Princeton published first (April 1936). He used his $\lambda$-calculus to define ``computable function,'' then showed that validity in first-order logic is not computable.
+
+\textbf{Alan Turing}, a 23-year-old at Cambridge, had been working on the same problem without knowing of Church's work. He invented the Turing machine---an abstract model of mechanical computation---and proved the same result. His paper introduced the famous ``halting problem'': no algorithm can determine whether an arbitrary program will halt or run forever.
+
+When Turing learned of Church's result (after completing his own paper), he went to Princeton to study under Church, who became his doctoral advisor. They proved that $\lambda$-calculus and Turing machines are equivalent in power. The \textbf{Church-Turing thesis} emerged: any ``reasonable'' notion of computation is equivalent to Turing machines (or $\lambda$-calculus, or any of several other equivalent formalisms).
+
+The Entscheidungsproblem is unsolvable. There is no algorithm that can always tell you whether a first-order formula is valid. You can search for a proof (and you'll find one if it exists, by completeness), but if the formula is invalid, you might search forever.
+
+\begin{definition}[Decidability]
+A logic is \textbf{decidable} if there exists an algorithm that:
+\begin{itemize}
+    \item Takes any formula $\varphi$ as input
+    \item Always terminates (doesn't run forever)
+    \item Correctly outputs ``valid'' or ``not valid''
+\end{itemize}
+\end{definition}
+
+Return to Hilbert's question: can a machine check validity?
+
+The answer splits in two. For \textbf{propositional logic}: yes. Truth tables give a mechanical procedure---check all $2^n$ rows, and you'll know whether $\varphi$ is valid. Slow, but guaranteed to terminate with the correct answer.
+
+For \textbf{first-order logic}: no. Church and Turing showed that no algorithm can do this. You can search for a proof, and if $\varphi$ is valid, you'll eventually find one (by completeness). But if $\varphi$ is \emph{not} valid, you might search forever without knowing whether to keep looking or give up.
+
+This is Hilbert's Entscheidungsproblem, answered in the negative. But the negative answer required defining precisely what an ``algorithm'' is---and that definition (Turing machines, $\lambda$-calculus) became the foundation of computer science.
+
+\subsubsection{Completeness vs. Decidability: A Crucial Distinction}
+
+These two properties are easy to confuse. Let's be precise:
+
+\begin{center}
+\begin{tabular}{l|p{10cm}}
+\textbf{Completeness} & If $\varphi$ is valid, then $\varphi$ has a proof. \\
+& (Every truth is provable.) \\[0.5em]
+\textbf{Decidability} & There exists an algorithm that, given any $\varphi$, correctly determines whether $\varphi$ is valid. \\
+& (A machine can always tell you yes or no.)
+\end{tabular}
+\end{center}
+
+Two natural questions arise:
+
+\begin{quote}
+\textbf{Q1}: ``If a proof exists (completeness), why can't I just search and find it? Doesn't that give me an algorithm (decidability)?''
+
+\textbf{Q2}: ``If I have an algorithm that decides everything (decidability), doesn't that cover all truths (completeness)?''
+\end{quote}
+
+Both questions have subtle answers.
+
+\textbf{Answer to Q1}: Yes, you can search for proofs. Enumerate all possible proofs: proof 1, proof 2, proof 3, ... If $\varphi$ is valid, you'll eventually find a proof. But here's the catch: \emph{what if $\varphi$ is invalid?} Then no proof exists. You'll search forever---proof 1 (no), proof 2 (no), proof 3 (no)---never knowing whether to keep looking or give up.
+
+The search procedure only works in one direction: it can \emph{confirm} validity (by finding a proof) but cannot \emph{refute} it (you can't search through all possible counterexamples). This is called \textbf{semi-decidability}: valid formulas can be recognized, but invalid ones cannot.
+
+\textbf{Answer to Q2}: This is subtler. You're right that if an algorithm says ``valid,'' you \emph{know} it's valid. But completeness asks a different question: can a \emph{specific proof system} derive all valid formulas?
+
+Here's the distinction:
+\begin{itemize}
+    \item \textbf{Decidability} is a property of the \emph{logic itself}. It asks: can we determine validity?
+    \item \textbf{Completeness} is a property of a \emph{particular proof system}. It asks: can \emph{this} proof system derive all valid formulas?
+\end{itemize}
+
+A logic can be decidable while a particular proof system for it is incomplete. Let's see a concrete example.
+
+\textbf{The logic}: Propositional logic.
+
+\textbf{The decision algorithm}: Truth tables. Given any formula $\varphi$, list all possible truth assignments to its variables. If $\varphi$ is true under every assignment, output ``valid.'' Otherwise, output ``not valid.''
+
+For example, to check $p \to p$:
+\begin{center}
+\begin{tabular}{c|c}
+$p$ & $p \to p$ \\
+\hline
+T & T \\
+F & T
+\end{tabular}
+\end{center}
+All rows give T, so the algorithm outputs ``valid.'' This works for any formula---propositional logic is decidable.
+
+\textbf{The (weak) proof system}: Only one rule---modus ponens. No axioms.
+\begin{quote}
+\textbf{Modus ponens}: From $A$ and $A \to B$, derive $B$.
+\end{quote}
+
+Can this system prove $p \to p$?
+
+No! Modus ponens lets you derive new formulas from old ones. But with no axioms, you have no starting point. You can't derive anything at all, let alone $p \to p$.
+
+So here's the situation:
+\begin{itemize}
+    \item The algorithm says: ``$p \to p$ is valid'' (by truth table).
+    \item The proof system says: ``I can't derive $p \to p$'' (no axioms to start from).
+\end{itemize}
+
+The logic is decidable. This particular proof system is incomplete.
+
+\textbf{Why not use the algorithm as the proof system?} You could define ``proof of $\varphi$'' to mean ``the truth table has all T's.'' Then by definition, every valid formula has a proof, and your system is complete.
+
+But notice what you've lost: the truth table doesn't \emph{explain} why $p \to p$ is valid. It just checks all cases. A traditional proof gives you a derivation:
+\begin{enumerate}
+    \item Assume $p$ \hfill (hypothesis)
+    \item We have $p$ \hfill (from 1)
+    \item Therefore $p \to p$ \hfill (discharge assumption)
+\end{enumerate}
+
+This tells you \emph{why}: to prove $p \to p$, assume $p$ and derive $p$ (trivially). The algorithm tells you \emph{that} it's valid; the proof tells you \emph{why}.
+
+\textbf{Does completeness imply decidability?} No!
+
+First-order logic is the classic counterexample:
+\begin{itemize}
+    \item \textbf{Complete}: Yes (Gödel 1929). Every valid formula has a proof.
+    \item \textbf{Decidable}: No (Church-Turing 1936). No algorithm can always determine validity.
+\end{itemize}
+
+How can this be? Here's the situation:
+\begin{enumerate}
+    \item You want to know if $\varphi$ is valid.
+    \item You start enumerating all possible proofs: proof 1, proof 2, proof 3, ...
+    \item If $\varphi$ is valid, by completeness, a proof exists. Eventually you'll find it. Success!
+    \item But if $\varphi$ is \emph{not} valid, no proof exists. You'll search forever: proof 1 (not a proof of $\varphi$), proof 2 (not a proof of $\varphi$), ... You never know when to stop.
+\end{enumerate}
+
+Completeness guarantees the proof is out there (if $\varphi$ is valid). But it doesn't help you when $\varphi$ is \emph{invalid}---you can't distinguish ``haven't found it yet'' from ``it doesn't exist.''
+
+\textbf{Does decidability imply completeness?} No!
+
+Consider a deliberately weakened proof system: take first-order logic but remove some valid axioms. Now some valid formulas have no proof (incomplete), but you might still be able to decide validity by other means.
+
+A concrete example: \textbf{monadic first-order logic} (only unary predicates, no relations). It is decidable---there's an algorithm to check validity. But if you use a weak proof system, it could be incomplete.
+
+\textbf{The four combinations:}
+
+\begin{center}
+\begin{tabular}{l|cc}
+& Complete & Incomplete \\
+\hline
+Decidable & Propositional logic & Weak subsystems \\
+Undecidable & First-order logic & Peano arithmetic \\
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item \textbf{Propositional logic}: Complete (truth tables prove everything valid) and decidable (truth tables are an algorithm).
+
+    \item \textbf{First-order logic}: Complete (Gödel) but undecidable (Church-Turing). You can find proofs of valid formulas, but can't always detect invalidity.
+
+    \item \textbf{Peano arithmetic}: Incomplete (Gödel's incompleteness) and undecidable. Some true statements have no proof, and no algorithm can determine truth.
+\end{itemize}
+
+\begin{keyinsight}
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Property} & \textbf{Meaning} & \textbf{Without it...} \\
+\hline
+Soundness & Proofs $\Rightarrow$ truth & Proofs are meaningless \\
+Consistency & No contradictions & Everything is provable \\
+Completeness & Truth $\Rightarrow$ proofs & Some truths have no proofs \\
+Decidability & Algorithm exists & No machine can always check \\
+\end{tabular}
+\end{center}
+
+Soundness and consistency are \textbf{non-negotiable}---a system without them is useless. Completeness and decidability are \textbf{desirable but sometimes impossible}.
+\end{keyinsight}
+
+\subsection{Structural Properties}
+
+Beyond the basic four, several deeper properties reveal the structure of logical systems.
+
+\subsubsection{Compactness: Infinity Has No Surprises}
+
+Here is a puzzle. Suppose you have infinitely many sentences: $\varphi_1, \varphi_2, \varphi_3, \ldots$ You check: $\{\varphi_1\}$ has a model. $\{\varphi_1, \varphi_2\}$ has a model. $\{\varphi_1, \varphi_2, \varphi_3\}$ has a model. Every finite subset has a model.
+
+\textbf{Question}: Does the infinite set $\{\varphi_1, \varphi_2, \varphi_3, \ldots\}$ have a model?
+
+You might think: ``Not necessarily! Maybe the sentences gradually `squeeze' tighter and tighter, and in the limit there's no room left. Like the intersection $[0,1] \cap [0, 1/2] \cap [0, 1/3] \cap \cdots = \{0\}$---each finite intersection is a whole interval, but the infinite intersection is just a point.''
+
+This intuition is reasonable. But for first-order logic, it's \emph{wrong}.
+
+\begin{history}[title={Gödel's Compactness Theorem, 1930}]
+While proving his completeness theorem, Gödel discovered a surprising byproduct: in first-order logic, infinity has no surprises. If every finite piece is satisfiable, the whole thing is satisfiable. There's no way to ``sneak up'' on a contradiction through infinity.
+\end{history}
+
+Why is this true? The key insight is that \textbf{proofs are finite}.
+
+Suppose the infinite set $\Gamma = \{\varphi_1, \varphi_2, \ldots\}$ has no model. Then $\Gamma$ is inconsistent---we can derive a contradiction from it. But a derivation is a finite sequence of steps, using only finitely many premises. So some \emph{finite} subset of $\Gamma$ already derives a contradiction. That finite subset has no model.
+
+Contrapositive: if every finite subset has a model, then the infinite set has a model.
+
+\begin{definition}[Compactness]
+A logic is \textbf{compact} if: whenever $\Gamma \models \varphi$, there is a finite $\Gamma_0 \subseteq \Gamma$ such that $\Gamma_0 \models \varphi$.
+
+Equivalently: if every finite subset of $\Gamma$ has a model, then $\Gamma$ itself has a model.
+\end{definition}
+
+\begin{intuition}
+You can't ``sneak up'' on a contradiction through infinity. If an infinite set of sentences has no model, some finite subset already has no model.
+\end{intuition}
+
+Compactness has surprising consequences:
+
+\begin{example}[First-order logic can't express finiteness]
+Consider $\Gamma = \{\exists x_1, \exists x_1 \exists x_2 (x_1 \neq x_2), \exists x_1 \exists x_2 \exists x_3 (\text{all different}), \ldots\}$
+
+Every finite subset has a finite model. By compactness, $\Gamma$ has a model---but that model must be infinite!
+
+This means: there is no first-order sentence $\varphi$ such that $\varphi$ is true exactly in finite models. First-order logic \textbf{cannot express finiteness}.
+\end{example}
+
+\subsubsection{Finite Model Property: Small Witnesses Suffice}
+
+\begin{definition}[Finite Model Property]
+A logic has the \textbf{finite model property (FMP)} if: whenever $\varphi$ is satisfiable, it is satisfiable in some \emph{finite} model.
+\end{definition}
+
+\begin{intuition}
+If you want to show $\varphi$ is satisfiable, you don't need to search through infinite models---a finite counterexample always exists (if any exists).
+\end{intuition}
+
+Why care? Because FMP + effective proof search = decidability. If you can enumerate all finite models and all proofs, you'll eventually find either a proof of $\varphi$ or a finite model of $\neg\varphi$.
+
+Basic modal logic \textbf{K} has the FMP, proved via \textbf{filtration}---a technique that collapses infinite models to finite ones while preserving truth of formulas up to a certain complexity.
+
+\subsubsection{Craig Interpolation: Proofs Stay On Topic}
+
+\begin{history}[title={Craig's Interpolation Theorem, 1957}]
+William Craig, working at Berkeley, asked a simple question: if $\varphi$ implies $\psi$, what is the ``common ground'' that connects them? He proved that there's always an intermediate statement using only their shared vocabulary.
+\end{history}
+
+Why does this matter? Consider two scientific theories that share some concepts. If theory A implies theory B, Craig's theorem guarantees there's a ``bridge'' statement expressible in their common language. The implication doesn't require smuggling in external concepts.
+
+This has practical applications in computer science: if module A's specification implies module B's behavior, there's always an interface description using only their shared vocabulary. Proofs are \textbf{modular}.
+
+\begin{definition}[Craig Interpolation]
+A logic has \textbf{Craig interpolation} if: whenever $\varphi \to \psi$ is valid, there exists a formula $\theta$ (the \textbf{interpolant}) such that:
+\begin{itemize}
+    \item $\varphi \to \theta$ is valid
+    \item $\theta \to \psi$ is valid
+    \item Every non-logical symbol in $\theta$ appears in both $\varphi$ and $\psi$
+\end{itemize}
+\end{definition}
+
+\begin{intuition}
+If $\varphi$ implies $\psi$, the proof doesn't ``wander into irrelevant territory.'' There's always an intermediate statement $\theta$ using only the shared vocabulary.
+
+This means proofs are \textbf{modular}---the connection between premise and conclusion can always be expressed using only their common concepts.
+\end{intuition}
+
+\subsubsection{Löwenheim-Skolem: The Strangeness of First-Order Logic}
+
+\begin{history}[title={Löwenheim-Skolem and the Paradox, 1915--1922}]
+Leopold Löwenheim (1915) proved that any satisfiable first-order sentence has a countable model. Thoralf Skolem (1920, 1922) strengthened and generalized this, then noticed a disturbing consequence that now bears his name.
+\end{history}
+
+Here is Skolem's paradox:
+
+Set theory (ZFC) proves that uncountable sets exist---Cantor's theorem shows $|\mathcal{P}(\mathbb{N})| > |\mathbb{N}|$. The real numbers are uncountable.
+
+But by Löwenheim-Skolem, ZFC has a \emph{countable} model! Call it $\mathcal{M}$. Inside $\mathcal{M}$, there's a set $r$ that $\mathcal{M}$ ``thinks'' is the real numbers---and $\mathcal{M}$ can prove $r$ is uncountable.
+
+Yet from outside, we can see that $\mathcal{M}$ itself is countable, so $r \subseteq \mathcal{M}$ is countable too.
+
+How can $r$ be ``uncountable inside'' but countable outside?
+
+The resolution: ``uncountable'' means ``no bijection to $\mathbb{N}$ exists.'' Inside $\mathcal{M}$, no bijection $r \to \mathbb{N}$ exists \emph{that is an element of $\mathcal{M}$}. But there are bijections outside $\mathcal{M}$ that $\mathcal{M}$ can't see.
+
+The paradox reveals: first-order logic cannot pin down ``absolute'' cardinality. It can only talk about bijections that exist within the model.
+
+\begin{definition}[Löwenheim-Skolem]
+If a first-order theory has an infinite model, it has models of every infinite cardinality (both smaller and larger).
+\end{definition}
+
+\begin{intuition}
+First-order logic cannot ``pin down'' the size of infinite structures. The real numbers, from inside first-order logic, look the same as a countable set.
+
+This is not a bug but a feature: it means first-order theories are ``robust'' across different sizes of infinity. But it also means first-order logic has limited expressive power.
+\end{intuition}
+
+\subsubsection{Cut Elimination: Proofs Without Detours}
+
+\begin{history}[title={Gentzen's Hauptsatz, 1935}]
+Gerhard Gentzen, a young German logician, invented the sequent calculus and proved his \emph{Hauptsatz} (main theorem): every proof can be transformed into ``cut-free'' form. This seemingly technical result had profound consequences for proof theory and would later influence computer science.
+\end{history}
+
+What is the ``cut'' rule? It's the formal version of using lemmas:
+\begin{enumerate}
+    \item Prove $\varphi$ (a lemma)
+    \item Prove $\varphi \to \psi$ (the lemma implies what you want)
+    \item Conclude $\psi$ (by modus ponens)
+\end{enumerate}
+
+The cut rule is powerful---it lets you introduce ``helper'' concepts not in your final conclusion. But Gentzen showed: you never \emph{need} it. Any proof using cuts can be transformed into one without.
+
+Why does this matter?
+
+Cut-free proofs have the \textbf{subformula property}: every formula in the proof is a subformula of the conclusion or premises. No ``outside'' concepts sneak in.
+
+This bounds proof search: to prove $\varphi$, you only need to consider subformulas of $\varphi$. And it yields consistency: to derive $\bot$ (falsehood), you'd need subformulas of $\bot$---but $\bot$ has no subformulas!
+
+Gentzen used this technique to prove the consistency of Peano arithmetic (relative to a stronger principle, transfinite induction up to $\varepsilon_0$). It was the first significant consistency proof after Gödel.
+
+\begin{history}[title={Gentzen's Fate}]
+Gentzen's life ended tragically. A member of the Nazi party (though apparently not ideologically committed), he was captured by Soviet forces in Prague in 1945 and died of starvation in a prison camp at age 29. His work on proof theory became foundational for computer science decades later---the Curry-Howard correspondence connects his sequent calculus to typed programming languages.
+\end{history}
+
+\begin{definition}[Cut Elimination]
+A proof system has \textbf{cut elimination} if every proof can be transformed into a \textbf{cut-free} proof---one that doesn't use the cut rule (or any rule introducing ``lemmas'').
+\end{definition}
+
+\begin{intuition}
+Cut-free proofs have the \textbf{subformula property}: every formula appearing in the proof is a subformula of the premises or conclusion. No ``outside'' formulas are needed.
+
+This is enormously useful:
+\begin{itemize}
+    \item \textbf{Proof search becomes bounded}: you only need to consider subformulas
+    \item \textbf{Consistency follows}: if you can't derive $\bot$ using only subformulas of $\bot$ (there are none!), the system is consistent
+\end{itemize}
+\end{intuition}
+
+Gentzen used cut elimination to prove the consistency of arithmetic (relative to a stronger principle called transfinite induction).

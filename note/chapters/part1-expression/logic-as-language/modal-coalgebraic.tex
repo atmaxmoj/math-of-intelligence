@@ -1,0 +1,35 @@
+% Section: Modal Logic as Coalgebraic Logic
+
+Here is where everything connects.
+
+Remember Kripke semantics for modal logic? A \textbf{Kripke frame} is a pair $(W, R)$ where:
+\begin{itemize}
+    \item $W$ is a set of ``possible worlds''
+    \item $R \subseteq W \times W$ is an ``accessibility relation''
+\end{itemize}
+
+But this is exactly a \textbf{coalgebra}! A Kripke frame is a coalgebra for the powerset functor:
+\[
+\alpha: W \to \mathcal{P}(W)
+\]
+where $\alpha(w) = \{v \mid w R v\}$---the set of worlds accessible from $w$.
+
+\begin{keyinsight}
+\textbf{Kripke frames are coalgebras.}
+
+And the key notion of equivalence for coalgebras is \textbf{bisimulation}---which is exactly the right notion of equivalence for modal logic!
+
+Van Benthem's theorem: modal logic is the \textbf{bisimulation-invariant} fragment of first-order logic.
+\end{keyinsight}
+
+This is not a coincidence. Modal logic is the \textbf{natural language for describing coalgebraic behavior}.
+
+Different modal logics arise from different functors:
+\begin{itemize}
+    \item Kripke frames: $F(X) = \mathcal{P}(X)$
+    \item Labeled transition systems: $F(X) = \mathcal{P}(A \times X)$ for action set $A$
+    \item Probabilistic systems: $F(X) = \mathcal{D}(X)$ (probability distributions)
+    \item Automata: $F(X) = 2 \times X^A$ (accepting/rejecting + transitions)
+\end{itemize}
+
+\textbf{Coalgebraic modal logic} provides a uniform treatment of all these cases.

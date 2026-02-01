@@ -69,6 +69,18 @@ cd note
 
 Or add to PATH: `export PATH="/Library/TeX/texbin:$PATH"`
 
+## Sync PDF to R2
+
+The book is hosted at https://pub-a715c67981dc46dba5ca653c3da7b400.r2.dev/main.pdf
+
+To sync locally (credentials in `note/.env`, gitignored):
+
+```bash
+scripts/.venv/bin/python scripts/sync_r2.py
+```
+
+This uploads `note/main.pdf` to Cloudflare R2. The web viewer at `docs/index.html` will auto-detect updates via ETag polling.
+
 ## Writing Style
 
 **Feynman lectures for logic.** Rigorous but human. Deep but accessible.

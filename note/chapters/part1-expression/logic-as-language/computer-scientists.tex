@@ -1,0 +1,131 @@
+% Section: Enter the Computer Scientists
+
+At the same time, computer scientists discovered they needed modal logic too.
+
+\subsection{Program Specification}
+
+How do you specify what a program should do?
+
+Floyd and Hoare developed \textbf{Hoare logic}: $\{P\} \, C \, \{Q\}$ means ``if precondition $P$ holds before running program $C$, then postcondition $Q$ holds after.''
+
+This is an \textbf{implication}---but about \emph{states before and after an action}. It has modal flavor.
+
+\subsection{Temporal Logic for Verification}
+
+Amir Pnueli introduced \textbf{temporal logic} for specifying properties of reactive systems:
+\begin{itemize}
+    \item $\mathbf{G}\, \varphi$: ``globally, $\varphi$'' (always in the future)
+    \item $\mathbf{F}\, \varphi$: ``finally, $\varphi$'' (eventually)
+    \item $\varphi \, \mathbf{U} \, \psi$: ``$\varphi$ until $\psi$''
+\end{itemize}
+
+\begin{example}
+``Every request is eventually answered'':
+\[
+\mathbf{G}\, (\mathit{request} \to \mathbf{F}\, \mathit{answer})
+\]
+\end{example}
+
+This is modal logic, with $\Box = \mathbf{G}$ (necessity as ``always'').
+
+\subsection{The Curry-Howard Correspondence}
+
+Perhaps the deepest connection: \textbf{proofs are programs}.
+
+This sounds mystical, but it's a precise mathematical statement. Let's build up to it.
+
+\textbf{The Core Idea:} Think of a proposition $A$ as a \emph{specification}---a claim that something exists or can be done. A proof of $A$ is \emph{evidence} that the claim is true. Now, what is evidence?
+
+For simple propositions, evidence might be a witness: a proof of ``there exists an even prime'' is the number 2.
+
+For implications $A \to B$, evidence is a \emph{method}: given evidence for $A$, produce evidence for $B$. But a method that transforms input to output is exactly what a \textbf{function} is!
+
+\begin{keyinsight}[title={Curry-Howard Isomorphism}]
+\begin{center}
+\begin{tabular}{rcl}
+Propositions & $\longleftrightarrow$ & Types \\
+Proofs & $\longleftrightarrow$ & Programs \\
+$A \to B$ & $\longleftrightarrow$ & Function type $A \to B$ \\
+$A \land B$ & $\longleftrightarrow$ & Product type $(A, B)$ \\
+$A \lor B$ & $\longleftrightarrow$ & Sum type $A + B$ \\
+Proof simplification & $\longleftrightarrow$ & Program execution
+\end{tabular}
+\end{center}
+\end{keyinsight}
+
+Let's see concrete examples.
+
+\begin{example}[Identity: $A \to A$]
+\textbf{Logical statement:} ``If $A$, then $A$.'' (Trivially true.)
+
+\textbf{Proof:} Assume $A$. Then we have $A$. Done.
+
+\textbf{Corresponding program:} The identity function.
+\begin{verbatim}
+    def identity(x: A) -> A:
+        return x
+\end{verbatim}
+
+\textbf{Why they match:} The proof says ``given evidence for $A$, return that same evidence.'' The program says ``given input of type $A$, return it unchanged.'' Same thing!
+\end{example}
+
+\begin{example}[Modus Ponens: $(A \to B) \land A \to B$]
+\textbf{Logical statement:} ``If we have both `$A$ implies $B$' and `$A$', then we have $B$.''
+
+\textbf{Proof:}
+\begin{enumerate}
+    \item Assume we have $(A \to B) \land A$.
+    \item From this, extract the proof of $A \to B$ (call it $f$).
+    \item From this, extract the proof of $A$ (call it $a$).
+    \item Apply $f$ to $a$ to get a proof of $B$.
+\end{enumerate}
+
+\textbf{Corresponding program:} Function application.
+\begin{verbatim}
+    def modus_ponens(pair: (A -> B, A)) -> B:
+        f, a = pair       # extract function and argument
+        return f(a)       # apply function to argument
+\end{verbatim}
+
+\textbf{Why they match:} ``Applying an implication to its antecedent'' in logic is exactly ``calling a function with its argument'' in programming.
+\end{example}
+
+\begin{example}[Composition: $(A \to B) \to (B \to C) \to (A \to C)$]
+\textbf{Logical statement:} ``If $A$ implies $B$, and $B$ implies $C$, then $A$ implies $C$.'' (Hypothetical syllogism!)
+
+\textbf{Proof:}
+\begin{enumerate}
+    \item Assume $A \to B$ (call this proof $f$).
+    \item Assume $B \to C$ (call this proof $g$).
+    \item Now we must prove $A \to C$. So assume $A$ (call this proof $a$).
+    \item Apply $f$ to $a$, getting a proof of $B$.
+    \item Apply $g$ to that, getting a proof of $C$.
+    \item Done: from $A$ we produced $C$.
+\end{enumerate}
+
+\textbf{Corresponding program:} Function composition.
+\begin{verbatim}
+    def compose(f: A -> B, g: B -> C) -> (A -> C):
+        def composed(a: A) -> C:
+            return g(f(a))
+        return composed
+\end{verbatim}
+
+\textbf{Why they match:} Chaining implications is function composition. The logical structure and the computational structure are identical.
+\end{example}
+
+\begin{intuition}
+The correspondence goes deeper:
+\begin{itemize}
+    \item \textbf{Conjunction} $A \land B$ corresponds to \textbf{pair/product types} $(A, B)$. A proof of $A \land B$ is a pair of proofs; a value of type $(A, B)$ is a pair of values.
+    \item \textbf{Disjunction} $A \lor B$ corresponds to \textbf{sum/union types} $A + B$. A proof of $A \lor B$ is either a proof of $A$ or a proof of $B$ (tagged with which); a value of $A + B$ is either a value of $A$ or a value of $B$.
+    \item \textbf{False} $\bot$ corresponds to the \textbf{empty type} (no values). There's no proof of $\bot$, and no program can return a value of the empty type.
+    \item \textbf{Proof simplification} (cutting out unnecessary steps) corresponds to \textbf{program execution} (reducing expressions to values).
+\end{itemize}
+\end{intuition}
+
+\begin{history}
+This correspondence was discovered independently by Haskell Curry (1934, for combinatory logic) and William Howard (1969, for natural deduction). It's now foundational to type theory and proof assistants like Coq, Agda, and Lean, where you literally write programs to construct proofs.
+\end{history}
+
+The Curry-Howard correspondence reveals that logic and computation are two perspectives on the same underlying structure. This is not a loose analogy---it's a precise isomorphism.
