@@ -280,6 +280,14 @@ So here's the situation:
 
 The logic is decidable. This particular proof system is incomplete.
 
+\begin{intuition}
+Notice something: modus ponens is not just a ``rule''---it's an \textbf{operation}. Given inputs $A$ and $A \to B$, it produces output $B$. The proof system \emph{is} an algorithm, defined by its rules.
+
+When we say ``use the decision algorithm as the proof system,'' we're really asking: which operations should count as valid proof steps? Truth tables? Modus ponens? Something else?
+
+This connection---\textbf{proofs as computations, rules as operations}---runs deep. We'll return to it in proof theory, where the Curry-Howard correspondence reveals that proofs literally \emph{are} programs.
+\end{intuition}
+
 \textbf{Why not use the algorithm as the proof system?} You absolutely can! Define ``proof of $\varphi$'' to mean ``the truth table has all T's.'' Then every valid formula has a proof, and your system is complete.
 
 This is a key insight: \textbf{if a logic is decidable, you can always construct a complete proof system}---just define ``proof'' as ``algorithm says valid.'' So:
