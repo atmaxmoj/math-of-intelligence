@@ -143,15 +143,59 @@ Aristotle's revolution: \textbf{form can be studied independently of content}.
 This is the founding insight of all formal logic. Once you abstract away the content, you can study validity mechanically, without understanding what the argument is about.
 \end{keyinsight}
 
-\section{The Long Sleep}
+\section{The Long Sleep---Or Was It?}
 
-After Aristotle, logic was considered essentially complete. Medieval scholars refined the syllogism, added some complications, debated edge cases---but the basic framework remained unchanged for nearly two thousand years.
+In 1781, Immanuel Kant made a famous pronouncement in the \emph{Critique of Pure Reason}: logic ``has not been able to advance a single step'' since Aristotle, and ``is to all appearance a closed and completed body of doctrine.''\footnote{Kant, \emph{Critique of Pure Reason}, Bviii.}
 
-Why?
+For over two centuries, this was the received wisdom. Logic stagnated for two thousand years, then suddenly leaped forward in the 19th century. A neat story---and largely false.
 
-Perhaps because syllogistic logic was \textbf{good enough} for philosophy and theology, which were the main intellectual activities of the time. When you're debating the nature of God or the essence of substances, the simple subject-predicate structure of syllogisms suffices.
+\subsection{The Medieval Golden Age}
 
-But then something changed.
+The historian J.M. Bocheński, in his \emph{A History of Formal Logic} (1961), identified \textbf{three} golden periods of logic: ancient Greece, the medieval scholastic period, and the mathematical period of the 19th--20th centuries.\footnote{See Catarina Dutilh Novaes, ``The Rise and Fall and Rise of Logic,'' \emph{Aeon} (2017).}
+
+Medieval logicians---William of Ockham, Jean Buridan, Walter Burley, and others---developed sophisticated formal systems that went far beyond Aristotle:
+
+\begin{itemize}
+    \item \textbf{Supposition theory}: A proto-semantics distinguishing how terms refer in different contexts. Ockham identified personal supposition (a term refers to what it signifies), simple supposition (a term refers to a concept), and material supposition (a term refers to itself as a word). This is remarkably close to modern distinctions between use and mention.
+
+    \item \textbf{Consequentiae}: A theory of logical consequence that went beyond the syllogism to study what follows from what in general. Buridan's treatise on consequences systematically analyzed valid inference patterns.
+
+    \item \textbf{Insolubilia}: The study of semantic paradoxes like the Liar (``This sentence is false''). Medieval logicians grappled with these puzzles centuries before Russell and Tarski.
+
+    \item \textbf{Obligationes}: Formalized disputation games with precise rules for what a respondent must accept or deny---an early study of dialogue logic.
+\end{itemize}
+
+This was serious, rigorous, technically sophisticated work. So why did Kant think nothing had happened?
+
+\subsection{The Humanist Catastrophe}
+
+Around 1530, the Renaissance humanists---Lorenzo Valla, Rudolph Agricola, and others---swept away the scholastic tradition. They found the ``barbarous language and twisted Latin of the scholastics'' distasteful. They preferred the elegance of Cicero to the precision of Ockham.\footnote{See ``History of Renaissance and Modern Logic,'' \emph{historyoflogic.com}.}
+
+More fundamentally, the humanists had different goals. Scholastic logic was designed for \emph{dialectical debate}---formal disputations where every move had to follow strict rules. The humanists preferred \emph{rhetoric}---the art of persuasion, of eloquence, of moving an audience. Logic became absorbed into the study of discourse, losing its formal character.
+
+\begin{quote}
+``After about 1530 not only did new writing on the specifically medieval contributions to logic cease, but the publication of medieval logicians virtually ceased.''
+\end{quote}
+
+The medieval advances were not refuted. They were simply \emph{forgotten}. It was only in the second half of the 20th century that historians rediscovered what had been lost.
+
+\subsection{What Actually Changed}
+
+So if medieval logic was sophisticated, why did it never break through to the modern form? The answer lies not in logic itself, but in what logic was \emph{for}.
+
+Medieval logic served philosophy and theology. Its paradigm cases were ``All men are mortal'' and ``God is good.'' These fit the subject-predicate structure of syllogisms.
+
+But in the 17th century, a new customer appeared: \textbf{mathematics}. And mathematics needed to say things that syllogisms could not express:
+
+\begin{itemize}
+    \item ``For every $\epsilon > 0$, there exists a $\delta > 0$ such that...'' (the definition of a limit)
+    \item ``There exists a unique $x$ such that $f(x) = 0$'' (existence and uniqueness)
+    \item ``For all $n$, if $P(n)$ then $P(n+1)$'' (mathematical induction)
+\end{itemize}
+
+These involve \textbf{nested quantifiers}---alternations of ``for all'' and ``there exists'' that bind variables in complex ways. Aristotle's ``All A are B'' cannot express ``for every $\epsilon$ there exists a $\delta$.''
+
+The real revolution in logic came when mathematicians needed to formalize their own reasoning. That required a new kind of logic entirely.
 
 \section{Leibniz's Dream}
 
