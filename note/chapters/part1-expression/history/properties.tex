@@ -280,40 +280,60 @@ So here's the situation:
 
 The logic is decidable. This particular proof system is incomplete.
 
-\textbf{Why not use the algorithm as the proof system?} You could define ``proof of $\varphi$'' to mean ``the truth table has all T's.'' Then by definition, every valid formula has a proof, and your system is complete.
+\textbf{Why not use the algorithm as the proof system?} You absolutely can! Define ``proof of $\varphi$'' to mean ``the truth table has all T's.'' Then every valid formula has a proof, and your system is complete.
 
-But notice what you've lost: the truth table doesn't \emph{explain} why $p \to p$ is valid. It just checks all cases. A traditional proof gives you a derivation:
-\begin{enumerate}
-    \item Assume $p$ \hfill (hypothesis)
-    \item We have $p$ \hfill (from 1)
-    \item Therefore $p \to p$ \hfill (discharge assumption)
-\end{enumerate}
+This is a key insight: \textbf{if a logic is decidable, you can always construct a complete proof system}---just define ``proof'' as ``algorithm says valid.'' So:
+\[ \text{Decidable} \Longrightarrow \text{Can have a complete proof system} \]
 
-This tells you \emph{why}: to prove $p \to p$, assume $p$ and derive $p$ (trivially). The algorithm tells you \emph{that} it's valid; the proof tells you \emph{why}.
+The modus-ponens-only example shows a \emph{different} proof system that is incomplete. The point is not that you \emph{must} use that system, but that completeness is a property of a \emph{particular} proof system, while decidability is a property of the \emph{logic itself}. The same logic can have complete and incomplete proof systems.
 
-\textbf{Does completeness imply decidability?} No!
+\begin{question}[title={Does completeness imply decidability?}]
+If every valid formula has a proof (completeness), can't I just search through all proofs until I find one? Doesn't that decide validity?
+\end{question}
 
+\begin{answer}[title={No: Completeness gives Semi-Decidability, not Decidability}]
 First-order logic is the classic counterexample:
 \begin{itemize}
     \item \textbf{Complete}: Yes (Gödel 1929). Every valid formula has a proof.
     \item \textbf{Decidable}: No (Church-Turing 1936). No algorithm can always determine validity.
 \end{itemize}
 
-How can this be? Here's the situation:
+Here's what goes wrong. You want to know if $\varphi$ is valid:
 \begin{enumerate}
-    \item You want to know if $\varphi$ is valid.
-    \item You start enumerating all possible proofs: proof 1, proof 2, proof 3, ...
-    \item If $\varphi$ is valid, by completeness, a proof exists. Eventually you'll find it. Success!
-    \item But if $\varphi$ is \emph{not} valid, no proof exists. You'll search forever: proof 1 (not a proof of $\varphi$), proof 2 (not a proof of $\varphi$), ... You never know when to stop.
+    \item You enumerate all possible proofs: proof 1, proof 2, proof 3, ...
+    \item If $\varphi$ is valid, by completeness, a proof exists. Eventually you find it. \textbf{Success!}
+    \item But if $\varphi$ is \emph{invalid}, no proof exists. You search forever: proof 1 (no), proof 2 (no), ... \textbf{You never know when to stop.}
 \end{enumerate}
 
-Completeness guarantees the proof is out there (if $\varphi$ is valid). But it doesn't help you when $\varphi$ is \emph{invalid}---you can't distinguish ``haven't found it yet'' from ``it doesn't exist.''
+Completeness guarantees the proof is out there \emph{if $\varphi$ is valid}. But it doesn't help when $\varphi$ is invalid---you can't distinguish ``haven't found it yet'' from ``doesn't exist.''
 
-\textbf{Does decidability imply completeness?} No!
+This is \textbf{semi-decidability}: you can confirm validity (by finding a proof) but cannot refute it (you'd search forever).
+\end{answer}
 
-Consider a deliberately weakened proof system: take first-order logic but remove some valid axioms. Now some valid formulas have no proof (incomplete), but you might still be able to decide validity by other means.
+\begin{question}[title={Does decidability imply completeness?}]
+If I have an algorithm that decides validity, can't I just use ``algorithm says valid'' as the definition of ``has a proof''? Then every valid formula has a proof!
+\end{question}
 
-A concrete example: \textbf{monadic first-order logic} (only unary predicates, no relations). It is decidable---there's an algorithm to check validity. But if you use a weak proof system, it could be incomplete.
+\begin{answer}[title={Yes, but Completeness is about a Specific Proof System}]
+You're right! If the logic is decidable, you \emph{can} construct a complete proof system this way.
+
+But completeness is a property of a \emph{particular} proof system, not the logic itself. The same decidable logic can have:
+\begin{itemize}
+    \item \textbf{System A} (algorithm-as-proof): Complete
+    \item \textbf{System B} (modus ponens only): Incomplete
+\end{itemize}
+
+When we ask ``is this proof system complete?'' we're asking about \emph{that specific system}, not whether \emph{some} complete system exists.
+
+The real lesson: decidable logic $\Rightarrow$ complete proof system \emph{exists}. But a given proof system might still be incomplete.
+\end{answer}
+
+The precise relationships:
+\begin{align*}
+\text{Decidable} &\Longrightarrow \text{Can construct a complete proof system} \\
+\text{Complete proof system} &\Longrightarrow \text{Semi-decidable} \\
+\text{Complete proof system} &\not\Longrightarrow \text{Decidable}
+\end{align*}
 
 \textbf{The four combinations:}
 
